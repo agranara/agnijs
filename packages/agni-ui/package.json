@@ -16,7 +16,6 @@
   "unpkg": "dist/index.umd.js",
   "sideEffects": false,
   "publishConfig": {
-    "registry": "https://registry.npmjs.com",
     "access": "public"
   },
   "repository": {
