@@ -11,7 +11,7 @@ export const UiProvider = ({ theme = defaultTheme, children }) => {
 
   return (
     <ThemeProvider theme={theme}>
-      <>
+      <React.Fragment>
         <Global
           styles={css`
             html {
@@ -300,7 +300,7 @@ export const UiProvider = ({ theme = defaultTheme, children }) => {
           `}
         />
         {children}
-      </>
+      </React.Fragment>
     </ThemeProvider>
   );
 };
