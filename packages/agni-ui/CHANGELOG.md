@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.2](https://github.com/agranara/agnijs/compare/@agnijs/agni-ui@1.1.1...@agnijs/agni-ui@1.1.2) (2020-01-17)
+
+### Bug Fixes
+
+- **theme, utils:** added theme and utils as export file ([3210bb7](https://github.com/agranara/agnijs/commit/3210bb79ee86dad5ea7ceded182aed5cd54dc146))
+
 ## [1.1.1](https://github.com/agranara/agnijs/compare/@agnijs/agni-ui@1.0.1...@agnijs/agni-ui@1.1.1) (2020-01-17)
 
 ### Bug Fixes
