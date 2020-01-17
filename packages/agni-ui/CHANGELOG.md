@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.3](https://github.com/agranara/agnijs/compare/@agnijs/agni-ui@1.1.2...@agnijs/agni-ui@1.1.3) (2020-01-17)
+
+### Bug Fixes
+
+- **uiprovider:** fixed empty tag for React.Fragment ([9563b7b](https://github.com/agranara/agnijs/commit/9563b7b113abda4e69267fd0c5be4b11b1e46410))
+
 ## [1.1.2](https://github.com/agranara/agnijs/compare/@agnijs/agni-ui@1.1.1...@agnijs/agni-ui@1.1.2) (2020-01-17)
 
 ### Bug Fixes
