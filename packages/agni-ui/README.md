@@ -9,11 +9,9 @@ To install AgniUI:
 ```
 $ yarn add @agnijs/agni-ui
 
-# OR
+// OR
 
 $ npm install @agnijs/agni-ui
-
-
 ```
 
 ## Usage

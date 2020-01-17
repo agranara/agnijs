@@ -1,6 +1,6 @@
 {
   "name": "@agnijs/agni-ui",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Agranara UI Components",
   "keywords": [
     "react",
@@ -16,7 +16,7 @@
   "unpkg": "dist/index.umd.js",
   "sideEffects": false,
   "publishConfig": {
-    "registry": "https://registry.yarnpkg.com",
+    "registry": "https://registry.npmjs.com",
     "access": "public"
   },
   "repository": {
