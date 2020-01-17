@@ -4,4 +4,4 @@ Agranara monorepo javascript project
 
 ## License
 
-MIT
+MIT 2020
