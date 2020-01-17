@@ -273,9 +273,6 @@ export const UiProvider = ({ theme = defaultTheme, children }) => {
               width: 100%;
               font-family: ${theme.fonts.body};
             }
-            * {
-              position: relative;
-            }
             *,
             *::before,
             *::after {
