@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.1](https://github.com/agranara/agnijs/compare/@agnijs/agni-ui@1.0.1...@agnijs/agni-ui@1.1.1) (2020-01-17)
+
+### Bug Fixes
+
+- **uiprovider.js:** position relative ([b08d79f](https://github.com/agranara/agnijs/commit/b08d79f8dd481df61a47d081f0154ac119612d3b))
+
+## 1.0.2 (2020-01-17)
+
 # 1.1.0 (2020-01-17)
 
 ### Bug Fixes
