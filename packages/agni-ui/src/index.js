@@ -20,3 +20,5 @@ export * from './Table';
 export * from './Text';
 export * from './UiProvider';
 export * from './VisuallyHidden';
+export * from './theme';
+export * from './utils';
