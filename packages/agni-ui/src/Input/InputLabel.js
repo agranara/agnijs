@@ -3,11 +3,11 @@ import { jsx } from '@emotion/core';
 import { forwardRef } from 'react';
 import { Box } from '../Box';
 
-export const RequiredIndicator = props => {
+const RequiredIndicator = props => {
   return <Box as="span" ml={1} color="red.500" aria-hidden="true" children="*" {...props} />;
 };
 
-export const InputLabel = forwardRef(({ children, isRow, ...props }, ref) => {
+const InputLabel = forwardRef(({ children, isRow, ...props }, ref) => {
   return (
     <Box
       ref={ref}
@@ -28,3 +28,6 @@ export const InputLabel = forwardRef(({ children, isRow, ...props }, ref) => {
     </Box>
   );
 });
+
+export { RequiredIndicator, InputLabel };
+export default InputLabel;

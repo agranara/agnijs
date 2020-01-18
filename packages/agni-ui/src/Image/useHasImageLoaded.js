@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect } from 'react';
 
-export const useHasImageLoaded = ({ src, onLoad, onError }) => {
+const useHasImageLoaded = ({ src, onLoad, onError }) => {
   const isMounted = useRef(true);
   const [hasLoaded, setHasLoaded] = useState(false);
 
@@ -31,3 +31,6 @@ export const useHasImageLoaded = ({ src, onLoad, onError }) => {
 
   return hasLoaded;
 };
+
+export { useHasImageLoaded };
+export default useHasImageLoaded;

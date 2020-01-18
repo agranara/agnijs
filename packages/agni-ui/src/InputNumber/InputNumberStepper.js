@@ -3,7 +3,7 @@ import { useInputNumberContext } from './InputNumberContext';
 import { PseudoBox } from '../Box';
 import styleProps from './styles';
 
-export const InputNumberStepper = forwardRef(
+const InputNumberStepper = forwardRef(
   ({ children, isIncrement, isDecrement, ...restProps }, ref) => {
     const { isDisabled, size, incrementStepper, decrementStepper } = useInputNumberContext();
 
@@ -33,3 +33,6 @@ export const InputNumberStepper = forwardRef(
     );
   }
 );
+
+export { InputNumberStepper };
+export default InputNumberStepper;

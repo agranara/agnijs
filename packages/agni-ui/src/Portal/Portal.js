@@ -14,7 +14,7 @@ function getContainer(container) {
   return findDOMNode(container);
 }
 
-export const Portal = forwardRef(({ children, container, isDisabled = false, onRendered }, ref) => {
+const Portal = forwardRef(({ children, container, isDisabled = false, onRendered }, ref) => {
   const [mountNode, setMountNode] = useState(null);
   const handleRef = useForkedRef(children.ref, ref);
 
@@ -50,3 +50,6 @@ export const Portal = forwardRef(({ children, container, isDisabled = false, onR
 
   return mountNode ? createPortal(children, mountNode) : mountNode;
 });
+
+export { Portal };
+export default Portal;

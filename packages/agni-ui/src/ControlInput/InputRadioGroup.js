@@ -13,7 +13,7 @@ import {
 import { Box } from '../Box';
 import { uniqueId } from '../utils';
 
-export const InputRadioGroup = forwardRef(
+const InputRadioGroup = forwardRef(
   (
     {
       onChange,
@@ -94,3 +94,6 @@ export const InputRadioGroup = forwardRef(
     );
   }
 );
+
+export { InputRadioGroup };
+export default InputRadioGroup;

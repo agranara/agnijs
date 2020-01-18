@@ -4,12 +4,10 @@ import { InputText, InputGroup, InputInside } from '../Input';
 import { Button } from '../Button';
 import { useDatePicker } from './useDatePicker';
 import { DatepickerContext } from './DatepickerContext';
-import { Picker } from './components/Picker';
-import { PickerHeader } from './components/PickerHeader';
-import { PickerFooter } from './components/PickerFooter';
+import { Picker, PickerHeader, PickerFooter } from './components';
 import { mergeRefs } from '../utils';
 
-export const Datepicker = forwardRef(
+const Datepicker = forwardRef(
   (
     {
       id,
@@ -80,3 +78,6 @@ export const Datepicker = forwardRef(
     );
   }
 );
+
+export { Datepicker };
+export default Datepicker;

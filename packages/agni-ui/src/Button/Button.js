@@ -6,7 +6,7 @@ import { Spinner } from '../Spinner';
 import useButtonStyle from './styles';
 import { Box, PseudoBox } from '../Box';
 
-export const Button = forwardRef(
+const Button = forwardRef(
   (
     {
       isDisabled,
@@ -86,3 +86,6 @@ export const Button = forwardRef(
     );
   }
 );
+
+export { Button };
+export default Button;

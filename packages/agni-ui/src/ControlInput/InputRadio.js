@@ -5,7 +5,7 @@ import { ControlBox, Box } from '../Box';
 import { VisuallyHidden } from '../VisuallyHidden';
 import useCheckboxStyle from './styles';
 
-export const InputRadio = forwardRef(
+const InputRadio = forwardRef(
   (
     {
       id,
@@ -74,3 +74,6 @@ export const InputRadio = forwardRef(
     );
   }
 );
+
+export { InputRadio };
+export default InputRadio;

@@ -38,7 +38,7 @@ const baseLink = (theme = defaultTheme) => css`
   }
 `;
 
-export const NavLink = forwardRef(
+const NavLink = forwardRef(
   ({ as: Comp = 'a', children, isActive, className, ...restProps }, ref) => {
     const theme = useUiTheme();
 
@@ -54,3 +54,6 @@ export const NavLink = forwardRef(
     );
   }
 );
+
+export { NavLink };
+export default NavLink;

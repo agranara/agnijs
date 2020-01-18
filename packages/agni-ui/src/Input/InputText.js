@@ -1,10 +1,10 @@
 import React, { useMemo, useContext, forwardRef } from 'react';
 import cn from 'classnames';
 import { get } from 'styled-system';
-import { PseudoBox } from '../../Box';
-import { inputSizes } from '../sizes';
-import { useUiTheme } from '../../UiProvider';
-import { InputGroupContext } from '../InputGroupContext';
+import { PseudoBox } from '../Box';
+import { useUiTheme } from '../UiProvider';
+import { inputSizes } from './sizes';
+import { InputGroupContext } from './InputGroupContext';
 
 const baseProps = {
   display: 'flex',
@@ -64,7 +64,7 @@ const boxedStyle = ({ theme, focusBorderColor, errorBorderColor }) => {
   };
 };
 
-export const InputText = forwardRef(
+const InputText = forwardRef(
   (
     {
       isFocus = false,
@@ -172,3 +172,6 @@ export const InputText = forwardRef(
     );
   }
 );
+
+export { InputText };
+export default InputText;

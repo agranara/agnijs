@@ -12,7 +12,7 @@ const sizes = {
   xs: 'sm'
 };
 
-export const Heading = forwardRef(({ size = 'xl', ...props }, ref) => (
+const Heading = forwardRef(({ size = 'xl', ...props }, ref) => (
   <Box
     ref={ref}
     as="h2"
@@ -23,3 +23,6 @@ export const Heading = forwardRef(({ size = 'xl', ...props }, ref) => (
     {...props}
   />
 ));
+
+export { Heading };
+export default Heading;

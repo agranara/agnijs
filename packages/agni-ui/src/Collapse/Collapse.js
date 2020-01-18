@@ -4,7 +4,7 @@ import { forwardRef } from 'react';
 import AnimateHeight from 'react-animate-height';
 import { Box } from '../Box';
 
-export const Collapse = forwardRef(
+const Collapse = forwardRef(
   (
     {
       isOpen,
@@ -40,3 +40,6 @@ export const Collapse = forwardRef(
     );
   }
 );
+
+export { Collapse };
+export default Collapse;

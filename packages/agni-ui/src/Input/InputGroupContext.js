@@ -1,6 +1,6 @@
 import { createContext } from 'react';
 
-export const InputGroupContext = createContext({
+const InputGroupContext = createContext({
   groupSize: null,
   groupPadding: null,
   hasLeft: false,
@@ -8,3 +8,6 @@ export const InputGroupContext = createContext({
   setHasRight: () => {},
   setHasLeft: () => {}
 });
+
+export { InputGroupContext };
+export default InputGroupContext;

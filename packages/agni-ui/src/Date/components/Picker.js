@@ -35,7 +35,7 @@ const resetRowCss = {
   }
 };
 
-export const Picker = ({ as: Comp = 'button', viewConfig = tableConfig.monthly }) => {
+const Picker = ({ as: Comp = 'button', viewConfig = tableConfig.monthly }) => {
   const { value, focusValue, onChange } = useDatepickerContext();
 
   const view = {
@@ -117,3 +117,6 @@ export const Picker = ({ as: Comp = 'button', viewConfig = tableConfig.monthly }
     </Table>
   );
 };
+
+export { Picker };
+export default Picker;

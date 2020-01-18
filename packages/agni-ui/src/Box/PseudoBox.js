@@ -28,7 +28,7 @@ const notFirst = '&:not(:first-of-type)';
 const notLast = '&:not(:last-of-type)';
 const groupHover = '[role=group]:hover &';
 
-export const PseudoBox = styled(Box)(
+const PseudoBox = styled(Box)(
   ({
     _after,
     _focus,
@@ -83,3 +83,6 @@ export const PseudoBox = styled(Box)(
     });
   }
 );
+
+export { PseudoBox };
+export default PseudoBox;

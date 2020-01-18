@@ -2,7 +2,7 @@ import React from 'react';
 import { MenuOption } from './MenuOption';
 import { useMenuContext } from './MenuContext';
 
-export const MenuItem = ({ children, onClick, ...restProps }) => {
+const MenuItem = ({ children, onClick, ...restProps }) => {
   const { close } = useMenuContext();
 
   const handleClick = ev => {
@@ -16,3 +16,6 @@ export const MenuItem = ({ children, onClick, ...restProps }) => {
     </MenuOption>
   );
 };
+
+export { MenuItem };
+export default MenuItem;

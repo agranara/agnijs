@@ -3,7 +3,7 @@ import { canUseDOM } from 'exenv';
 import { preventNonNumberKey, roundToPrecision, calculatePrecision } from './util';
 import { useLongPress } from '../utils';
 
-export const useNumberInput = ({
+const useNumberInput = ({
   value: valueProp,
   onChange,
   defaultValue,
@@ -219,3 +219,6 @@ export const useNumberInput = ({
     }
   };
 };
+
+export { useNumberInput };
+export default useNumberInput;

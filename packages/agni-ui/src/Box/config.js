@@ -1,6 +1,6 @@
 import { system } from 'styled-system';
 
-export const config = {
+const config = {
   roundedTop: {
     properties: ['borderTopLeftRadius', 'borderTopRightRadius'],
     scale: 'radii'
@@ -136,8 +136,6 @@ config.listStyleImg = config.listStyleImage;
 
 const extraConfig = system(config);
 
-export default extraConfig;
-
 // Create an issue on @styled-system/css to allow custom alias to be passed to the `css` function
 
 // Transform the custom alias to a format that styled-system CSS supports
@@ -162,7 +160,7 @@ const transformAlias = (prop, propValue) => {
   return result;
 };
 
-export const transformAliasProps = props => {
+const transformAliasProps = props => {
   let result = {};
   for (let prop in props) {
     if (typeof props[prop] === 'object') {
@@ -173,3 +171,6 @@ export const transformAliasProps = props => {
   }
   return result;
 };
+
+export { config, extraConfig, transformAliasProps };
+export default extraConfig;

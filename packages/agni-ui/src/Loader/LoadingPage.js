@@ -150,7 +150,7 @@ const useLoaderCss = () => {
   `;
 };
 
-export const LoadingPage = () => {
+const LoadingPage = () => {
   const loaderCss = useLoaderCss();
 
   return (
@@ -175,3 +175,6 @@ export const LoadingPage = () => {
     </div>
   );
 };
+
+export { LoadingPage };
+export default LoadingPage;

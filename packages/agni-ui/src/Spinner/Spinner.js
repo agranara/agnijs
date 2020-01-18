@@ -38,7 +38,7 @@ const spinnerSize = (size = 'md', sizes = defaultTheme.sizes) => {
   `;
 };
 
-export const Spinner = ({
+const Spinner = ({
   label = 'Loading...',
   variantColor = 'current',
   className,
@@ -61,3 +61,6 @@ export const Spinner = ({
     </Box>
   );
 };
+
+export { Spinner };
+export default Spinner;

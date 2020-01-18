@@ -15,7 +15,7 @@ import {
 } from 'styled-system';
 import extraConfig from './config';
 
-export const truncate = props => {
+const boxTruncate = props => {
   if (props.isTruncated) {
     return {
       overflow: 'hidden',
@@ -25,7 +25,7 @@ export const truncate = props => {
   }
 };
 
-export const systemProps = compose(
+const boxSystemProps = compose(
   layout,
   color,
   space,
@@ -59,7 +59,7 @@ const shouldForwardProp = createShouldForwardProp([
  */
 const nativeHTMLPropAlias = ['htmlWidth', 'htmlHeight'];
 
-export const Box = styled('div', {
+const Box = styled('div', {
   shouldForwardProp: prop => {
     if (nativeHTMLPropAlias.includes(prop)) {
       return true;
@@ -67,4 +67,7 @@ export const Box = styled('div', {
       return shouldForwardProp(prop);
     }
   }
-})(truncate, systemProps);
+})(boxTruncate, boxSystemProps);
+
+export { Box, boxTruncate, boxSystemProps };
+export default Box;

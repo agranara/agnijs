@@ -1,7 +1,7 @@
 import React from 'react';
 import { useMenuContext } from './MenuContext';
 
-export const MenuContainer = ({ children }) => {
+const MenuContainer = ({ children }) => {
   const { Dropdown } = useMenuContext();
 
   return (
@@ -10,3 +10,6 @@ export const MenuContainer = ({ children }) => {
     </Dropdown>
   );
 };
+
+export { MenuContainer };
+export default MenuContainer;

@@ -1,6 +1,6 @@
 import React, { createContext, useContext, Fragment } from 'react';
 
-export const MenuContext = createContext({
+const MenuContext = createContext({
   isActive: false,
   setIsActive: () => {},
   open: () => {},
@@ -10,4 +10,7 @@ export const MenuContext = createContext({
   isOpen: false
 });
 
-export const useMenuContext = () => useContext(MenuContext);
+const useMenuContext = () => useContext(MenuContext);
+
+export { MenuContext, useMenuContext };
+export default MenuContext;

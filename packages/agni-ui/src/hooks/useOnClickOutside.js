@@ -3,7 +3,7 @@ import { addEvent, removeEvent } from '../utils';
 
 const defaultEvents = ['mousedown', 'touchstart'];
 
-export const useOnClickOutside = (refs, onClickOutside, events = defaultEvents) => {
+const useOnClickOutside = (refs, onClickOutside, events = defaultEvents) => {
   const savedCallback = useRef(onClickOutside);
   useEffect(() => {
     savedCallback.current = onClickOutside;
@@ -28,3 +28,6 @@ export const useOnClickOutside = (refs, onClickOutside, events = defaultEvents) 
     };
   }, [events, refs]);
 };
+
+export { useOnClickOutside };
+export default useOnClickOutside;

@@ -1,12 +1,11 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core';
-import { useContext } from 'react';
 import cn from 'classnames';
 import { Box } from '../Box';
-import { RowContext } from './RowContext';
+import { useRowContext } from './RowContext';
 
-export const Column = ({ md, lg, xl, col, children, className, style }) => {
-  const { size, isDeck } = useContext(RowContext);
+const Column = ({ md, lg, xl, col, children, className, style }) => {
+  const { size, isDeck } = useRowContext();
 
   const calculateWidth = unit => {
     const w = (100 / size) * unit;
@@ -56,3 +55,6 @@ export const Column = ({ md, lg, xl, col, children, className, style }) => {
     </Box>
   );
 };
+
+export { Column };
+export default Column;

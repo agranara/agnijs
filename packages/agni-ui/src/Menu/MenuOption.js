@@ -57,7 +57,7 @@ const useMenuItemCss = ({ variantColor, size, isDisabled }) => {
   return css([baseCss, sizeCss, isDisabled && disabledCss]);
 };
 
-export const MenuOption = ({
+const MenuOption = ({
   as: Comp = 'button',
   children,
   size = 'md',
@@ -78,3 +78,6 @@ export const MenuOption = ({
     </Comp>
   );
 };
+
+export { MenuOption };
+export default MenuOption;

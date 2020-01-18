@@ -4,7 +4,7 @@ import { inputSizes } from './sizes';
 import { useUiTheme } from '../UiProvider';
 import { InputGroupContext } from './InputGroupContext';
 
-export const InputGroup = forwardRef(({ children, size = 'md', ...restProps }, ref) => {
+const InputGroup = forwardRef(({ children, size = 'md', ...restProps }, ref) => {
   const { sizes } = useUiTheme();
   const [hasLeft, setHasLeft] = useState(false);
   const [hasRight, setHasRight] = useState(false);
@@ -29,3 +29,6 @@ export const InputGroup = forwardRef(({ children, size = 'md', ...restProps }, r
     </InputGroupContext.Provider>
   );
 });
+
+export { InputGroup };
+export default InputGroup;

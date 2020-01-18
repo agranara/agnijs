@@ -1,4 +1,4 @@
-export function isNumberKey(event) {
+function isNumberKey(event) {
   const charCode = event.which ? event.which : event.keyCode;
   if (event.key === '.') return true;
   if (event.key === ',') return true;
@@ -12,17 +12,17 @@ export function isNumberKey(event) {
   return true;
 }
 
-export function preventNonNumberKey(event) {
+function preventNonNumberKey(event) {
   if (!isNumberKey(event)) {
     event.preventDefault();
   }
 }
 
-export function roundToPrecision(value, precision) {
+function roundToPrecision(value, precision) {
   return parseFloat(value).toFixed(precision);
 }
 
-export function calculatePrecision(value) {
+function calculatePrecision(value) {
   const groups = /[1-9]([0]+$)|\.([0-9]*)/.exec(String(value));
   if (!groups) {
     return 0;
@@ -35,3 +35,5 @@ export function calculatePrecision(value) {
   }
   return 0;
 }
+
+export { isNumberKey, preventNonNumberKey, roundToPrecision, calculatePrecision };

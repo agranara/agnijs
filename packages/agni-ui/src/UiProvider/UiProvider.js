@@ -4,7 +4,7 @@ import { ThemeProvider } from 'emotion-theming';
 
 import defaultTheme from '../theme';
 
-export const UiProvider = ({ theme = defaultTheme, children }) => {
+const UiProvider = ({ theme = defaultTheme, children }) => {
   const color = theme.colors.gray[800];
   const borderColor = theme.colors.gray[200];
   const placeholderColor = theme.colors.gray[500];
@@ -304,3 +304,6 @@ export const UiProvider = ({ theme = defaultTheme, children }) => {
     </ThemeProvider>
   );
 };
+
+export { UiProvider };
+export default UiProvider;

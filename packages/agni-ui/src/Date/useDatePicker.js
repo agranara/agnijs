@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/id';
 import { useDropdown } from '../hooks';
 
-export const useDatePicker = ({
+const useDatePicker = ({
   value: valueProp,
   onChange,
   isReadOnly,
@@ -103,3 +103,6 @@ export const useDatePicker = ({
     handleClear
   };
 };
+
+export { useDatePicker };
+export default useDatePicker;

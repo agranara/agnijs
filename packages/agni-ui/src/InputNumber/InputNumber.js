@@ -6,7 +6,7 @@ import { InputNumberField } from './InputNumberField';
 import { InputNumberStepper } from './InputNumberStepper';
 import { Box } from '../Box';
 
-export const InputNumber = forwardRef(
+const InputNumber = forwardRef(
   (
     {
       value,
@@ -84,3 +84,6 @@ export const InputNumber = forwardRef(
     );
   }
 );
+
+export { InputNumber };
+export default InputNumber;

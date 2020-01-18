@@ -46,3 +46,5 @@ export const BreadcrumbItem = forwardRef(
     );
   }
 );
+
+export default BreadcrumbItem;

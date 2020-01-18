@@ -5,7 +5,7 @@ import { Box } from '../Box';
 import { useUiTheme } from '../UiProvider';
 import { useHasImageLoaded } from './useHasImageLoaded';
 
-export const AvatarBadge = props => {
+const AvatarBadge = props => {
   const borderColor = 'white';
 
   return (
@@ -60,7 +60,7 @@ const DefaultAvatar = props => (
   </Box>
 );
 
-export const Avatar = ({ size = 'md', showBorder, name, src, borderColor, children, ...rest }) => {
+const Avatar = ({ size = 'md', showBorder, name, src, borderColor, children, ...rest }) => {
   const avatarStyleProps = useAvatarStyle({
     name,
     size,
@@ -101,3 +101,6 @@ export const Avatar = ({ size = 'md', showBorder, name, src, borderColor, childr
     </Box>
   );
 };
+
+export { Avatar, AvatarBadge };
+export default Avatar;

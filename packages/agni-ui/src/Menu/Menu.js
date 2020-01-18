@@ -3,7 +3,7 @@ import { MenuContext } from './MenuContext';
 import { Box } from '../Box';
 import { useDropdown } from '../hooks';
 
-export const Menu = ({ children, isFixed }) => {
+const Menu = ({ children, isFixed }) => {
   const toggleRef = useRef();
   const menuRef = useRef();
   const [isActive, setIsActive] = useState();
@@ -30,3 +30,6 @@ export const Menu = ({ children, isFixed }) => {
     </MenuContext.Provider>
   );
 };
+
+export { Menu };
+export default Menu;

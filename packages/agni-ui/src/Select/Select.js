@@ -3,7 +3,7 @@ import { jsx, css } from '@emotion/core';
 import { useMemo } from 'react';
 import InputSelect from 'react-dropdown-select';
 import cn from 'classnames';
-import get from 'lodash/get';
+import get from 'lodash.get';
 import { FiX } from 'react-icons/fi';
 import { Button } from '../Button';
 import { useUiTheme } from '../UiProvider';
@@ -91,7 +91,7 @@ const useSelectCss = ({ size = 'md' }) => {
   };
 };
 
-export const Select = ({
+const Select = ({
   id,
   name,
   value,
@@ -201,7 +201,10 @@ export const Select = ({
         handleKeyDownFn={handleKeyDown}
         css={css([result])}
       />
-      {disabled && <div css={css(disabledCss)} />}
+      {disabled ? <div css={css(disabledCss)} /> : null}
     </Box>
   );
 };
+
+export { Select };
+export default Select;

@@ -5,7 +5,7 @@ import { addEvent, removeEvent, useEnhancedEffect } from '../utils';
 
 const defaultEvents = ['mousedown', 'touchstart'];
 
-export const useDropdown = ({ ref, initialOpen = false, isFixed }) => {
+const useDropdown = ({ ref, initialOpen = false, isFixed }) => {
   const boxRef = useRef(null);
   const [pos, setPosition] = useState({});
   const [isOpen, setOpen] = useState(initialOpen);
@@ -94,3 +94,6 @@ export const useDropdown = ({ ref, initialOpen = false, isFixed }) => {
     close
   };
 };
+
+export { useDropdown };
+export default useDropdown;

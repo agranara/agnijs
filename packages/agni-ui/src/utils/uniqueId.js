@@ -3,6 +3,7 @@ const idCounter = {};
 
 /**
  * Generates a unique ID. If `prefix` is given, the ID is appended to it.
+ * original source: https://github.com/lodash/lodash/blob/master/uniqueId.js
  *
  * @since 0.1.0
  * @category Util
@@ -17,7 +18,7 @@ const idCounter = {};
  * uniqueId()
  * // => '105'
  */
-export function uniqueId(prefix = '$lodash$') {
+function uniqueId(prefix = '$lodash$') {
   if (!idCounter[prefix]) {
     idCounter[prefix] = 0;
   }
@@ -30,4 +31,5 @@ export function uniqueId(prefix = '$lodash$') {
   return `${prefix + id}`;
 }
 
+export { uniqueId };
 export default uniqueId;

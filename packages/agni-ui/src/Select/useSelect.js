@@ -2,7 +2,7 @@ import { useRef, useState } from 'react';
 import { useDropdown } from '../hooks';
 
 // TODO: Use later to refactor Select in same folder as this
-export const useSelect = ({
+const useSelect = ({
   value: valueProp,
   onChange,
   defaultValue,
@@ -64,3 +64,6 @@ export const useSelect = ({
     close
   };
 };
+
+export { useSelect };
+export default useSelect;

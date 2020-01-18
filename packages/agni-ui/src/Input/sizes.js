@@ -1,4 +1,4 @@
-export const inputSizes = {
+const inputSizes = {
   lg: {
     fontSize: 'lg',
     px: 4,
@@ -21,3 +21,6 @@ export const inputSizes = {
     rounded: 'sm'
   }
 };
+
+export { inputSizes };
+export default inputSizes;

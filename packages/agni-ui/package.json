@@ -10,10 +10,9 @@
   "author": "Agranara <agranara.indonesia@gmail.com>",
   "homepage": "https://agranara.com",
   "license": "MIT",
-  "source": "src/index.js",
   "main": "dist/index.js",
-  "module": "dist/index.mjs",
-  "unpkg": "dist/index.umd.js",
+  "module": "dist/index.es.js",
+  "jsnext:main": "dist/index.es.js",
   "sideEffects": false,
   "publishConfig": {
     "access": "public"
@@ -24,8 +23,9 @@
   },
   "scripts": {
     "prebuild": "rimraf dist",
-    "build": "microbundle --jsx React.createElement",
-    "dev": "microbundle watch --jsx React.createElement",
+    "build": "cross-env NODE_ENV=production BABEL_ENV=production rollup -c",
+    "prestart": "rimraf dist",
+    "start": "cross-env NODE_ENV=development BABEL_ENV=development rollup -c -w",
     "version": "yarn build"
   },
   "bugs": {
@@ -35,15 +35,17 @@
     "@emotion/core": ">= 10.x",
     "@emotion/styled": ">= 10.x",
     "emotion-theming": ">= 10.x",
-    "react": ">= 16.8",
-    "react-dom": ">= 16.8"
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6"
   },
   "dependencies": {
+    "@styled-system/css": "^5.1.4",
     "@styled-system/should-forward-prop": "^5.1.4",
     "classnames": "^2.2.6",
     "color": "^3.1.2",
     "dayjs": "^1.8.19",
     "exenv": "^1.2.2",
+    "lodash.get": "^4.4.2",
     "react-animate-height": "^2.0.20",
     "react-dropdown-select": "^3.9.0",
     "react-icons": "^3.8.0",
@@ -53,8 +55,8 @@
     "@emotion/core": "^10.0.27",
     "@emotion/styled": "^10.0.27",
     "emotion-theming": "^10.0.27",
-    "react": "^16.12.0",
-    "react-dom": "^16.12.0"
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6"
   },
   "gitHead": "29947082b007b2bd7b4179d3440076b71c5254e0"
 }

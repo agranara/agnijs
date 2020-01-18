@@ -3,7 +3,7 @@ import { InputGroupContext } from './InputGroupContext';
 import { Box } from '../Box';
 import { inputSizes } from './sizes';
 
-export const InputInside = ({
+const InputInside = ({
   disablePointerEvents = false,
   size = 'md',
   placement = 'left',
@@ -45,3 +45,6 @@ export const InputInside = ({
     </Box>
   );
 };
+
+export { InputInside };
+export default InputInside;

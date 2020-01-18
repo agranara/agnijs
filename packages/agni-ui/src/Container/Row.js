@@ -3,7 +3,7 @@ import cn from 'classnames';
 import { Box } from '../Box';
 import { RowContext } from './RowContext';
 
-export const Row = ({ size = 24, className, style, children, isDeck, ...restProps }) => {
+const Row = ({ size = 24, className, style, children, isDeck, ...restProps }) => {
   const isZero = restProps.mx === 0;
   const marginX = restProps.mx || -2;
 
@@ -23,3 +23,6 @@ export const Row = ({ size = 24, className, style, children, isDeck, ...restProp
     </RowContext.Provider>
   );
 };
+
+export { Row };
+export default Row;

@@ -1,6 +1,6 @@
 import defaultTheme from './theme';
 
-export const sizeConfig = {
+const sizeConfig = {
   lg: {
     height: 12,
     minWidth: 12,
@@ -27,7 +27,7 @@ export const sizeConfig = {
   }
 };
 
-export const sizeStyle = (size = 'sm', sizes = defaultTheme.sizes) => {
+const sizeStyle = (size = 'sm', sizes = defaultTheme.sizes) => {
   const conf = sizeConfig[size];
   return `
     height: ${sizes[conf.height]};
@@ -37,3 +37,6 @@ export const sizeStyle = (size = 'sm', sizes = defaultTheme.sizes) => {
     padding-right: ${sizes[conf.px]};
   `;
 };
+
+export { sizeConfig, sizeStyle };
+export default sizeStyle;

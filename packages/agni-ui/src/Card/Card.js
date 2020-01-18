@@ -3,7 +3,7 @@ import { Box } from '../Box';
 import { Heading, Text } from '../Text';
 import cn from 'classnames';
 
-export const Card = ({
+const Card = ({
   children,
   cardProps = {},
   title,
@@ -86,3 +86,6 @@ export const Card = ({
     </Box>
   );
 };
+
+export { Card };
+export default Card;

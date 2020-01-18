@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-export const VisuallyHidden = styled.span`
+const VisuallyHidden = styled.span`
   position: absolute;
   width: 1px;
   height: 1px;
@@ -11,3 +11,6 @@ export const VisuallyHidden = styled.span`
   white-space: nowrap;
   border: 0;
 `;
+
+export { VisuallyHidden };
+export default VisuallyHidden;

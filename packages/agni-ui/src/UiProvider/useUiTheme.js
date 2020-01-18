@@ -6,9 +6,12 @@ import defaultTheme from '../theme';
  *
  * @return {defaultTheme}
  */
-export const useUiTheme = () => {
+const useUiTheme = () => {
   const preset = useTheme();
   const theme = preset && Object.keys(preset).length > 0 ? preset : defaultTheme;
 
   return theme;
 };
+
+export { useUiTheme };
+export default useUiTheme;

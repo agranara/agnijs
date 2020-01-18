@@ -17,7 +17,7 @@ function string2Hex(str) {
   return color;
 }
 
-export const avatarSizes = {
+const avatarSizes = {
   '2xs': 4,
   xs: 6,
   sm: 8,
@@ -56,4 +56,5 @@ const useAvatarStyle = ({ size, name, showBorder, borderColor }) => {
   };
 };
 
+export { avatarSizes };
 export default useAvatarStyle;

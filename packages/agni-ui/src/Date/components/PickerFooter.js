@@ -3,7 +3,7 @@ import { Box } from '../../Box';
 import { Button } from '../../Button';
 import { useDatepickerContext } from '../DatepickerContext';
 
-export const PickerFooter = () => {
+const PickerFooter = () => {
   const { onChange, parser } = useDatepickerContext();
   return (
     <Box>
@@ -19,3 +19,6 @@ export const PickerFooter = () => {
     </Box>
   );
 };
+
+export { PickerFooter };
+export default PickerFooter;

@@ -5,7 +5,7 @@ import { Box } from '../../Box';
 import { useDatepickerContext } from '../DatepickerContext';
 import { months, years } from '../constants';
 
-export const PickerHeaderButton = ({ children, onClick, title }) => {
+const PickerHeaderButton = ({ children, onClick, title }) => {
   return (
     <Button
       size="sm"
@@ -23,7 +23,7 @@ export const PickerHeaderButton = ({ children, onClick, title }) => {
   );
 };
 
-export const PickerHeader = () => {
+const PickerHeader = () => {
   const { focusValue, setFocusValue } = useDatepickerContext();
 
   const handleChange = (ev, focusDate) => {
@@ -79,3 +79,6 @@ export const PickerHeader = () => {
     </Box>
   );
 };
+
+export { PickerHeader, PickerHeaderButton };
+export default PickerHeader;

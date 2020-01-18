@@ -33,7 +33,7 @@ const MoreAvatarLabel = ({ size, label, ...props }) => {
   );
 };
 
-export const AvatarGroup = ({ size, children, borderColor, max, spacing = -3, ...rest }) => {
+const AvatarGroup = ({ size, children, borderColor, max, spacing = -3, ...rest }) => {
   let count = Children.count(children);
 
   const clones = Children.map(children, (child, index) => {
@@ -65,3 +65,6 @@ export const AvatarGroup = ({ size, children, borderColor, max, spacing = -3, ..
     </Box>
   );
 };
+
+export { AvatarGroup };
+export default AvatarGroup;

@@ -1,6 +1,11 @@
-import { createContext } from 'react';
+import { createContext, useContext } from 'react';
 
-export const RowContext = createContext({
+const RowContext = createContext({
   size: 24,
   isDeck: false
 });
+
+const useRowContext = () => useContext(RowContext);
+
+export { RowContext, useRowContext };
+export default RowContext;
