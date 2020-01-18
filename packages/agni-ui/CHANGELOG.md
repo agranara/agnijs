@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.4](https://github.com/agranara/agnijs/compare/@agnijs/agni-ui@1.1.3...@agnijs/agni-ui@1.1.4) (2020-01-18)
+
+**Note:** Version bump only for package @agnijs/agni-ui
+
 ## [1.1.3](https://github.com/agranara/agnijs/compare/@agnijs/agni-ui@1.1.2...@agnijs/agni-ui@1.1.3) (2020-01-17)
 
 ### Bug Fixes
