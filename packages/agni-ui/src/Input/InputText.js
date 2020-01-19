@@ -1,10 +1,10 @@
-import React, { useMemo, useContext, forwardRef } from 'react';
+import React, { useMemo, forwardRef } from 'react';
 import cn from 'classnames';
 import { get } from 'styled-system';
-import { PseudoBox } from '../Box';
+import PseudoBox from '../PseudoBox';
 import { useUiTheme } from '../UiProvider';
 import { inputSizes } from './sizes';
-import { InputGroupContext } from './InputGroupContext';
+import { useInputGroupContext } from './InputGroupContext';
 
 const baseProps = {
   display: 'flex',
@@ -70,12 +70,12 @@ const InputText = forwardRef(
       isFocus = false,
       isFullWidth = true,
       isDisabled = false,
-      disabled = false,
       isReadOnly = false,
-      readOnly = false,
       isInvalid = false,
-      invalid = false,
       isRequired = false,
+      disabled = false,
+      readOnly = false,
+      invalid = false,
       required = false,
       size = 'md',
       variantType = 'boxed',
@@ -93,7 +93,7 @@ const InputText = forwardRef(
     ref
   ) => {
     const theme = useUiTheme();
-    const { hasLeft, groupPadding, hasRight, groupSize } = useContext(InputGroupContext);
+    const { hasLeft, groupPadding, hasRight, groupSize } = useInputGroupContext();
 
     const paddingLeftProps = useMemo(() => {
       const result = {};
@@ -173,5 +173,6 @@ const InputText = forwardRef(
   }
 );
 
+InputText.displayName = 'InputText';
+
 export { InputText };
-export default InputText;

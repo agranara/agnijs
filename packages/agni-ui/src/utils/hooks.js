@@ -52,30 +52,30 @@ export function useUpdateEffect(effect, deps) {
  *
  * https://github.com/the-road-to-learn-react/use-state-with-callback/
  */
-export const useStateWithCallback = (initialState, callback) => {
+export function useStateWithCallback(initialState, callback) {
   const [state, setState] = useState(initialState);
 
   useEffect(() => callback(state), [state, callback]);
 
   return [state, setState];
-};
+}
 
-export const useStateWithCallbackInstant = (initialState, callback) => {
+export function useStateWithCallbackInstant(initialState, callback) {
   const [state, setState] = useState(initialState);
 
   useLayoutEffect(() => callback(state), [state, callback]);
 
   return [state, setState];
-};
+}
 
-export const useRefState = initialValue => {
+export function useRefState(initialValue) {
   const [state, setState] = useState(initialValue);
   const stateRef = useRef(state);
   useEffect(() => {
     stateRef.current = state;
   }, [state]);
   return [stateRef.current, setState];
-};
+}
 
 export const useLongPress = (callback = () => {}, speed = 200) => {
   const [isPressed, setIsPressed] = useState(false);

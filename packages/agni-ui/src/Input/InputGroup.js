@@ -1,5 +1,5 @@
 import React, { useState, forwardRef } from 'react';
-import { Box } from '../Box';
+import Box from '../Box';
 import { inputSizes } from './sizes';
 import { useUiTheme } from '../UiProvider';
 import { InputGroupContext } from './InputGroupContext';
@@ -30,5 +30,6 @@ const InputGroup = forwardRef(({ children, size = 'md', ...restProps }, ref) => 
   );
 });
 
+InputGroup.displayName = 'InputGroup';
+
 export { InputGroup };
-export default InputGroup;

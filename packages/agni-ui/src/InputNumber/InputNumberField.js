@@ -43,5 +43,6 @@ const InputNumberField = forwardRef(({ onBlur, onFocus, onKeyDown, onChange, ...
   );
 });
 
+InputNumberField.displayName = 'InputNumberField';
+
 export { InputNumberField };
-export default InputNumberField;

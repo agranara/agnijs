@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core';
 import useAvatarStyle, { avatarSizes } from './styles';
-import { Box } from '../Box';
+import Box from '../Box';
 import { useUiTheme } from '../UiProvider';
 import { useHasImageLoaded } from './useHasImageLoaded';
 
@@ -24,6 +24,10 @@ const AvatarBadge = props => {
     />
   );
 };
+
+AvatarBadge.displayName = 'AvatarBadge';
+
+///////////////////////////////////////////////////////////////////////
 
 const getInitials = name => {
   const [firstName, lastName] = name.split(' ');
@@ -102,5 +106,6 @@ const Avatar = ({ size = 'md', showBorder, name, src, borderColor, children, ...
   );
 };
 
+Avatar.displayName = 'Avatar';
+
 export { Avatar, AvatarBadge };
-export default Avatar;

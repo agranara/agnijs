@@ -32,4 +32,3 @@ function uniqueId(prefix = '$lodash$') {
 }
 
 export { uniqueId };
-export default uniqueId;

@@ -23,4 +23,3 @@ const inputSizes = {
 };
 
 export { inputSizes };
-export default inputSizes;

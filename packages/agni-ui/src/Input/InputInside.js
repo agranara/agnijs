@@ -1,7 +1,7 @@
-import React, { useContext, useEffect } from 'react';
-import { InputGroupContext } from './InputGroupContext';
-import { Box } from '../Box';
+import React, { useEffect } from 'react';
+import Box from '../Box';
 import { inputSizes } from './sizes';
+import { useInputGroupContext } from './InputGroupContext';
 
 const InputInside = ({
   disablePointerEvents = false,
@@ -10,7 +10,7 @@ const InputInside = ({
   children,
   ...restProps
 }) => {
-  const { hasLeft, hasRight, groupSize, setHasLeft, setHasRight } = useContext(InputGroupContext);
+  const { hasLeft, hasRight, groupSize, setHasLeft, setHasRight } = useInputGroupContext();
 
   useEffect(() => {
     if (placement === 'left' && !hasLeft) {
@@ -46,5 +46,6 @@ const InputInside = ({
   );
 };
 
+InputInside.displayName = 'InputInside';
+
 export { InputInside };
-export default InputInside;

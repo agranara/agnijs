@@ -23,4 +23,4 @@ yarn-error.log*
 
 lerna-debug.log
 
-packages/agni-bsm
+apps/

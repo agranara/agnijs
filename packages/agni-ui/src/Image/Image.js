@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core';
 import { forwardRef } from 'react';
-import { Box } from '../Box';
+import Box from '../Box';
 import { useHasImageLoaded } from './useHasImageLoaded';
 
 const NativeImage = forwardRef(({ htmlWidth, htmlHeight, alt, ...props }, ref) => (
@@ -19,5 +19,6 @@ const Image = forwardRef(({ src, fallbackSrc, onError, onLoad, ignoreFallback, .
   return <Box as={NativeImage} ref={ref} {...imageProps} {...props} />;
 });
 
+Image.displayName = 'Image';
+
 export { Image };
-export default Image;

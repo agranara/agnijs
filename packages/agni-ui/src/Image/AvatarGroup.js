@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core';
 import { Children, cloneElement, isValidElement } from 'react';
-import { Box } from '../Box';
+import Box from '../Box';
 import { avatarSizes } from './styles';
 import { useUiTheme } from '../UiProvider';
 
@@ -66,5 +66,6 @@ const AvatarGroup = ({ size, children, borderColor, max, spacing = -3, ...rest }
   );
 };
 
+AvatarGroup.displayName = 'AvatarGroup';
+
 export { AvatarGroup };
-export default AvatarGroup;

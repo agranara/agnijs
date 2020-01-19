@@ -1,6 +1,6 @@
 import React, { forwardRef } from 'react';
 import { useInputNumberContext } from './InputNumberContext';
-import { PseudoBox } from '../Box';
+import PseudoBox from '../PseudoBox';
 import styleProps from './styles';
 
 const InputNumberStepper = forwardRef(
@@ -34,5 +34,6 @@ const InputNumberStepper = forwardRef(
   }
 );
 
+InputNumberStepper.displayName = 'InputNumberStepper';
+
 export { InputNumberStepper };
-export default InputNumberStepper;

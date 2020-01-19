@@ -2,39 +2,42 @@
   "name": "@agnijs/agni-ui",
   "version": "1.1.4",
   "description": "Agranara UI Components",
-  "keywords": [
-    "react",
-    "javascript",
-    "components"
-  ],
+  "keywords": [],
   "author": "Agranara <agranara.indonesia@gmail.com>",
-  "homepage": "https://agranara.com",
+  "homepage": "https://github.com/agranara/agnijs",
   "license": "MIT",
+  "source": "src/index.js",
   "main": "dist/index.js",
-  "module": "dist/index.es.js",
-  "jsnext:main": "dist/index.es.js",
+  "module": "dist/index.modern.mjs",
+  "types": "dist/index.d.ts",
+  "umd:main": "dist/index.umd.js",
   "sideEffects": false,
   "publishConfig": {
     "access": "public"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/agranara/agnijs.git"
+    "url": "git+https://github.com/agranara/agnijs.git",
+    "directory": "packages/agni-ui"
   },
   "scripts": {
-    "prebuild": "rimraf dist",
-    "build": "cross-env NODE_ENV=production BABEL_ENV=production rollup -c",
-    "prestart": "rimraf dist",
-    "start": "cross-env NODE_ENV=development BABEL_ENV=development rollup -c -w",
+    "clean": "rimraf dist",
+    "prebuild": "yarn clean && yarn build:umd",
+    "build": "yarn build:cjs && yarn build:es && yarn build:script",
+    "build:cjs": "cross-env NODE_ENV=production BABEL_ENV=cjs babel --root-mode upward src -d dist",
+    "build:esm": "cross-env NODE_ENV=production BABEL_ENV=esm babel --root-mode upward src -d dist/esm",
+    "build:es": "cross-env NODE_ENV=production BABEL_ENV=es babel --root-mode upward src -d dist/es",
+    "build:script": "node ../../scripts/build.js",
+    "build:umd": "microbundle -f umd,modern --globals react=React,react-dom=ReactDOM --jsx React.createElement",
     "version": "yarn build"
   },
   "bugs": {
     "url": "https://github.com/agranara/agnijs/issues"
   },
   "peerDependencies": {
-    "@emotion/core": ">= 10.x",
-    "@emotion/styled": ">= 10.x",
-    "emotion-theming": ">= 10.x",
+    "@emotion/core": "^10.0.27",
+    "@emotion/styled": "^10.0.27",
+    "emotion-theming": "^10.0.27",
     "react": "^16.8.6",
     "react-dom": "^16.8.6"
   },
@@ -46,17 +49,17 @@
     "dayjs": "^1.8.19",
     "exenv": "^1.2.2",
     "lodash.get": "^4.4.2",
+    "prop-types": "^15.7.2",
     "react-animate-height": "^2.0.20",
-    "react-dropdown-select": "^3.9.0",
+    "react-dropdown-select": "3.8.1",
     "react-icons": "^3.8.0",
     "styled-system": "^5.1.4"
   },
+  "gitHead": "29947082b007b2bd7b4179d3440076b71c5254e0",
   "devDependencies": {
-    "@emotion/core": "^10.0.27",
-    "@emotion/styled": "^10.0.27",
-    "emotion-theming": "^10.0.27",
-    "react": "^16.8.6",
-    "react-dom": "^16.8.6"
-  },
-  "gitHead": "29947082b007b2bd7b4179d3440076b71c5254e0"
+    "@types/color": "^3.0.1",
+    "@types/styled-system": "^5.1.4",
+    "@types/styled-system__css": "^5.0.4",
+    "@types/styled-system__should-forward-prop": "^5.1.0"
+  }
 }

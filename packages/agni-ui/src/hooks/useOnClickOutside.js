@@ -30,4 +30,3 @@ const useOnClickOutside = (refs, onClickOutside, events = defaultEvents) => {
 };
 
 export { useOnClickOutside };
-export default useOnClickOutside;

@@ -1,4 +1,4 @@
-import { createContext } from 'react';
+import { createContext, useContext } from 'react';
 
 const InputGroupContext = createContext({
   groupSize: null,
@@ -9,5 +9,6 @@ const InputGroupContext = createContext({
   setHasLeft: () => {}
 });
 
-export { InputGroupContext };
-export default InputGroupContext;
+const useInputGroupContext = () => useContext(InputGroupContext);
+
+export { InputGroupContext, useInputGroupContext };

@@ -221,4 +221,3 @@ const useNumberInput = ({
 };
 
 export { useNumberInput };
-export default useNumberInput;

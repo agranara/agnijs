@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
-import { Box } from '../Box';
-import { Portal } from '../Portal';
+import Box from '../Box';
+import Portal from '../Portal';
 import { addEvent, removeEvent, useEnhancedEffect } from '../utils';
 
 const defaultEvents = ['mousedown', 'touchstart'];
@@ -96,4 +96,3 @@ const useDropdown = ({ ref, initialOpen = false, isFixed }) => {
 };
 
 export { useDropdown };
-export default useDropdown;

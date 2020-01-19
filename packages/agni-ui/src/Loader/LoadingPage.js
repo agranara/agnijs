@@ -177,4 +177,3 @@ const LoadingPage = () => {
 };
 
 export { LoadingPage };
-export default LoadingPage;
