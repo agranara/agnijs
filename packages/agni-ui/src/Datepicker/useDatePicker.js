@@ -33,7 +33,13 @@ const useDatePicker = ({
     return undefined;
   });
 
-  const value = isControlled ? parser(valueProp, valueFormat) : valueState;
+  // When controlled, check value prop, when present, format to dayjs
+  // else use undefined as intended
+  const value = isControlled
+    ? valueProp
+      ? parser(valueProp, valueFormat)
+      : undefined
+    : valueState;
   const prevNextValue = useRef(null);
 
   const [focusValue, setFocusValue] = useState(() => {

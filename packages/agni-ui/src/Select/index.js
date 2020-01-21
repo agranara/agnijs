@@ -28,6 +28,7 @@ const useSelectCss = ({ size = 'md' }) => {
     padding-bottom: 0;
     border-color: inherit;
     box-shadow: ${theme.shadows.input};
+    background-color: white;
 
     &[disabled] {
       opacity: 1;

@@ -5,7 +5,7 @@ import cn from 'classnames';
 
 /////////////////////////////////////////////////////////////////
 
-const Card = ({ children, className, cardProps }) => {
+const Card = ({ children, className, ...cardProps }) => {
   return (
     <Box
       d="flex"
