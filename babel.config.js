@@ -15,6 +15,7 @@ const presets = [
 const plugins = [
   '@babel/plugin-proposal-object-rest-spread',
   '@babel/plugin-transform-runtime',
+  'babel-plugin-emotion',
   [
     'babel-plugin-transform-react-remove-prop-types',
     {

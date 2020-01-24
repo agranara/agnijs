@@ -1,6 +1,6 @@
 {
   "name": "@agnijs/agni-ui",
-  "version": "1.1.5",
+  "version": "1.1.6",
   "description": "Agranara UI Components",
   "keywords": [],
   "author": "Agranara <agranara.indonesia@gmail.com>",
@@ -8,8 +8,6 @@
   "license": "MIT",
   "source": "src/index.js",
   "main": "dist/index.js",
-  "module": "dist/index.modern.mjs",
-  "types": "dist/index.d.ts",
   "umd:main": "dist/index.umd.js",
   "sideEffects": false,
   "publishConfig": {
@@ -23,12 +21,14 @@
   "scripts": {
     "clean": "rimraf dist",
     "prebuild": "yarn clean && yarn build:umd",
+    "prewatch": "yarn clean",
+    "watch": "cross-env NODE_ENV=development BABEL_ENV=cjs babel --watch --root-mode upward src -d dist",
     "build": "yarn build:cjs && yarn build:es && yarn build:script",
     "build:cjs": "cross-env NODE_ENV=production BABEL_ENV=cjs babel --root-mode upward src -d dist",
     "build:esm": "cross-env NODE_ENV=production BABEL_ENV=esm babel --root-mode upward src -d dist/esm",
     "build:es": "cross-env NODE_ENV=production BABEL_ENV=es babel --root-mode upward src -d dist/es",
     "build:script": "node ../../scripts/build.js",
-    "build:umd": "microbundle -f umd,modern --globals react=React,react-dom=ReactDOM --jsx React.createElement",
+    "build:umd": "microbundle -f umd --globals react=React,react-dom=ReactDOM --jsx React.createElement",
     "version": "yarn build"
   },
   "bugs": {

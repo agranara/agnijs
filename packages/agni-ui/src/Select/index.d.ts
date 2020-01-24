@@ -14,7 +14,7 @@ interface ISelectProps {
   isClearable?: boolean;
   isSearchable?: boolean;
   dropdownHeight?: string;
-  size?: 'xs' | 'sm' | 'md' | 'lg';
+  size?: 'sm' | 'md' | 'lg';
   className?: string;
 }
 

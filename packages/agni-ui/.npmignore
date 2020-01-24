@@ -6,3 +6,5 @@ tests
 .eslintrc
 babel.config.js
 rollup.config.js
+tsconfig.build.json
+.eslintrc.js
