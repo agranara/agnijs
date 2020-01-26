@@ -44,9 +44,7 @@ const Select = forwardRef(
     forwardedRef
   ) => {
     const uid = useAutoId();
-    const { current: isControlled } = useRef(
-      valueProp !== null || (typeof valueProp === 'undefined' && typeof onChange === 'undefined')
-    );
+    const { current: isControlled } = useRef(typeof onChange === 'function');
     const ref = useRef();
     const searchRef = useRef();
     const pickerTimeout = useRef();
