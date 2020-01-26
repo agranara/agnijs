@@ -2,9 +2,8 @@
 import { jsx, css, keyframes } from '@emotion/core';
 import { get } from 'styled-system';
 import cn from 'classnames';
-import defaultTheme from '../theme';
-import VisuallyHidden from '../VisuallyHidden';
-import Box from '../Box';
+import { VisuallyHidden } from '../VisuallyHidden';
+import { Box } from '../Box';
 import { useUiTheme } from '../UiProvider';
 
 const spin = keyframes`
@@ -53,7 +52,7 @@ const sizeConfig = {
   }
 };
 
-const spinnerSize = (size = 'md', sizes = defaultTheme.sizes) => {
+const spinnerSize = (size = 'md', sizes) => {
   const conf = sizeConfig[size];
 
   return `
@@ -86,4 +85,6 @@ const Spinner = ({
   );
 };
 
-export default Spinner;
+Spinner.displayName = 'Spinner';
+
+export { Spinner };

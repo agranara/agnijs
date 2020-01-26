@@ -1,4 +1,4 @@
-import { InputTextProps } from '../Input';
+import { InputTextProps } from '../InputText';
 
 interface IDatepickerProps {
   valueFormat?: string;
@@ -13,6 +13,4 @@ interface IDatepickerProps {
 
 type DatepickerProps = IDatepickerProps & InputTextProps;
 
-declare const Datepicker: React.ForwardRefExoticComponent<DatepickerProps>;
-
-export default Datepicker;
+export const Datepicker: React.ForwardRefExoticComponent<DatepickerProps>;

@@ -1,6 +1,7 @@
 import * as StyledSystem from 'styled-system';
 // import * as Emotion from "@emotion/styled";
 import * as React from 'react';
+// eslint-disable-next-line import/no-unresolved
 import { Omit } from '../common';
 
 type CSS = React.CSSProperties;
@@ -183,6 +184,4 @@ export type BoxProps = BoxHTMLProps &
 /**
  * Primitive box that utilize 'styled-system' package
  */
-declare const Box: React.ForwardRefExoticComponent<BoxProps>;
-
-export default Box;
+export const Box: React.ForwardRefExoticComponent<BoxProps>;

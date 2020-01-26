@@ -1,7 +1,7 @@
 import React from 'react';
-import Box from '../Box';
-import { Heading, Text } from '../Text';
 import cn from 'classnames';
+import { Box } from '../Box';
+import { Heading, Text } from '../Text';
 
 /////////////////////////////////////////////////////////////////
 

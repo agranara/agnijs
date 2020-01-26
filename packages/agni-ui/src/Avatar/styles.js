@@ -17,7 +17,7 @@ function string2Hex(str) {
   return color;
 }
 
-const avatarSizes = {
+export const avatarSizes = {
   '2xs': 4,
   xs: 6,
   sm: 8,
@@ -28,7 +28,7 @@ const avatarSizes = {
   full: 'full'
 };
 
-const useAvatarStyle = ({ size, name, showBorder, borderColor }) => {
+export const useAvatarStyle = ({ size, name, showBorder, borderColor }) => {
   const { colors } = useUiTheme();
 
   const bg = name ? string2Hex(name) : colors.gray[400];
@@ -55,6 +55,3 @@ const useAvatarStyle = ({ size, name, showBorder, borderColor }) => {
     })
   };
 };
-
-export { avatarSizes };
-export default useAvatarStyle;

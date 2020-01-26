@@ -20,6 +20,4 @@ export interface PortalProps {
   onRendered?: () => void;
 }
 
-declare const Portal: React.ForwardRefExoticComponent<PortalProps>;
-
-export default Portal;
+export const Portal: React.ForwardRefExoticComponent<PortalProps>;

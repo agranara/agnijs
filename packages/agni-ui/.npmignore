@@ -3,6 +3,7 @@ src
 scripts
 tests
 *.tgz
+*.log
 .eslintrc
 babel.config.js
 rollup.config.js

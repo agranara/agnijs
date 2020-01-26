@@ -1,5 +1,5 @@
-const { BABEL_ENV } = process.env;
-const isBuilding = BABEL_ENV !== undefined && BABEL_ENV !== 'cjs';
+const { BABEL_TARGET_ENV } = process.env;
+const isBuilding = BABEL_TARGET_ENV !== undefined && BABEL_TARGET_ENV !== 'cjs';
 
 const presets = [
   [

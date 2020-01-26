@@ -75,7 +75,7 @@ const useLoaderCss = () => {
   const theme = useUiTheme();
 
   const path = theme.colors.gray[600];
-  const dot = theme.colors.teal[500];
+  const dot = theme.colors.primary[500];
   const duration = '3s';
 
   return css`
@@ -175,5 +175,7 @@ const LoadingPage = () => {
     </div>
   );
 };
+
+LoadingPage.displayName = 'LoadingPage';
 
 export { LoadingPage };

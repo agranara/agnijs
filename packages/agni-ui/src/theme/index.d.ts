@@ -1,5 +1,6 @@
-import { Omit } from '../common';
 import * as SS from 'styled-system';
+// eslint-disable-next-line import/no-unresolved
+import { Omit } from '../common';
 
 interface Shadows {
   sm: string;
@@ -227,6 +228,4 @@ export interface CustomTheme extends SS.Theme {
 
 export type ITheme = DefaultTheme;
 
-declare const theme: ITheme;
-
-export default theme;
+export const theme: ITheme;

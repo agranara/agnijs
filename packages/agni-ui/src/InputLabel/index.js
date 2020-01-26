@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core';
 import { forwardRef } from 'react';
-import Box from '../Box';
+import { Box } from '../Box';
 
 const RequiredIndicator = props => {
   return <Box as="span" ml={1} color="red.500" aria-hidden="true" children="*" {...props} />;

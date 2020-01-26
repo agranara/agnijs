@@ -1,16 +1,19 @@
-import React, { useState, useRef } from 'react';
-import Box from '../Box';
-import Portal from '../Portal';
+import React, { useState, useRef, useCallback } from 'react';
+import { Box } from '../Box';
+import { Portal } from '../Portal';
 import { addEvent, removeEvent, useEnhancedEffect } from '../utils';
 
 const defaultEvents = ['mousedown', 'touchstart'];
 
-const useDropdown = ({ ref, initialOpen = false, isFixed }) => {
+const useDropdown = ({ ref, initialOpen, isFixed, onClose, onOpen }) => {
   const boxRef = useRef(null);
   const [pos, setPosition] = useState({});
-  const [isOpen, setOpen] = useState(initialOpen);
+  const [isOpen, setOpen] = useState(() => {
+    return initialOpen || false;
+  });
+  const prevNextOpen = useRef(initialOpen || false);
 
-  const reposition = () => {
+  const reposition = useCallback(() => {
     const scrollY = window.scrollY || 0;
 
     const rect = ref.current.getBoundingClientRect();
@@ -21,24 +24,42 @@ const useDropdown = ({ ref, initialOpen = false, isFixed }) => {
     result.top = isFixed ? rect.top + result.height : rect.top + scrollY + result.height;
 
     setPosition(result);
+  }, [isFixed, ref]);
+
+  const isEventOutsideRefs = useCallback(
+    event => {
+      const { current: toggler } = ref;
+      const { current: box } = boxRef;
+
+      return toggler && !toggler.contains(event.target) && box && !box.contains(event.target);
+    },
+    [ref]
+  );
+
+  const updateOpen = (newOpen, event) => {
+    if (prevNextOpen.current === newOpen) return;
+
+    setOpen(newOpen);
+
+    if (onClose && !newOpen) onClose(event);
+    else if (onOpen && newOpen) onOpen(event);
+
+    prevNextOpen.current = newOpen;
   };
 
   useEnhancedEffect(() => {
     const handler = event => {
-      const { current: toggler } = ref;
-      const { current: box } = boxRef;
-
-      if (toggler && !toggler.contains(event.target) && box && !box.contains(event.target)) {
-        setOpen(false);
+      if (isEventOutsideRefs(event)) {
+        updateOpen(false);
       }
     };
     for (const eventName of defaultEvents) {
-      addEvent(document, eventName, handler);
+      addEvent(document, eventName, handler, false);
     }
 
     return () => {
       for (const eventName of defaultEvents) {
-        removeEvent(document, eventName, handler);
+        removeEvent(document, eventName, handler, false);
       }
     };
   }, []);
@@ -47,18 +68,16 @@ const useDropdown = ({ ref, initialOpen = false, isFixed }) => {
     reposition();
   }, [isOpen]);
 
-  const toggle = () => setOpen(oldOpen => !oldOpen);
-
-  const open = () => {
-    if (!isOpen) {
-      setOpen(true);
-    }
+  const toggle = () => {
+    const newOpen = !isOpen;
+    updateOpen(newOpen);
   };
 
-  const close = () => {
-    if (isOpen) {
-      setOpen(false);
-    }
+  const open = event => {
+    updateOpen(true, event);
+  };
+  const close = event => {
+    updateOpen(false, event);
   };
 
   return {
@@ -71,15 +90,17 @@ const useDropdown = ({ ref, initialOpen = false, isFixed }) => {
               ref={boxRef}
               minW={8}
               pos={isFixed ? 'fixed' : 'absolute'}
-              p={2}
+              py={1}
               mt={1}
               rounded="md"
               shadow="xs"
               zIndex="dropdown"
               borderWidth={1}
               bg="white"
-              top={pos.top ? `${pos.top}px` : 0}
-              left={pos.left ? `${pos.left}px` : 0}
+              style={{
+                top: pos.top,
+                left: pos.left
+              }}
               {...restProps}
             >
               {children}
@@ -91,7 +112,9 @@ const useDropdown = ({ ref, initialOpen = false, isFixed }) => {
     isOpen,
     toggle,
     open,
-    close
+    close,
+    isEventOutsideRefs,
+    reposition
   };
 };
 

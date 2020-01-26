@@ -7,6 +7,4 @@ interface ISpinnerProps {
 
 type SpinnerProps = ISpinnerProps & Omit<BoxProps, 'size'>;
 
-declare const Spinner: React.FC<SpinnerProps>;
-
-export default Spinner;
+export const Spinner: React.FC<SpinnerProps>;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Table, THead, Tr, TBody, Td, Th } from '../../Table';
 
-import Button from '../../Button';
+import { Button } from '../../Button';
 import { useDatepickerContext } from '../DatepickerContext';
 
 const tableConfig = {

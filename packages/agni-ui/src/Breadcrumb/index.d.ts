@@ -1,5 +1,5 @@
-import { BoxProps } from '../Box';
 import { HTMLAttributes } from 'react';
+import { BoxProps } from '../Box';
 
 interface IBreadcrumbProps extends HTMLAttributes<HTMLLinkElement> {
   as?: React.ElementType<any>;

@@ -1,8 +1,8 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core';
 import cn from 'classnames';
-import Box from '../Box';
 import { createContext, useContext } from 'react';
+import { Box } from '../Box';
 
 const RowContext = createContext({
   size: 24,
@@ -13,7 +13,7 @@ const useRowContext = () => useContext(RowContext);
 
 ////////////////////////////////////////////////////////////////////////
 
-const Row = ({ size = 24, className, style, children, isDeck, ...restProps }) => {
+const Row = ({ size = 24, className, style, children, isDeck = false, ...restProps }) => {
   const isZero = restProps.mx === 0;
   const marginX = restProps.mx || -2;
 

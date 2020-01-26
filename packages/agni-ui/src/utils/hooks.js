@@ -1,6 +1,6 @@
 import { useMemo, useRef, useEffect, useLayoutEffect, useState, useCallback } from 'react';
-import { assignRef } from './refs';
 import { canUseDOM } from 'exenv';
+import { assignRef } from './refs';
 
 /**
  * Passes or assigns a value to multiple refs (typically a DOM node). Useful for

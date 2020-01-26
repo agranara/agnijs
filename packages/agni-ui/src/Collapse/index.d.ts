@@ -39,6 +39,4 @@ interface ICollapseProps {
 
 type CollapseProps = ICollapseProps & BoxProps;
 
-declare const Collapse: React.ForwardRefExoticComponent<CollapseProps>;
-
-export default Collapse;
+export const Collapse: React.ForwardRefExoticComponent<CollapseProps>;

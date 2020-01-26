@@ -1,7 +1,8 @@
 import { useRef, useState } from 'react';
 import { canUseDOM } from 'exenv';
-import { preventNonNumberKey, roundToPrecision, calculatePrecision } from './util';
 import { useLongPress } from '../utils';
+import { isKeyboardKey } from '../keyboard';
+import { preventNonNumberKey, roundToPrecision, calculatePrecision } from './util';
 
 const useNumberInput = ({
   value: valueProp,
@@ -114,26 +115,26 @@ const useNumberInput = ({
     preventNonNumberKey(event);
     if (!isInteractive) return;
 
-    if (event.key === 'ArrowUp') {
+    if (isKeyboardKey(event.key, 'ArrowUp')) {
       event.preventDefault();
       const ratio = getIncrementFactor(event);
       handleIncrement(ratio * stepProp);
     }
 
-    if (event.key === 'ArrowDown') {
+    if (isKeyboardKey(event.key, 'ArrowDown')) {
       event.preventDefault();
       const ratio = getIncrementFactor(event);
       handleDecrement(ratio * stepProp);
     }
 
-    if (event.key === 'Home') {
+    if (isKeyboardKey(event.key, 'Home')) {
       event.preventDefault();
       if (min != null) {
         updateValue(max);
       }
     }
 
-    if (event.key === 'End') {
+    if (isKeyboardKey(event.key, 'End')) {
       event.preventDefault();
       if (max != null) {
         updateValue(min);

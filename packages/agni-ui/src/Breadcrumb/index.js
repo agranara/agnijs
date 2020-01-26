@@ -2,7 +2,7 @@
 import { jsx, css } from '@emotion/core';
 import cn from 'classnames';
 import { forwardRef } from 'react';
-import Box from '../Box';
+import { Box } from '../Box';
 import { useUiTheme } from '../UiProvider';
 
 const Breadcrumb = ({ children, ...restProps }) => {

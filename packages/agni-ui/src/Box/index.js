@@ -13,7 +13,7 @@ import {
   typography,
   compose
 } from 'styled-system';
-import extraConfig from './config';
+import { extraConfig } from './config';
 
 const boxTruncate = props => {
   if (props.isTruncated) {
@@ -71,4 +71,4 @@ const Box = styled('div', {
 
 Box.displayName = 'Box';
 
-export default Box;
+export { Box };

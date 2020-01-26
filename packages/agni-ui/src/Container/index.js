@@ -1,5 +1,5 @@
 import React from 'react';
-import Box from '../Box';
+import { Box } from '../Box';
 
 const Container = ({ isFluid, children, ...restProps }) => {
   const props = {
@@ -20,4 +20,4 @@ const Container = ({ isFluid, children, ...restProps }) => {
 
 Container.displayName = 'Container';
 
-export default Container;
+export { Container };

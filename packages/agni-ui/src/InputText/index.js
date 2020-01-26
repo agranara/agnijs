@@ -1,68 +1,10 @@
 import React, { useMemo, forwardRef } from 'react';
 import cn from 'classnames';
-import { get } from 'styled-system';
-import PseudoBox from '../PseudoBox';
+import { PseudoBox } from '../PseudoBox';
 import { useUiTheme } from '../UiProvider';
-import { inputSizes } from './sizes';
-import { useInputGroupContext } from './InputGroupContext';
-
-const baseProps = {
-  display: 'flex',
-  alignItems: 'center',
-  position: 'relative',
-  transition: 'all 0.2s',
-  outline: 'none'
-};
-
-const readOnlyStyle = {
-  _readOnly: {
-    bg: 'transparent',
-    boxShadow: 'none',
-    userSelect: 'all'
-  }
-};
-
-const boxedStyle = ({ theme, focusBorderColor, errorBorderColor }) => {
-  const bg = 'white';
-  const borderColor = 'inherit';
-  const hoverColor = 'gray.300';
-
-  /**
-   * styled-system's get takes 3 args
-   * - object or array to read from
-   * - key to get
-   * - fallback value
-   */
-  const _focusBorderColor = get(
-    theme.colors,
-    focusBorderColor,
-    focusBorderColor // If color doesn't exist in theme, use it's raw value
-  );
-  const _errorBorderColor = get(theme.colors, errorBorderColor, errorBorderColor);
-
-  return {
-    ...readOnlyStyle,
-    border: '1px',
-    borderColor,
-    bg,
-    boxShadow: theme.shadows.input,
-    _hover: {
-      borderColor: hoverColor
-    },
-    _disabled: {
-      opacity: '0.4',
-      cursor: 'not-allowed'
-    },
-    _focus: {
-      borderColor: _focusBorderColor,
-      boxShadow: `0 0 0 1px ${_focusBorderColor}`
-    },
-    _invalid: {
-      borderColor: _errorBorderColor,
-      boxShadow: `0 0 0 1px ${_errorBorderColor}`
-    }
-  };
-};
+import { inputSizes } from '../inputSizes';
+import { useInputGroupContext } from '../InputGroup/InputGroupContext';
+import { baseProps, boxedStyle } from './styles';
 
 const InputText = forwardRef(
   (
@@ -79,8 +21,8 @@ const InputText = forwardRef(
       required = false,
       size = 'md',
       variantType = 'boxed',
-      focusBorderColor = 'teal.500',
-      errorBorderColor = 'red.500',
+      focusBorderColor = 'primary.500',
+      errorBorderColor = 'danger.500',
       className,
       value,
       defaultValue,

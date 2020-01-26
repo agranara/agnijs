@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import css from '@styled-system/css';
-import Box from '../Box';
+import { Box } from '../Box';
 import { transformAliasProps as tx } from '../Box/config';
 
 //////////////////////////////////////////////////////
@@ -90,4 +90,4 @@ const PseudoBox = styled(Box)(
 
 PseudoBox.displayName = 'PseudoBox';
 
-export default PseudoBox;
+export { PseudoBox };

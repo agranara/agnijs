@@ -1,7 +1,7 @@
 import React, { forwardRef } from 'react';
+import { wrapEvent, useForkedRef } from '../utils';
+import { InputText } from '../InputText';
 import { useInputNumberContext } from './InputNumberContext';
-import { useForkedRef, wrapEvent } from '../utils';
-import { InputText } from '../Input/InputText';
 
 const InputNumberField = forwardRef(({ onBlur, onFocus, onKeyDown, onChange, ...props }, ref) => {
   const {

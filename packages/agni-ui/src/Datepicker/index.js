@@ -1,11 +1,13 @@
 import React, { forwardRef } from 'react';
 import { FiCalendar, FiX } from 'react-icons/fi';
-import { InputText, InputGroup, InputInside } from '../Input';
-import Button from '../Button';
+import { InputText } from '../InputText';
+import { InputGroup } from '../InputGroup';
+import { InputInside } from '../InputInside';
+import { Button } from '../Button';
+import { mergeRefs } from '../utils';
 import { useDatePicker } from './useDatePicker';
 import { DatepickerContext } from './DatepickerContext';
 import { Picker, PickerHeader, PickerFooter } from './components';
-import { mergeRefs } from '../utils';
 
 const Datepicker = forwardRef(
   (
@@ -70,7 +72,7 @@ const Datepicker = forwardRef(
               )}
             </InputInside>
           </InputGroup>
-          <Dropdown>
+          <Dropdown p={2}>
             <PickerHeader />
             <Picker />
             <PickerFooter />
@@ -83,4 +85,4 @@ const Datepicker = forwardRef(
 
 Datepicker.displayName = 'Datepicker';
 
-export default Datepicker;
+export { Datepicker };

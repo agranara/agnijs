@@ -1,11 +1,10 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core';
 import cn from 'classnames';
-import { useUiTheme } from '../UiProvider';
-import defaultTheme from '../theme';
 import { forwardRef } from 'react';
+import { useUiTheme } from '../UiProvider';
 
-const baseLink = (theme = defaultTheme) => css`
+const baseLink = theme => css`
   display: inline-flex;
   appearance: none;
   align-items: center;
@@ -29,8 +28,8 @@ const baseLink = (theme = defaultTheme) => css`
 
   &:active,
   &.active {
-    border-color: ${theme.colors.teal[500]};
-    color: ${theme.colors.teal[500]};
+    border-color: ${theme.colors.primary[500]};
+    color: ${theme.colors.primary[500]};
   }
 
   & ~ & {

@@ -141,6 +141,4 @@ export type PseudoBoxProps = IPseudoBoxProps & BoxProps;
  * <PseudoBox _hover={...} _focus={...}/>
  * ```
  */
-declare const PseudoBox: React.ForwardRefExoticComponent<PseudoBoxProps>;
-
-export default PseudoBox;
+export const PseudoBox: React.ForwardRefExoticComponent<PseudoBoxProps>;

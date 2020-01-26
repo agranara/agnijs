@@ -53,4 +53,4 @@ const Portal = forwardRef(({ children, container, isDisabled = false, onRendered
 
 Portal.displayName = 'Portal';
 
-export default Portal;
+export { Portal };

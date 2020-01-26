@@ -33,9 +33,9 @@ const typography = {
     mono: `SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace`
   },
   fontSizes: {
-    xs: '0.75rem',
-    sm: '0.825rem',
-    md: '0.875rem',
+    xs: '0.8rem',
+    sm: '0.875rem',
+    md: '0.9375rem',
     lg: '1.1rem',
     xl: '1.25rem',
     '2xl': '1.5rem',

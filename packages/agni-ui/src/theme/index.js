@@ -89,4 +89,4 @@ const theme = {
   // icons
 };
 
-export default theme;
+export { theme };

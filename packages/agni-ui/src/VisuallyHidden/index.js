@@ -12,4 +12,6 @@ const VisuallyHidden = styled.span`
   border: 0;
 `;
 
-export default VisuallyHidden;
+VisuallyHidden.displayName = 'VisuallyHidden';
+
+export { VisuallyHidden };

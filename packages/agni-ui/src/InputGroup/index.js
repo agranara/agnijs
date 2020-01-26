@@ -1,7 +1,7 @@
 import React, { useState, forwardRef } from 'react';
-import Box from '../Box';
-import { inputSizes } from './sizes';
+import { Box } from '../Box';
 import { useUiTheme } from '../UiProvider';
+import { inputSizes } from '../inputSizes';
 import { InputGroupContext } from './InputGroupContext';
 
 const InputGroup = forwardRef(({ children, size = 'md', ...restProps }, ref) => {

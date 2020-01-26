@@ -28,7 +28,6 @@ function uniqueId(prefix = '$lodash$') {
     return `${id}`;
   }
 
-  return `${prefix + id}`;
+  return `${prefix}${id}`;
 }
-
 export { uniqueId };

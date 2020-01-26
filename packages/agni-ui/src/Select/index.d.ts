@@ -1,23 +1,27 @@
-interface ISelectProps {
+type ISelectProps<T> = {
   id?: string;
   name?: string;
-  defaultValue?: any;
-  value?: any | any[];
-  options?: any[];
-  onChange?: (val: any) => void;
+  value?: T | T[];
+  options?: T[];
+  onChange?: (val: T) => void;
   disabled?: boolean;
+  readOnly?: boolean;
   placeholder?: string;
   notFoundText?: string;
   labelKey?: string;
   valueKey?: string;
   isMulti?: boolean;
+  isCreatable?: boolean;
   isClearable?: boolean;
   isSearchable?: boolean;
-  dropdownHeight?: string;
+  isInitialOpen?: boolean;
+  dropdownHeight?: number;
+  dropdownWidth?: number;
+  maxItemShow?: number;
   size?: 'sm' | 'md' | 'lg';
   className?: string;
-}
+};
 
-declare const Select: React.FC<ISelectProps>;
+type SelectComponent<T = any> = React.FC<ISelectProps<T>>;
 
-export default Select;
+export const Select: SelectComponent;

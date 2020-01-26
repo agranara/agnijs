@@ -90,6 +90,9 @@ const linkVariantProps = ({ color }) => {
     },
     _active: {
       color: _activeColor
+    },
+    _focus: {
+      shadow: 'none'
     }
   };
 };

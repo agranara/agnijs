@@ -5,22 +5,24 @@ const useHasImageLoaded = ({ src, onLoad, onError }) => {
   const [hasLoaded, setHasLoaded] = useState(false);
 
   useEffect(() => {
-    const image = new window.Image();
-    image.src = src;
+    if (src) {
+      const image = new window.Image();
+      image.src = src;
 
-    image.onload = event => {
-      if (isMounted.current) {
-        setHasLoaded(true);
-        onLoad && onLoad(event);
-      }
-    };
+      image.onload = event => {
+        if (isMounted.current) {
+          setHasLoaded(true);
+          onLoad && onLoad(event);
+        }
+      };
 
-    image.onerror = event => {
-      if (isMounted.current) {
-        setHasLoaded(false);
-        onError && onError(event);
-      }
-    };
+      image.onerror = event => {
+        if (isMounted.current) {
+          setHasLoaded(false);
+          onError && onError(event);
+        }
+      };
+    }
   }, [src, onLoad, onError]);
 
   useEffect(() => {
@@ -33,4 +35,3 @@ const useHasImageLoaded = ({ src, onLoad, onError }) => {
 };
 
 export { useHasImageLoaded };
-export default useHasImageLoaded;

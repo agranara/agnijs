@@ -173,4 +173,3 @@ const transformAliasProps = props => {
 };
 
 export { config, extraConfig, transformAliasProps };
-export default extraConfig;

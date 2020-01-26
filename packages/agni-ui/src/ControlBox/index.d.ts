@@ -16,6 +16,4 @@ interface IControlBox {
 
 export type ControlBoxProps = IControlBox & BoxProps;
 
-declare const ControlBox: React.ForwardRefExoticComponent<ControlBoxProps>;
-
-export default ControlBox;
+export const ControlBox: React.ForwardRefExoticComponent<ControlBoxProps>;

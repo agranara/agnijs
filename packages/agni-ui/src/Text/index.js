@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core';
-import Box from '../Box';
 import { forwardRef } from 'react';
+import { Box } from '../Box';
 
 const sizes = {
   '2xl': ['4xl', null, '5xl'],

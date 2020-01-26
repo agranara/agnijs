@@ -1,211 +1,642 @@
-/** @jsx jsx */
-import { jsx, css } from '@emotion/core';
-import { useMemo } from 'react';
-import InputSelect from 'react-dropdown-select';
-import cn from 'classnames';
+import React, { useMemo, forwardRef, useRef, useState, useEffect, useCallback } from 'react';
 import get from 'lodash.get';
-import Box from '../Box';
-import Button from '../Button';
-import { FiX } from 'react-icons/fi';
+import cn from 'classnames';
+import { FixedSizeList } from 'react-window';
+import AutoSizer from 'react-virtualized-auto-sizer';
+import { FiX, FiChevronDown } from 'react-icons/fi';
+import { Button } from '../Button';
+import { mergeRefs } from '../utils';
+import { useDropdown, useAutoId, useDebounceCallback } from '../hooks';
+import { inputSizes } from '../inputSizes';
+import { PseudoBox } from '../PseudoBox';
+import { isKeyboardKey } from '../keyboard';
+import { baseProps, boxedStyle } from '../InputText/styles';
 import { useUiTheme } from '../UiProvider';
-import { inputSizes } from '../Input/sizes';
+import { SelectContext, useSelectContext } from './SelectContext';
 
-const useSelectCss = ({ size = 'md' }) => {
-  const theme = useUiTheme();
-  const { px, height, lineHeight, rounded, fontSize } = inputSizes[size];
+const safeString = str => str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
-  const _focusBorderColor = theme.colors.teal[500];
-  const hoverColor = theme.colors.gray[300];
+const Select = forwardRef(
+  (
+    {
+      id,
+      name,
+      value: valueProp,
+      options = [],
+      onChange,
+      className,
+      placeholder = 'Select one from option below',
+      notFoundText = 'Option not found',
+      dropdownWidth,
+      dropdownHeight,
+      labelKey = 'label',
+      valueKey = 'value',
+      isMulti = false,
+      isClearable = true,
+      isSearchable = true,
+      isCreatable = false,
+      isInitialOpen = false,
+      disabled = false,
+      readOnly = false,
+      maxItemShown = 8,
+      size = 'md'
+    },
+    forwardedRef
+  ) => {
+    const uid = useAutoId();
+    const { current: isControlled } = useRef(
+      valueProp !== null || (typeof valueProp === 'undefined' && typeof onChange === 'undefined')
+    );
+    const ref = useRef();
+    const searchRef = useRef();
+    const pickerTimeout = useRef();
+    const prevNextValue = useRef(null);
+    const prevNextSearch = useRef('');
 
-  const result = `
-    padding-left: ${theme.sizes[px]};
-    padding-right: 0.375rem;
-    min-height: ${theme.sizes[height]};
-    font-size: ${theme.fontSizes[fontSize]};
-    border-radius: ${theme.radii[rounded]};
-    line-height: ${theme.lineHeights[lineHeight]};
-    padding-top: 0;
-    padding-bottom: 0;
-    border-color: inherit;
-    box-shadow: ${theme.shadows.input};
-    background-color: white;
+    useEffect(() => {
+      const timeout = pickerTimeout.current;
+      return () => {
+        if (timeout) {
+          clearTimeout(timeout);
+        }
+      };
+    }, []);
 
-    &[disabled] {
-      opacity: 1;
-      pointer-events: none;
-    }
+    const [search, setSearch] = useState('');
+    const [cursor, setCursor] = useState(null);
 
-    &:hover {
-      border-color: ${hoverColor};
-    }
+    // Initial internal value
+    const [valueState, setValueState] = useState(() => {
+      if (isMulti) {
+        if (Array.isArray(valueProp)) {
+          return options.filter(opt => valueProp.indexOf(opt[valueKey]) > -1);
+        }
+        return [];
+      }
 
-    &:focus-within {
-      border-color: ${_focusBorderColor};
-      box-shadow: 0 0 0 1px ${_focusBorderColor};
-    }
+      if (valueProp) {
+        return valueProp;
+      }
+      return undefined;
+    });
 
-    & .react-dropdown-select-input {
-      margin-left: 0;
-      font-size: ${theme.fontSizes[fontSize]};
-    }
+    // Debouncing filter options
+    const [filterOptions, setFilterOptions] = useState(() => {
+      return options || [];
+    });
 
-    & .react-dropdown-select-content > span {
-      padding-top: 0.25rem;
-      padding-bottom: 0.25rem;
-    }
+    const setFilterOnSearch = useCallback(
+      searchValue => {
+        if (!searchValue || searchValue === '') return setFilterOptions(options);
+        const regexp = new RegExp(safeString(searchValue), 'i');
+        const newOptions = options.filter(
+          item => regexp.test(item[labelKey]) || regexp.test(item[valueKey])
+        );
 
-    & .react-dropdown-select-dropdown-handle {
-      margin: 0;
-      margin-left: 4px;
-    }
+        setFilterOptions(newOptions);
+      },
+      [labelKey, options, valueKey]
+    );
 
-    & .react-dropdown-select-item {
-      padding-left: ${theme.sizes[px]};
-      padding-right: ${theme.sizes[px]};
-      padding-top: 0.5rem;
-      padding-bottom: 0.5rem;
-    }
+    const [debounceFilterOnSearch] = useDebounceCallback({
+      callback: setFilterOnSearch,
+      delay: 300
+    });
 
-    & .react-dropdown-select-dropdown {
-      border: 1px solid ${theme.colors.gray[100]};
-      box-shadow: ${theme.shadows.sm};
-      border-radius: ${theme.radii[rounded]};
-      z-index: ${theme.zIndices.dropdown};
-    }
-  `;
+    const { Dropdown, isOpen, open, close, reposition } = useDropdown({
+      ref,
+      initialOpen: isInitialOpen,
+      onClose: () => updateSearch('')
+    });
 
-  const disabledCss = `
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    border-radius: ${theme.radii.md};
-    background-color: ${theme.colors.gray[200]};
-    opacity: 0.4;
-  `;
+    const memoizedKeyedOptions = useMemo(() => {
+      return Array.isArray(options)
+        ? options.reduce((acc, cur) => {
+            if (cur && cur[valueKey]) {
+              return {
+                ...acc,
+                [get(cur, valueKey)]: cur
+              };
+            }
+            return acc;
+          }, {})
+        : {};
+    }, [options, valueKey]);
 
-  return {
-    result,
-    theme,
-    disabledCss
-  };
+    const inputSize = useMemo(() => inputSizes[size], [size]);
+
+    const isInteractive = !(readOnly || disabled);
+    const value = isControlled ? valueProp : valueState;
+    const hasValue = value && value !== null;
+    const hasValueAndSearch = hasValue || search !== '';
+
+    const updateValue = nextValue => {
+      if (prevNextValue.current === nextValue) return;
+
+      if (!isControlled) setValueState(nextValue);
+      setCursor(null);
+      if (onChange) onChange(nextValue);
+      resetPosition();
+      prevNextValue.current = nextValue;
+    };
+
+    const updateSearch = nextSearch => {
+      if (prevNextSearch.current === nextSearch) return;
+      const dom = searchRef.current;
+      if (dom) {
+        const str = nextSearch;
+        dom.style.width = `${str.length * 7 + 12}px`;
+      }
+      debounceFilterOnSearch(nextSearch);
+      setSearch(nextSearch);
+      prevNextSearch.current = nextSearch;
+    };
+
+    // Set position dropdown
+    const resetPosition = () => {
+      pickerTimeout.current = setTimeout(() => {
+        reposition();
+      }, 50);
+    };
+
+    // Set search value onChange
+    const handleSearch = ev => {
+      if (!isInteractive || hasValue) return;
+      if (hasValue && !isMulti) return;
+      updateSearch(ev.target.value);
+    };
+
+    // Handle clear
+    const handleClear = () => {
+      if (!isInteractive) return;
+
+      if (isMulti) {
+        updateValue([]);
+      } else {
+        updateValue(undefined);
+      }
+    };
+
+    // Handle focus
+    const handleFocus = ev => {
+      if (!isInteractive) return;
+      open(ev);
+
+      if (searchRef.current) {
+        searchRef.current.focus(ev);
+      }
+    };
+
+    // Handle Change option;
+    const handleClickItem = (ev, nextValue) => {
+      if (isMulti) {
+        const newOptions = [...value, nextValue];
+        updateValue(newOptions);
+        updateSearch('');
+      } else {
+        updateValue(nextValue);
+        close();
+      }
+    };
+
+    // Handle keydown
+    const handleKeyDown = ev => {
+      const isArrowUp = isKeyboardKey(ev.key, 'ArrowUp');
+      const isArrowDown = isKeyboardKey(ev.key, 'ArrowDown');
+      const isTab = isKeyboardKey(ev.key, 'Tab');
+      const isEscape = isKeyboardKey(ev.key, 'Escape');
+      const isShift = ev.shiftKey;
+      const isBackspace = isKeyboardKey(ev.key, 'Backspace');
+      const isEnter = isKeyboardKey(ev.key, 'Enter');
+
+      if (isArrowDown && cursor === null && filterOptions.length > 0) {
+        if (!isOpen) {
+          handleFocus();
+        }
+
+        return setCursor(0);
+      }
+
+      if (isArrowUp || isArrowDown || isShift & isTab) {
+        ev.preventDefault();
+      }
+
+      if (isTab) {
+        return close();
+      }
+
+      if (isEscape) {
+        close();
+      }
+
+      if (isBackspace && search === '' && hasValue) {
+        // clear
+        handleClear();
+      }
+
+      if (filterOptions.length > 0) {
+        if (isEnter && cursor !== null) {
+          const item = filterOptions[cursor][valueKey];
+          handleClickItem(ev, item);
+        }
+
+        if (isArrowDown && cursor < filterOptions.length - 1) {
+          setCursor(oldCursor => oldCursor + 1);
+        } else if (isArrowUp && cursor > 0) {
+          setCursor(oldCursor => oldCursor - 1);
+        }
+      }
+    };
+
+    return (
+      <SelectContext.Provider
+        value={{
+          options: filterOptions,
+          inputSize,
+          valueKey,
+          labelKey,
+          value,
+          handleClickItem,
+          isMulti,
+          isCreatable,
+          cursor
+        }}
+      >
+        <React.Fragment>
+          <SelectContainer
+            id={id}
+            className={className}
+            ref={mergeRefs(ref, forwardedRef)}
+            onFocus={handleFocus}
+            isFocus={isOpen && isInteractive}
+            disabled={disabled}
+            readOnly={readOnly}
+            name={name}
+            inputSize={inputSize}
+          >
+            <PseudoBox
+              className="select--selection"
+              d="flex"
+              alignItems="flex-start"
+              maxW="100%"
+              flexWrap="wrap"
+            >
+              <SelectPlaceholder inputSize={inputSize} hasValue={hasValueAndSearch}>
+                {placeholder}
+              </SelectPlaceholder>
+              <SelectValues
+                uid={uid}
+                value={value}
+                valueKey={valueKey}
+                labelKey={labelKey}
+                inputSize={inputSize}
+                keyedOptions={memoizedKeyedOptions}
+              >
+                {isInteractive && isSearchable && (
+                  <SelectSearch
+                    searchRef={searchRef}
+                    search={search}
+                    onChange={handleSearch}
+                    onKeyDown={handleKeyDown}
+                    inputSize={inputSize}
+                  />
+                )}
+              </SelectValues>
+            </PseudoBox>
+            <PseudoBox
+              d="flex"
+              flexWrap="nowrap"
+              pos="absolute"
+              right={0}
+              top={0}
+              height={inputSize.height}
+              alignItems="center"
+              px={2}
+              className="select--controls"
+            >
+              {hasValue && isInteractive && isClearable ? (
+                <Button
+                  className="select--icon-clear"
+                  size="xs"
+                  variantColor="danger"
+                  p={1}
+                  onClick={handleClear}
+                >
+                  <FiX />
+                </Button>
+              ) : (
+                <PseudoBox
+                  className="select--icon-dropdown"
+                  pt="2px"
+                  lineHeight="1"
+                  h={5}
+                  fontSize="1rem"
+                >
+                  <FiChevronDown />
+                </PseudoBox>
+              )}
+            </PseudoBox>
+          </SelectContainer>
+          <AutoSizer disableHeight>
+            {({ width }) => (
+              <Dropdown role="list">
+                <SelectPickerList
+                  width={dropdownWidth ? dropdownWidth : width}
+                  height={dropdownHeight}
+                  cursor={cursor}
+                  maxItemShown={maxItemShown}
+                  inputSize={inputSize}
+                  options={filterOptions}
+                />
+                {filterOptions.length === 0 && (
+                  <SelectPickerItem
+                    label={notFoundText}
+                    style={{ justifyContent: 'center' }}
+                    inputSize={inputSize}
+                  />
+                )}
+              </Dropdown>
+            )}
+          </AutoSizer>
+        </React.Fragment>
+      </SelectContext.Provider>
+    );
+  }
+);
+
+Select.displayName = 'Select';
+
+////////////////////////////////////////////////////////////
+
+const SelectContainer = forwardRef(
+  (
+    { children, className, inputSize, isFocus, onFocus, disabled, readOnly, name },
+    forwardedRef
+  ) => {
+    const theme = useUiTheme();
+
+    return (
+      <PseudoBox
+        ref={forwardedRef}
+        {...baseProps}
+        {...boxedStyle({ theme, focusBorderColor: 'primary.500', errorBorderColor: 'danger.500' })}
+        d="block"
+        pl={inputSize.px}
+        pr="42px"
+        rounded={inputSize.rounded}
+        pos="relative"
+        tabIndex={0}
+        h="auto"
+        minH={inputSize.height}
+        className={cn(['select--container', className, isFocus && 'focused'])}
+        onFocus={onFocus}
+        aria-disabled={disabled}
+        disabled={disabled}
+        readOnly={readOnly}
+        aria-readonly={readOnly}
+        aria-expanded={isFocus}
+        role="combobox"
+        aria-autocomplete="list"
+        aria-haspopup="listbox"
+        name={name}
+        width="100%"
+      >
+        {children}
+      </PseudoBox>
+    );
+  }
+);
+
+////////////////////////////////////////////////////////////
+
+const SelectPlaceholder = ({ children, inputSize, hasValue }) => {
+  return (
+    <PseudoBox
+      lineHeight={`calc(${inputSize.lineHeight} - 2px)`}
+      fontSize={inputSize.fontSize}
+      pos="absolute"
+      className="select--placeholder"
+      userSelect="none"
+      color="gray.500"
+      d={hasValue ? 'none' : undefined}
+    >
+      {children}
+    </PseudoBox>
+  );
 };
 
-const Select = ({
-  id,
-  name,
-  value,
-  options,
-  onChange,
-  className,
-  placeholder = 'Select one from option below',
-  notFoundText = 'Option not found',
-  labelKey = 'label',
-  valueKey = 'value',
-  isMulti = false,
-  isClearable = true,
-  isSearchable = true,
-  disabled = false,
-  dropdownHeight = '300px',
-  size = 'md'
-}) => {
-  const { result, theme, disabledCss } = useSelectCss({ size });
+SelectPlaceholder.displayName = 'SelectPlaceholder';
 
-  // Memoize options by setting value as key object
-  const memoizedKeyedOptions = useMemo(() => {
-    return Array.isArray(options)
-      ? options.reduce((acc, cur) => {
-          if (cur && cur[valueKey]) {
-            return {
-              ...acc,
-              [get(cur, valueKey)]: cur
-            };
-          }
-          return acc;
-        }, {})
-      : {};
-  }, [options, valueKey]);
+////////////////////////////////////////////////////////////
 
-  // Format value to match 'react-dropdown-select' values usage
-  const formatValue = val => {
-    if (Array.isArray(val) && isMulti) {
-      return val.map(v => memoizedKeyedOptions[v]);
-    }
-    if (val && !isMulti) {
-      return [memoizedKeyedOptions[val]];
-    }
-    return [];
-  };
+const SelectValues = ({ uid, value, valueKey, labelKey, keyedOptions, inputSize, children }) => {
+  return (
+    <PseudoBox as="ul" listStyleType="none" className="select--values" maxW="100%">
+      {Array.isArray(value) ? (
+        value.map(val => (
+          <SelectValueItem
+            key={`${uid}-val-${keyedOptions[val][valueKey].toString()}`}
+            inputSize={inputSize}
+          >
+            {val[labelKey]}
+          </SelectValueItem>
+        ))
+      ) : value ? (
+        <SelectValueItem
+          key={`${uid}-val-${keyedOptions[value][valueKey].toString()}`}
+          inputSize={inputSize}
+        >
+          {keyedOptions[value][labelKey]}
+        </SelectValueItem>
+      ) : null}
+      <PseudoBox
+        className="select--values-search"
+        as="li"
+        pos="static"
+        float="left"
+        w="auto"
+        maxW="full"
+        p={0}
+      >
+        {children}
+      </PseudoBox>
+    </PseudoBox>
+  );
+};
 
-  // Handle change to matched its type
-  // multi returns array, if not return single object
-  const handleChange = val => {
-    if (isMulti) {
-      const newValues = val.map(v => get(v, valueKey));
-      if (onChange) onChange(newValues);
-    } else {
-      if (onChange) onChange(get(val[0], valueKey));
-    }
-  };
+SelectValues.displayName = 'SelectValues';
 
-  // Additional handle keydown to clear values
-  // when search is empty and backspace (keycode = 8) is pressed
-  const handleKeyDown = ({ event, state, methods }) => {
-    if (event.keyCode === 8 && !state.search && state.values.length > 0) {
-      const lastItem = state.values[state.values.length - 1];
-      methods.removeItem(event, lastItem, false);
+////////////////////////////////////////////////////////////
+
+const SelectValueItem = ({ children, inputSize }) => {
+  return (
+    <PseudoBox
+      className="select--value-item"
+      as="li"
+      pos="relative"
+      width="auto"
+      float="left"
+      mr={1}
+      // lineHeight={`calc(${inputSize.lineHeight} - 2px)`}
+      fontSize={inputSize.fontSize}
+      userSelect="none"
+      pt="5px"
+    >
+      {children}
+    </PseudoBox>
+  );
+};
+
+SelectValueItem.displayName = 'SelectValueItem';
+
+////////////////////////////////////////////////////////////
+
+const SelectSearch = ({ searchRef, search, onChange, inputSize, onKeyDown }) => {
+  const theme = useUiTheme();
+
+  return (
+    <PseudoBox d="inline-block" w="full" maxW="full" pos="relative">
+      <PseudoBox
+        outline="none"
+        ref={searchRef}
+        as="input"
+        w="12px"
+        d="inline-block"
+        maxW="full"
+        h={`calc(${theme.sizes[inputSize.height]} - 2px)`}
+        fontSize={inputSize.fontSize}
+        className="select--search-input"
+        onChange={onChange}
+        value={search}
+        spellCheck="false"
+        autoCorrect="off"
+        autoSave="off"
+        autoComplete="off"
+        onKeyDown={onKeyDown}
+        bg="transparent"
+      />
+    </PseudoBox>
+  );
+};
+
+SelectSearch.displayName = 'SelectSearch';
+
+////////////////////////////////////////////////////////////
+
+const SelectPickerWindowItem = ({ index, style }) => {
+  const {
+    inputSize,
+    options,
+    isMulti,
+    cursor,
+    value,
+    valueKey,
+    labelKey,
+    handleClickItem
+  } = useSelectContext();
+
+  const option = options[index];
+  const optionLabel = option[labelKey];
+  const optionValue = option[valueKey];
+
+  return (
+    <SelectPickerItem
+      style={style}
+      label={optionLabel}
+      onClick={handleClickItem}
+      value={optionValue}
+      isFocused={index === cursor}
+      isActive={isMulti ? value.indexOf(optionValue) > -1 : value === optionValue}
+      inputSize={inputSize}
+    />
+  );
+};
+
+SelectPickerWindowItem.displayName = 'SelectPickerWindowItem';
+
+////////////////////////////////////////////////////////////
+
+const SelectPickerItem = ({ label, style, value, isFocused, isActive, onClick, inputSize }) => {
+  const handleClick = ev => {
+    if (onClick) {
+      onClick(ev, value);
     }
   };
 
   return (
-    <Box pos="relative">
-      <InputSelect
-        id={id}
-        name={name}
-        values={formatValue(value)}
-        options={options}
-        multi={isMulti}
-        placeholder={placeholder}
-        onChange={handleChange}
-        labelField={labelKey}
-        valueField={valueKey}
-        dropdownHeight={dropdownHeight}
-        searchable={isSearchable}
-        clearable={isClearable}
-        className={cn(['rc-dropdown-select', className])}
-        disabled={disabled}
-        noDataLabel={notFoundText}
-        closeOnSelect={false}
-        dropdownGap={2}
-        color={theme.colors.teal[500]}
-        clearRenderer={({ state, methods }) => {
-          if (state.values.length > 0) {
-            return (
-              <Button
-                size="xs"
-                variant="solid"
-                variantColor="red"
-                p={0}
-                onClick={e => {
-                  e.preventDefault();
-                  methods.clearAll();
-                }}
-              >
-                <FiX />
-              </Button>
-            );
-          }
-          return null;
-        }}
-        handleKeyDownFn={handleKeyDown}
-        css={css([result])}
-      />
-      {disabled ? <div css={css(disabledCss)} /> : null}
-    </Box>
+    <PseudoBox
+      className={cn(['select--list-item', isFocused && 'focused', isActive && 'active'])}
+      style={style}
+      px={inputSize.px}
+      fontSize={inputSize.fontSize}
+      lineHeight={inputSize.lineHeight}
+      d="flex"
+      alignItems="center"
+      cursor="pointer"
+      userSelect="none"
+      onClick={handleClick}
+      _active={{
+        bg: 'primary.500',
+        color: 'white'
+      }}
+      _focus={{
+        bg: 'primary.100'
+      }}
+      _hover={{
+        bg: 'primary.50'
+      }}
+      title={label}
+      role={value ? 'option' : undefined}
+      aria-selected={isActive ? 'true' : 'false'}
+      transition="all 0.2s"
+      tabIndex={0}
+      outline="none"
+    >
+      <PseudoBox whiteSpace="nowrap" overflow="hidden" textOverflow="ellipsis">
+        {label}
+      </PseudoBox>
+    </PseudoBox>
   );
 };
 
-Select.displayName = 'Select';
+SelectPickerItem.displayName = 'SelectPickerItem';
 
-export default Select;
+////////////////////////////////////////////////////////////
+
+const SelectPickerList = ({ width, height, maxItemShown, cursor, inputSize, options }) => {
+  const listRef = useRef();
+
+  useEffect(() => {
+    if (listRef) {
+      listRef.current.scrollToItem(cursor);
+    }
+  }, [cursor]);
+
+  const itemSize = inputSize.height * 4;
+  const itemCount = options.length;
+
+  const calculatedHeight =
+    maxItemShown * itemSize > itemCount * itemSize ? itemCount * itemSize : maxItemShown * itemSize;
+
+  const usedHeight = height ? height : calculatedHeight;
+
+  return (
+    <FixedSizeList
+      ref={listRef}
+      className="select--list"
+      width={width}
+      height={usedHeight}
+      itemCount={itemCount}
+      itemSize={itemSize}
+      itemData={options}
+    >
+      {SelectPickerWindowItem}
+    </FixedSizeList>
+  );
+};
+
+SelectPickerList.displayName = 'SelectPickerList';
+
+////////////////////////////////////////////////////////////
+
+export { Select };

@@ -1,7 +1,7 @@
 import React from 'react';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
-import Button from '../../Button';
-import Box from '../../Box';
+import { Button } from '../../Button';
+import { Box } from '../../Box';
 import { useDatepickerContext } from '../DatepickerContext';
 import { months, years } from '../constants';
 

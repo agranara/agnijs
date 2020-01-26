@@ -11,7 +11,8 @@
   "umd:main": "dist/index.umd.js",
   "sideEffects": false,
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "directory": "dist"
   },
   "repository": {
     "type": "git",
@@ -21,12 +22,11 @@
   "scripts": {
     "clean": "rimraf dist",
     "prebuild": "yarn clean && yarn build:umd",
-    "prewatch": "yarn clean",
-    "watch": "cross-env NODE_ENV=development BABEL_ENV=cjs babel --watch --root-mode upward src -d dist",
+    "watch": "microbundle watch -f cjs --globals react=React,react-dom=ReactDOM --jsx React.createElement",
     "build": "yarn build:cjs && yarn build:es && yarn build:script",
-    "build:cjs": "cross-env NODE_ENV=production BABEL_ENV=cjs babel --root-mode upward src -d dist",
-    "build:esm": "cross-env NODE_ENV=production BABEL_ENV=esm babel --root-mode upward src -d dist/esm",
-    "build:es": "cross-env NODE_ENV=production BABEL_ENV=es babel --root-mode upward src -d dist/es",
+    "build:cjs": "cross-env NODE_ENV=production BABEL_ENV=production BABEL_TARGET_ENV=cjs babel --root-mode upward src -d dist",
+    "build:esm": "cross-env NODE_ENV=production BABEL_ENV=production BABEL_TARGET_ENV=esm babel --root-mode upward src -d dist/esm",
+    "build:es": "cross-env NODE_ENV=production BABEL_ENV=production BABEL_TARGET_ENV=es babel --root-mode upward src -d dist/es",
     "build:script": "node ../../scripts/build.js",
     "build:umd": "microbundle -f umd --globals react=React,react-dom=ReactDOM --jsx React.createElement",
     "version": "yarn build"
@@ -49,10 +49,14 @@
     "dayjs": "^1.8.19",
     "exenv": "^1.2.2",
     "lodash.get": "^4.4.2",
+    "memoize-one": "^5.1.1",
     "prop-types": "^15.7.2",
     "react-animate-height": "^2.0.20",
+    "react-anime": "^3.0.3",
     "react-dropdown-select": "3.8.1",
     "react-icons": "^3.8.0",
+    "react-virtualized-auto-sizer": "^1.0.2",
+    "react-window": "^1.8.5",
     "styled-system": "^5.1.4"
   },
   "gitHead": "29947082b007b2bd7b4179d3440076b71c5254e0",

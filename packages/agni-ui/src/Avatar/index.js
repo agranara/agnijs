@@ -1,9 +1,9 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core';
-import useAvatarStyle, { avatarSizes } from './styles';
-import Box from '../Box';
+import { Box } from '../Box';
 import { useUiTheme } from '../UiProvider';
-import { useHasImageLoaded } from './useHasImageLoaded';
+import { useHasImageLoaded } from '../hooks';
+import { useAvatarStyle, avatarSizes } from './styles';
 
 const AvatarBadge = props => {
   const borderColor = 'white';

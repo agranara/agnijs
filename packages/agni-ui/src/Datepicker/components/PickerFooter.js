@@ -1,6 +1,6 @@
 import React from 'react';
-import Box from '../../Box';
-import Button from '../../Button';
+import { Box } from '../../Box';
+import { Button } from '../../Button';
 import { useDatepickerContext } from '../DatepickerContext';
 
 const PickerFooter = () => {

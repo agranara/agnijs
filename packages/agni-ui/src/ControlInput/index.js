@@ -4,17 +4,16 @@ import {
   forwardRef,
   useRef,
   useState,
-  useMemo,
   useImperativeHandle,
   cloneElement,
   isValidElement,
   Children
 } from 'react';
-import Box from '../Box';
-import ControlBox from '../ControlBox';
-import VisuallyHidden from '../VisuallyHidden';
+import { Box } from '../Box';
+import { ControlBox } from '../ControlBox';
+import { VisuallyHidden } from '../VisuallyHidden';
+import { useAutoId } from '../hooks';
 import useCheckboxStyle from './styles';
-import { uniqueId } from '../utils';
 
 const InputRadio = forwardRef(
   (
@@ -135,28 +134,7 @@ const InputRadioGroup = forwardRef(
     };
 
     // If no name is passed, we'll generate a random, unique name
-    const fallbackName = useMemo(() => uniqueId(), []);
-
-    const _name = name || fallbackName;
-
-    const clones = Children.map(children, (child, index) => {
-      if (!isValidElement(child)) return;
-
-      const isLastRadio = children.length === index + 1;
-      const spacingProps = isInline ? { mr: spacing } : { mb: spacing };
-
-      return (
-        <Box display={isInline ? 'inline-block' : 'block'} {...(!isLastRadio && spacingProps)}>
-          {cloneElement(child, {
-            size: child.props.size || size,
-            variantColor: child.props.variantColor || variantColor,
-            name: _name,
-            onChange: _onChange,
-            isChecked: child.props.value === _value
-          })}
-        </Box>
-      );
-    });
+    const _name = useAutoId(name);
 
     // Calling focus() on the radiogroup should focus on the selected option or first enabled option
     useImperativeHandle(
@@ -176,6 +154,25 @@ const InputRadioGroup = forwardRef(
       }),
       []
     );
+
+    const clones = Children.map(children, (child, index) => {
+      if (!isValidElement(child)) return;
+
+      const isLastRadio = children.length === index + 1;
+      const spacingProps = isInline ? { mr: spacing } : { mb: spacing };
+
+      return (
+        <Box display={isInline ? 'inline-block' : 'block'} {...(!isLastRadio && spacingProps)}>
+          {cloneElement(child, {
+            size: child.props.size || size,
+            variantColor: child.props.variantColor || variantColor,
+            name: _name,
+            onChange: _onChange,
+            isChecked: child.props.value === _value
+          })}
+        </Box>
+      );
+    });
 
     return (
       <Box ref={rootRef} role="radiogroup" className="input-radio-group" {...rest}>

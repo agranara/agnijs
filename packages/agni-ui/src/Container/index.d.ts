@@ -6,6 +6,4 @@ interface IContainerProps {
 
 export type ContainerProps = IContainerProps & BoxProps;
 
-declare const Container: React.FC<ContainerProps>;
-
-export default Container;
+export const Container: React.FC<ContainerProps>;

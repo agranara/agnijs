@@ -61,6 +61,4 @@ type Combined = IPseudoBoxProps & BoxProps;
 
 export type ButtonProps = IButtonProps & Omit<Combined, 'size'>;
 
-declare const Button: React.ForwardRefExoticComponent<ButtonProps>;
-
-export default Button;
+export const Button: React.ForwardRefExoticComponent<ButtonProps>;

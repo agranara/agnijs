@@ -1,11 +1,11 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core';
 import React, { useState, useRef, createContext, useContext } from 'react';
-import Box from '../Box';
-import Button from '../Button';
+import { get } from 'styled-system';
+import { Box } from '../Box';
+import { Button } from '../Button';
 import { useDropdown } from '../hooks';
 import { useUiTheme } from '../UiProvider';
-import { get } from 'styled-system';
 import { sizes } from '../Button/styles';
 
 const MenuContext = createContext({
@@ -27,7 +27,10 @@ const Menu = ({ children, isFixed, ...restProps }) => {
   const menuRef = useRef();
   const [isActive, setIsActive] = useState();
 
-  const { Dropdown, open, close, isOpen, toggle } = useDropdown({ ref: toggleRef, isFixed });
+  const { Dropdown, open, close, isOpen, toggle } = useDropdown({
+    ref: toggleRef,
+    isFixed
+  });
 
   return (
     <MenuContext.Provider

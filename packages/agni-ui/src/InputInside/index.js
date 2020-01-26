@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
-import Box from '../Box';
-import { inputSizes } from './sizes';
-import { useInputGroupContext } from './InputGroupContext';
+import { Box } from '../Box';
+import { useInputGroupContext } from '../InputGroup/InputGroupContext';
+import { inputSizes } from '../inputSizes';
 
 const InputInside = ({
   disablePointerEvents = false,

@@ -1,8 +1,8 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core';
 import { Children, cloneElement, isValidElement } from 'react';
-import Box from '../Box';
-import { avatarSizes } from './styles';
+import { Box } from '../Box';
+import { avatarSizes } from '../Avatar/styles';
 import { useUiTheme } from '../UiProvider';
 
 const MoreAvatarLabel = ({ size, label, ...props }) => {

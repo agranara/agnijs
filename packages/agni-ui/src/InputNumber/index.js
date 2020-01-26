@@ -1,10 +1,10 @@
 import React, { forwardRef } from 'react';
 import { FiChevronUp, FiChevronDown } from 'react-icons/fi';
+import { Box } from '../Box';
 import { useNumberInput } from './useInputNumber';
 import { InputNumberContext } from './InputNumberContext';
 import { InputNumberField } from './InputNumberField';
 import { InputNumberStepper } from './InputNumberStepper';
-import Box from '../Box';
 
 const InputNumber = forwardRef(
   (
@@ -87,4 +87,4 @@ const InputNumber = forwardRef(
 
 InputNumber.displayName = 'InputNumber';
 
-export default InputNumber;
+export { InputNumber };

@@ -18,6 +18,4 @@ interface IInputNumberProps {
 
 type InputNumberProps = IInputNumberProps & Omit<BoxProps, 'size'>;
 
-declare const InputNumber: React.ForwardRefExoticComponent<InputNumberProps>;
-
-export default InputNumber;
+export const InputNumber: React.ForwardRefExoticComponent<InputNumberProps>;

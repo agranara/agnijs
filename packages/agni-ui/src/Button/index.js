@@ -1,10 +1,10 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core';
 import { forwardRef } from 'react';
-import Spinner from '../Spinner';
+import { Box } from '../Box';
+import { Spinner } from '../Spinner';
+import { PseudoBox } from '../PseudoBox';
 import useButtonStyle from './styles';
-import Box from '../Box';
-import PseudoBox from '../PseudoBox';
 
 const Button = forwardRef(
   (
@@ -89,4 +89,4 @@ const Button = forwardRef(
 
 Button.displayName = 'Button';
 
-export default Button;
+export { Button };
