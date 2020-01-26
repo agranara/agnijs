@@ -74,7 +74,11 @@ const Spinner = ({
 
   return (
     <Box
-      css={css([spinner, { color: get(theme.colors, variantColor) }, spinnerSize(size)])}
+      css={css([
+        spinner,
+        { color: get(theme.colors, variantColor) },
+        spinnerSize(size, theme.sizes)
+      ])}
       className={cn(['spinner', className])}
       role="status"
       {...restProps}
