@@ -299,7 +299,6 @@ const providerCss = (theme = defaultTheme) => {
       line-height: 1.5;
       color: ${color};
       font-family: ${theme.fonts.body};
-      font-size: ${theme.fontSizes.md};
     }
 
     *,
@@ -323,9 +322,15 @@ const providerCss = (theme = defaultTheme) => {
       color: ${placeholderColor};
     }
 
+    html,
+    body,
     #root {
       height: 100%;
       width: 100%;
+    }
+
+    body {
+      font-size: ${theme.fontSizes.md};
     }
 
     pre,
