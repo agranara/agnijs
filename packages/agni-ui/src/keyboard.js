@@ -3,28 +3,30 @@
  *
  * based on https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key/Key_Values
  */
-export const isKeyboardKey = (eventKey, name) => {
+export const isKeyboardKey = (event, name) => {
+  if (!event.key) return;
+
   if (name === 'ArrowUp') {
-    return eventKey === 'ArrowUp' || eventKey === 'Up'; // IE /Edge;
+    return event.key === 'ArrowUp' || event.key === 'Up'; // IE /Edge;
   }
   if (name === 'ArrowDown') {
-    return eventKey === 'ArrowDown' || eventKey === 'Down';
+    return event.key === 'ArrowDown' || event.key === 'Down';
   }
   if (name === 'ArrowLeft') {
-    return eventKey === 'ArrowLeft' || eventKey === 'Left';
+    return event.key === 'ArrowLeft' || event.key === 'Left';
   }
   if (name === 'ArrowRight') {
-    return eventKey === 'ArrowRight' || eventKey === 'Right';
+    return event.key === 'ArrowRight' || event.key === 'Right';
   }
   if (name === 'Enter') {
-    return eventKey === 'Enter';
+    return event.key === 'Enter';
   }
   if (name === 'Escape') {
-    return eventKey === 'Escape' || eventKey === 'Esc'; // IE/Edge;
+    return event.key === 'Escape' || event.key === 'Esc'; // IE/Edge;
   }
   if (name === 'Backspace') {
-    return eventKey === 'Backspace';
+    return event.key === 'Backspace';
   }
 
-  return eventKey === name;
+  return event.key === name;
 };

@@ -11,8 +11,9 @@ const Card = ({ children, className, ...cardProps }) => {
       d="flex"
       flexDirection="column"
       flexWrap="wrap"
-      shadow="xs"
+      shadow="sm"
       w="full"
+      bg="white"
       mb={3}
       borderWidth="1px"
       borderColor="gray.200"

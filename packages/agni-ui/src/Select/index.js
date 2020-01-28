@@ -199,13 +199,13 @@ const Select = forwardRef(
 
     // Handle keydown
     const handleKeyDown = ev => {
-      const isArrowUp = isKeyboardKey(ev.key, 'ArrowUp');
-      const isArrowDown = isKeyboardKey(ev.key, 'ArrowDown');
-      const isTab = isKeyboardKey(ev.key, 'Tab');
-      const isEscape = isKeyboardKey(ev.key, 'Escape');
+      const isArrowUp = isKeyboardKey(ev, 'ArrowUp');
+      const isArrowDown = isKeyboardKey(ev, 'ArrowDown');
+      const isTab = isKeyboardKey(ev, 'Tab');
+      const isEscape = isKeyboardKey(ev, 'Escape');
       const isShift = ev.shiftKey;
-      const isBackspace = isKeyboardKey(ev.key, 'Backspace');
-      const isEnter = isKeyboardKey(ev.key, 'Enter');
+      const isBackspace = isKeyboardKey(ev, 'Backspace');
+      const isEnter = isKeyboardKey(ev, 'Enter');
 
       if (isArrowDown && cursor === null && filterOptions.length > 0) {
         if (!isOpen) {
@@ -478,7 +478,7 @@ const SelectValueItem = ({ children, inputSize }) => {
       // lineHeight={`calc(${inputSize.lineHeight} - 2px)`}
       fontSize={inputSize.fontSize}
       userSelect="none"
-      pt="5px"
+      pt="6px"
     >
       {children}
     </PseudoBox>

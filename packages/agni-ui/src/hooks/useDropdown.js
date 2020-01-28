@@ -93,7 +93,7 @@ const useDropdown = ({ ref, initialOpen, isFixed, onClose, onOpen }) => {
               py={1}
               mt={1}
               rounded="md"
-              shadow="xs"
+              shadow="sm"
               zIndex="dropdown"
               borderWidth={1}
               bg="white"

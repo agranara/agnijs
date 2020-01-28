@@ -7,7 +7,7 @@ import { Button } from '../Button';
 import { mergeRefs } from '../utils';
 import { useDatePicker } from './useDatePicker';
 import { DatepickerContext } from './DatepickerContext';
-import { Picker, PickerHeader, PickerFooter } from './components';
+import { PickerHeader, PickerBody, PickerFooter } from './components';
 
 const Datepicker = forwardRef(
   (
@@ -45,11 +45,12 @@ const Datepicker = forwardRef(
     return (
       <DatepickerContext.Provider value={{ ...ctx }}>
         <React.Fragment>
-          <InputGroup>
+          <InputGroup className="datepicker">
             <InputText
               ref={mergeRefs(ref, ctx.ref)}
               id={id}
               name={name}
+              className="datepicker--text"
               placeholder={placeholder}
               onFocus={ctx.open}
               onClick={ctx.open}
@@ -57,7 +58,7 @@ const Datepicker = forwardRef(
               isReadOnly
               _readOnly={{
                 bg: 'transparent',
-                userSelect: 'all',
+                userSelect: 'none',
                 boxShadow: `0 0 0 1px primary.500`
               }}
               {...rest}
@@ -74,7 +75,7 @@ const Datepicker = forwardRef(
           </InputGroup>
           <Dropdown p={2}>
             <PickerHeader />
-            <Picker />
+            <PickerBody />
             <PickerFooter />
           </Dropdown>
         </React.Fragment>

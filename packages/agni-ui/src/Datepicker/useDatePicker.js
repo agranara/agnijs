@@ -2,6 +2,7 @@ import { useState, useRef } from 'react';
 import dayjs from 'dayjs';
 import 'dayjs/locale/id';
 import { useDropdown } from '../hooks';
+import { isKeyboardKey } from '../keyboard';
 
 const useDatePicker = ({
   value: valueProp,
@@ -19,15 +20,13 @@ const useDatePicker = ({
   parser.locale(locale);
 
   const inputRef = useRef();
-  const { Dropdown, isOpen, open, close } = useDropdown({
-    ref: inputRef,
-    initialOpen: initialOpenPicker
-  });
 
-  const { current: isControlled } = useRef(!!valueProp);
+  const isEmpty = typeof valueProp !== 'undefined' || valueProp !== null;
+
+  const { current: isControlled } = useRef(isEmpty);
 
   const [valueState, setValue] = useState(() => {
-    if (!!valueProp) {
+    if (isEmpty) {
       return parser(valueProp, valueFormat);
     }
     return undefined;
@@ -40,14 +39,25 @@ const useDatePicker = ({
       ? parser(valueProp, valueFormat)
       : undefined
     : valueState;
+
   const prevNextValue = useRef(null);
 
   const [focusValue, setFocusValue] = useState(() => {
-    if (!!valueProp) {
+    if (isEmpty) {
       return parser(valueProp, valueFormat);
     }
 
     return parser();
+  });
+
+  const { Dropdown, isOpen, open, close } = useDropdown({
+    ref: inputRef,
+    initialOpen: initialOpenPicker,
+    onOpen: () => {
+      if (value && value !== focusValue) {
+        setFocusValue(value);
+      }
+    }
   });
 
   const updateValue = nextValue => {
@@ -58,7 +68,7 @@ const useDatePicker = ({
     if (!isControlled) setValue(nextValue);
     if (onChange) onChange(converted);
 
-    setFocusValue(nextValue || parser());
+    setFocusValue(nextValue ? nextValue : parser());
 
     prevNextValue.current = nextValue;
 
@@ -81,6 +91,48 @@ const useDatePicker = ({
     }
   };
 
+  const handleKeyDown = ev => {
+    const isArrowUp = isKeyboardKey(ev, 'ArrowUp');
+    const isArrowDown = isKeyboardKey(ev, 'ArrowDown');
+    const isArrowLeft = isKeyboardKey(ev, 'ArrowLeft');
+    const isArrowRight = isKeyboardKey(ev, 'ArrowRight');
+    const isTab = isKeyboardKey(ev, 'Tab');
+    const isEscape = isKeyboardKey(ev, 'Escape');
+    // const isShift = ev.shiftKey;
+    const isBackspace = isKeyboardKey(ev, 'Backspace');
+    const isEnter = isKeyboardKey(ev, 'Enter');
+
+    if (isArrowUp || isArrowDown || isArrowRight || isArrowLeft) {
+      ev.preventDefault();
+    }
+
+    if (isArrowDown && !isOpen) {
+      return open();
+    }
+
+    if (isArrowUp) {
+      setFocusValue(oldFocus => oldFocus.subtract(1, 'week'));
+    }
+    if (isArrowDown) {
+      setFocusValue(oldFocus => oldFocus.add(1, 'week'));
+    }
+    if (isArrowLeft) {
+      setFocusValue(oldFocus => oldFocus.subtract(1, 'day'));
+    }
+    if (isArrowRight) {
+      setFocusValue(oldFocus => oldFocus.add(1, 'day'));
+    }
+    if (isEnter) {
+      updateValue(focusValue);
+    }
+    if (isBackspace) {
+      updateValue(undefined);
+    }
+    if (isEscape || isTab) {
+      close();
+    }
+  };
+
   return {
     value,
     ref: inputRef,
@@ -94,10 +146,9 @@ const useDatePicker = ({
       spellCheck: 'false',
       isFocused: isOpen,
       isFocus: isOpen,
-      onFocus: () => {
-        open();
-      },
-      onChange: () => {}
+      onFocus: open,
+      onChange: () => {},
+      onKeyDown: handleKeyDown
     },
     Dropdown,
     isOpen,

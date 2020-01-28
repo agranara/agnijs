@@ -322,8 +322,6 @@ const providerCss = (theme = defaultTheme) => {
       color: ${placeholderColor};
     }
 
-    html,
-    body,
     #root {
       height: 100%;
       width: 100%;
