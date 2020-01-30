@@ -5,7 +5,7 @@ import { FixedSizeList } from 'react-window';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { FiX, FiChevronDown } from 'react-icons/fi';
 import { Button } from '../Button';
-import { mergeRefs } from '../utils';
+import { useForkedRef } from '../utils';
 import { useDropdown, useAutoId, useDebounceCallback } from '../hooks';
 import { inputSizes } from '../inputSizes';
 import { PseudoBox } from '../PseudoBox';
@@ -46,6 +46,7 @@ const Select = forwardRef(
     const uid = useAutoId();
     const { current: isControlled } = useRef(typeof onChange === 'function');
     const ref = useRef();
+    const forkedRef = useForkedRef(ref, forwardedRef);
     const searchRef = useRef();
     const pickerTimeout = useRef();
     const prevNextValue = useRef(null);
@@ -264,7 +265,7 @@ const Select = forwardRef(
           <SelectContainer
             id={id}
             className={className}
-            ref={mergeRefs(ref, forwardedRef)}
+            ref={forkedRef}
             onFocus={handleFocus}
             isFocus={isOpen && isInteractive}
             disabled={disabled}

@@ -4,7 +4,7 @@ import { InputText } from '../InputText';
 import { InputGroup } from '../InputGroup';
 import { InputInside } from '../InputInside';
 import { Button } from '../Button';
-import { mergeRefs } from '../utils';
+import { useForkedRef } from '../utils';
 import { useDatePicker } from './useDatePicker';
 import { DatepickerContext } from './DatepickerContext';
 import { PickerHeader, PickerBody, PickerFooter } from './components';
@@ -42,12 +42,14 @@ const Datepicker = forwardRef(
       visualFormat
     });
 
+    const forkedRef = useForkedRef(ref, ctx.ref);
+
     return (
       <DatepickerContext.Provider value={{ ...ctx }}>
         <React.Fragment>
           <InputGroup className="datepicker">
             <InputText
-              ref={mergeRefs(ref, ctx.ref)}
+              ref={forkedRef}
               id={id}
               name={name}
               className="datepicker--text"

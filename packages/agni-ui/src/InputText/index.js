@@ -11,12 +11,8 @@ const InputText = forwardRef(
     {
       isFocus = false,
       isFullWidth = true,
-      isDisabled = false,
-      isReadOnly = false,
-      isInvalid = false,
-      isRequired = false,
-      disabled = false,
       readOnly = false,
+      disabled = false,
       invalid = false,
       required = false,
       size = 'md',
@@ -74,36 +70,23 @@ const InputText = forwardRef(
         };
     }, [variantType, theme, focusBorderColor, errorBorderColor]);
 
-    const disabledProps = useMemo(() => {
-      return isDisabled || disabled ? { disabled: true, 'aria-disabled': true } : {};
-    }, [isDisabled, disabled]);
-
-    const invalidProps = useMemo(() => {
-      return isInvalid || invalid ? { 'aria-invalid': true } : {};
-    }, [isInvalid, invalid]);
-
-    const readOnlyProps = useMemo(() => {
-      return isReadOnly || readOnly ? { 'aria-readonly': true, readOnly: true } : {};
-    }, [isReadOnly, readOnly]);
-
-    const requiredProps = useMemo(() => {
-      return isRequired || required ? { required: true, 'aria-required': true } : {};
-    }, [isRequired, required]);
-
     return (
       <PseudoBox
         ref={ref}
         {...baseProps}
         {...sizeProps}
         {...variantProps}
-        {...disabledProps}
-        {...invalidProps}
-        {...readOnlyProps}
-        {...requiredProps}
         {...paddingLeftProps}
         {...paddingRightProps}
-        w={isFullWidth ? '100%' : undefined}
         {...restProps}
+        disabled={disabled}
+        aria-disabled={disabled}
+        readOnly={readOnly}
+        aria-readonly={readOnly}
+        aria-invalid={invalid}
+        required={required}
+        aria-required={required}
+        w={isFullWidth ? '100%' : undefined}
         as="input"
         className={cn(['input', isFocus && 'focused', className])}
         value={value}
