@@ -1,6 +1,5 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Box } from '../Box';
-import { useInputGroupContext } from '../InputGroup/InputGroupContext';
 import { inputSizes } from '../inputSizes';
 
 const InputInside = ({
@@ -10,20 +9,8 @@ const InputInside = ({
   children,
   ...restProps
 }) => {
-  const { hasLeft, hasRight, groupSize, setHasLeft, setHasRight } = useInputGroupContext();
-
-  useEffect(() => {
-    if (placement === 'left' && !hasLeft) {
-      setHasLeft(true);
-    } else if (placement === 'right' && !hasRight) {
-      setHasRight(true);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [placement, hasLeft, hasRight]);
-
-  const usedSize = groupSize || size;
-  const height = inputSizes[usedSize] && inputSizes[usedSize]['height'];
-  const fontSize = inputSizes[usedSize] && inputSizes[usedSize]['fontSize'];
+  const height = inputSizes[size] && inputSizes[size]['height'];
+  const fontSize = inputSizes[size] && inputSizes[size]['fontSize'];
   const placementProp = { [placement]: '0' };
 
   return (

@@ -20,7 +20,7 @@ Breadcrumb.dispayName = 'Breadcrumb';
 const useBaseCss = () => {
   const { sizes, fontSizes, lineHeights, colors } = useUiTheme();
 
-  return css`
+  return `
     font-size: ${fontSizes.sm};
     display: inline-flex;
     vertical-align: middle;
@@ -56,7 +56,7 @@ const BreadcrumbItem = forwardRef(
         ref={forwardedRef}
         className={cn(['breadcrumb-item', className])}
         {...restProps}
-        css={cssResult}
+        css={css([cssResult])}
       >
         {children}
       </Item>

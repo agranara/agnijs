@@ -1,32 +1,45 @@
-import React, { useState, forwardRef } from 'react';
+import React, { forwardRef, Children, isValidElement, cloneElement } from 'react';
 import { Box } from '../Box';
 import { useUiTheme } from '../UiProvider';
 import { inputSizes } from '../inputSizes';
-import { InputGroupContext } from './InputGroupContext';
+import { InputInside } from '../InputInside';
+import { InputText } from '../InputText';
 
 const InputGroup = forwardRef(({ children, size = 'md', ...restProps }, ref) => {
   const { sizes } = useUiTheme();
-  const [hasLeft, setHasLeft] = useState(false);
-  const [hasRight, setHasRight] = useState(false);
 
   const height = inputSizes[size] && inputSizes[size]['height'];
-  const padding = sizes[height];
+  const paddingSize = sizes[height];
+
+  let paddingLeft = null;
+  let paddingRight = null;
+
+  Children.forEach(children, child => {
+    if (child.type === InputInside && child.props.placement === 'left') {
+      paddingLeft = paddingSize;
+    }
+    if (child.type === InputInside && child.props.placement === 'right') {
+      paddingRight = paddingSize;
+    }
+  });
 
   return (
-    <InputGroupContext.Provider
-      value={{
-        groupPadding: padding,
-        groupSize: size,
-        hasLeft,
-        hasRight,
-        setHasLeft,
-        setHasRight
-      }}
-    >
-      <Box ref={ref} d="flex" pos="relative" alignItems="center" {...restProps}>
-        {children}
-      </Box>
-    </InputGroupContext.Provider>
+    <Box ref={ref} d="flex" pos="relative" alignItems="center" {...restProps}>
+      {Children.map(children, child => {
+        if (!isValidElement(child)) return null;
+
+        if (child.type === InputText) {
+          const inputProps = {
+            size,
+            pl: child.props.pl || paddingLeft,
+            pr: child.props.pr || paddingRight
+          };
+          return cloneElement(child, inputProps);
+        }
+
+        return child;
+      })}
+    </Box>
   );
 });
 
