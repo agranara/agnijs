@@ -4,11 +4,12 @@ import { PseudoBox } from '../PseudoBox';
 import { useUiTheme } from '../UiProvider';
 import { inputSizes } from '../inputSizes';
 import { useInputGroupContext } from '../InputGroup/InputGroupContext';
-import { baseProps, boxedStyle } from './styles';
+import { baseProps, boxedStyle, unstyledStyle } from './styles';
 
 const InputText = forwardRef(
   (
     {
+      as: Comp = 'input',
       isFocus = false,
       isFullWidth = true,
       readOnly = false,
@@ -32,6 +33,7 @@ const InputText = forwardRef(
   ) => {
     const theme = useUiTheme();
     const { hasLeft, groupPadding, hasRight, groupSize } = useInputGroupContext();
+    const passedProps = { theme, focusBorderColor, errorBorderColor };
 
     const paddingLeftProps = useMemo(() => {
       const result = {};
@@ -58,24 +60,14 @@ const InputText = forwardRef(
       return { ...inputSizes[usedSize] };
     }, [groupSize, size]);
 
-    const variantProps = useMemo(() => {
-      const passedProps = { theme, focusBorderColor, errorBorderColor };
-
-      if (variantType === 'boxed') return { ...boxedStyle(passedProps) };
-      if (variantType === 'unstyled')
-        return {
-          bg: 'transparent',
-          px: undefined,
-          height: undefined
-        };
-    }, [variantType, theme, focusBorderColor, errorBorderColor]);
-
     return (
       <PseudoBox
         ref={ref}
+        as={Comp}
         {...baseProps}
         {...sizeProps}
-        {...variantProps}
+        {...(variantType === 'boxed' && boxedStyle(passedProps))}
+        {...(variantType === 'unstyled' && unstyledStyle)}
         {...paddingLeftProps}
         {...paddingRightProps}
         {...restProps}
@@ -87,7 +79,6 @@ const InputText = forwardRef(
         required={required}
         aria-required={required}
         w={isFullWidth ? '100%' : undefined}
-        as="input"
         className={cn(['input', isFocus && 'focused', className])}
         value={value}
         defaultValue={defaultValue}

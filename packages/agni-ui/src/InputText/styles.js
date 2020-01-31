@@ -16,6 +16,12 @@ export const readOnlyStyle = {
   }
 };
 
+export const unstyledStyle = {
+  bg: 'transparent',
+  px: undefined,
+  height: undefined
+};
+
 export const boxedStyle = ({ theme, focusBorderColor, errorBorderColor }) => {
   const bg = 'white';
   const borderColor = 'inherit';
