@@ -40,7 +40,7 @@ const useDatePicker = ({
       : undefined
     : valueState;
 
-  const prevNextValue = useRef(null);
+  const prevNextValue = useRef(valueProp);
 
   const [focusValue, setFocusValue] = useState(() => {
     if (isEmpty) {
