@@ -33,6 +33,8 @@ const InputText = forwardRef(
     const theme = useUiTheme();
     const passedProps = { theme, focusBorderColor, errorBorderColor };
 
+    const inputSize = inputSizes[size];
+
     return (
       <PseudoBox
         ref={ref}
@@ -41,9 +43,9 @@ const InputText = forwardRef(
         {...(variantType === 'boxed' && boxedStyle(passedProps))}
         {...(variantType === 'unstyled' && unstyledStyle)}
         {...restProps}
-        {...inputSizes[size]}
-        pl={pl}
-        pr={pr}
+        {...inputSize}
+        pl={pl || inputSize.px}
+        pr={pr || inputSize.px}
         disabled={disabled}
         aria-disabled={disabled}
         readOnly={readOnly}

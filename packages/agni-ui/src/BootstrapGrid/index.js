@@ -1,48 +1,24 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core';
 import cn from 'classnames';
-import { createContext, useContext } from 'react';
+import { Children, isValidElement, cloneElement } from 'react';
 import { Box } from '../Box';
-
-const RowContext = createContext({
-  size: 24,
-  isDeck: false
-});
-
-const useRowContext = () => useContext(RowContext);
-
-////////////////////////////////////////////////////////////////////////
-
-const Row = ({ size = 24, className, style, children, isDeck = false, ...restProps }) => {
-  const isZero = restProps.mx === 0;
-  const marginX = restProps.mx || -2;
-
-  return (
-    <RowContext.Provider value={{ size, isDeck }}>
-      <Box
-        {...restProps}
-        d={restProps.d || 'flex'}
-        mx={isZero ? 0 : marginX}
-        flexWrap="wrap"
-        className={cn(['row', className])}
-        style={style}
-        // w={restProps.w || 'full'}
-      >
-        {children}
-      </Box>
-    </RowContext.Provider>
-  );
-};
-
-Row.displayName = 'Row';
 
 /////////////////////////////////////////////////////////////////////
 
-const Column = ({ md, lg, xl, col, children, className, style }) => {
-  const { size, isDeck } = useRowContext();
-
+const Column = ({
+  md,
+  lg,
+  xl,
+  col,
+  isDeck = false,
+  totalColumn = 24,
+  children,
+  className,
+  style
+}) => {
   const calculateWidth = unit => {
-    const w = (100 / size) * unit;
+    const w = (100 / totalColumn) * unit;
     return `${w}%`;
   };
 
@@ -91,5 +67,35 @@ const Column = ({ md, lg, xl, col, children, className, style }) => {
 };
 
 Column.displayName = 'Column';
+
+////////////////////////////////////////////////////////////////////////
+
+const Row = ({ totalColumn = 24, className, style, children, isDeck = false, ...restProps }) => {
+  const isZero = restProps.mx === 0;
+  const marginX = restProps.mx || -2;
+
+  return (
+    <Box
+      {...restProps}
+      d={restProps.d || 'flex'}
+      mx={isZero ? 0 : marginX}
+      flexWrap="wrap"
+      className={cn(['row', className])}
+      style={style}
+      // w={restProps.w || 'full'}
+    >
+      {Children.map(children, child => {
+        if (!isValidElement(child)) return null;
+
+        if (child.type === Column) {
+          return cloneElement(child, { isDeck, totalColumn });
+        }
+        return child;
+      })}
+    </Box>
+  );
+};
+
+Row.displayName = 'Row';
 
 export { Row, Column };

@@ -1,11 +1,11 @@
 import { BoxProps } from '../Box';
 
 interface IRowProps {
-  size?: number;
+  totalColumn?: number;
   isDeck?: boolean;
 }
 
-interface IColumnProps {
+interface IColumnProps extends IRowProps {
   md?: number;
   lg?: number;
   xl?: number;
