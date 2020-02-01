@@ -9,6 +9,7 @@ const Flex = forwardRef(({ align, justify, wrap, direction, ...rest }, ref) => (
     alignItems={align}
     justifyContent={justify}
     flexWrap={wrap}
+    className="flex"
     {...rest}
   />
 ));

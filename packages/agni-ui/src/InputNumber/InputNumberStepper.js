@@ -11,6 +11,7 @@ const InputNumberStepper = forwardRef(
       <PseudoBox
         ref={ref}
         display="flex"
+        className="input-number__stepper"
         justifyContent="center"
         alignItems="center"
         flex="1"

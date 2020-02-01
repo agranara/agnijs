@@ -37,7 +37,7 @@ const BreadcrumbLink = forwardRef(
     return (
       <Item
         ref={forwardedRef}
-        className={cn(['breadcrumb--link', className])}
+        className={cn(['breadcrumb__link', className])}
         {...restProps}
         css={css([cssResult])}
       >
@@ -56,7 +56,7 @@ const BreadcrumbItem = forwardRef(
     return (
       <Item ref={forwardedRef} {...restProps}>
         {index > 0 && (
-          <Box as="span" className="breadcrumb--divider" lineHeight="shorter" px={1} pt="3px">
+          <Box as="span" className="breadcrumb__divider" lineHeight="shorter" px={1} pt="3px">
             <FiChevronRight />
           </Box>
         )}

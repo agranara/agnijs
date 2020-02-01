@@ -17,11 +17,11 @@ const SelectControl = () => {
       height={inputSize.height}
       alignItems="center"
       px={2}
-      className="select--control"
+      className="select__control"
     >
       {hasValue && isInteractive && isClearable ? (
         <Button
-          className="select--icon-clear"
+          className="select__icon-clear"
           size="xs"
           variantColor="danger"
           p={1}
@@ -30,7 +30,7 @@ const SelectControl = () => {
           <FiX />
         </Button>
       ) : (
-        <PseudoBox className="select--icon-dropdown" pt="2px" lineHeight="1" h={5} fontSize="1rem">
+        <PseudoBox className="select__icon-dropdown" pt="2px" lineHeight="1" h={5} fontSize="1rem">
           <FiChevronDown />
         </PseudoBox>
       )}

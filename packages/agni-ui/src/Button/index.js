@@ -49,10 +49,11 @@ const Button = forwardRef(
         fontWeight="semibold"
         width={isFullWidth ? 'full' : undefined}
         data-active={isActive ? 'true' : undefined}
+        className="button"
         {...insertedProps}
       >
         {iconLeft && !isLoading && (
-          <Box mr={iconSpacing} d="inline-flex">
+          <Box className="button__icon-left" mr={iconSpacing} d="inline-flex">
             {iconLeft}
           </Box>
         )}
@@ -66,17 +67,17 @@ const Button = forwardRef(
         )}
         {isLoading ? (
           loadingText || (
-            <Box as="span" opacity="0">
+            <Box as="span" className="button__content" opacity="0">
               {children}
             </Box>
           )
         ) : (
-          <Box as="span" lineHeight="0" alignSelf="center">
+          <Box as="span" className="button__content" lineHeight="0" alignSelf="center">
             {children}
           </Box>
         )}
         {iconRight && !isLoading && (
-          <Box ml={iconSpacing} d="inline-flex">
+          <Box className="button__icon-right" ml={iconSpacing} d="inline-flex">
             {iconRight}
           </Box>
         )}

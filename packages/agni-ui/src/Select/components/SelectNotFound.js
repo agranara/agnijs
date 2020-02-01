@@ -7,7 +7,7 @@ const SelectNotFound = ({ width, children }) => {
 
   return (
     <PseudoBox
-      className="select--not-found"
+      className="select__not-found"
       px={inputSize.px}
       fontSize={inputSize.fontSize}
       lineHeight={inputSize.lineHeight}

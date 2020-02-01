@@ -109,7 +109,7 @@ const ThSortContainer = ({ children, ...restProps }) => {
   return (
     <PseudoBox
       as="span"
-      className="table--th"
+      className="table__th"
       d="inline-flex"
       alignItems="center"
       verticalAlign="middle"
@@ -137,7 +137,7 @@ const ThSortIcon = ({ children, ...restProps }) => {
       pos="relative"
       color="primary.500"
       pl={1}
-      className="table--sort"
+      className="table__sort"
       {...restProps}
     >
       {children}

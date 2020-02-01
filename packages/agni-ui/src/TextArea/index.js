@@ -130,6 +130,7 @@ const TextArea = forwardRef((props, forwardedRef) => {
       <InputText
         {...restProps}
         as="textarea"
+        className="textarea"
         ref={forkedRef}
         rows={rowsMin}
         py="7px"

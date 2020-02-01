@@ -22,7 +22,7 @@ const SelectOptionList = ({ width, height, maxItemShown, cursor, inputSize, opti
   return (
     <FixedSizeList
       ref={listRef}
-      className="select--option-list"
+      className="select__option-list"
       width={width}
       height={usedHeight}
       itemCount={itemCount}

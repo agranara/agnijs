@@ -29,7 +29,7 @@ const SelectContainer = forwardRef(({ className, children }, forwardedRef) => {
       tabIndex={0}
       h="auto"
       minH={inputSize.height}
-      className={cn(['select--container', className, isContainerFocus && 'focused'])}
+      className={cn(['select__container', className, isContainerFocus && 'focused'])}
       onFocus={onContainerFocus}
       aria-disabled={disabled}
       disabled={disabled}

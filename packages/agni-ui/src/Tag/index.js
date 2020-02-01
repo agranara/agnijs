@@ -47,6 +47,7 @@ const Tag = ({
       px={2}
       py={1}
       lineHeight="1"
+      className="tag"
       {...rest}
     >
       {children}

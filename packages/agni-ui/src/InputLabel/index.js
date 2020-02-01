@@ -13,6 +13,7 @@ const InputLabel = forwardRef(({ children, isRow, ...props }, ref) => {
   return (
     <Box
       ref={ref}
+      className="input-label"
       fontSize="md"
       pr="12px"
       pb="4px"

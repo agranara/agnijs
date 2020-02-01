@@ -9,7 +9,7 @@ const SelectSearch = ({ searchRef }) => {
 
   return (
     <PseudoBox
-      className="select--values-search"
+      className="select__values-search"
       as="li"
       pos="static"
       float="left"
@@ -27,7 +27,7 @@ const SelectSearch = ({ searchRef }) => {
           maxW="full"
           h={`calc(${theme.sizes[inputSize.height]} - 2px)`}
           fontSize={inputSize.fontSize}
-          className="select--search"
+          className="select__search"
           onChange={onSearch}
           value={search}
           spellCheck="false"

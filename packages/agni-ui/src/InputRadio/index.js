@@ -73,9 +73,9 @@ const InputRadio = forwardRef(
           checked={isChecked}
           disabled={isDisabled}
         />
-        <ControlBox className="input-radio--box" {...styleProps} type="radio" rounded="full">
+        <ControlBox className="input-radio__box" {...styleProps} type="radio" rounded="full">
           <Box
-            className="input-radio--check"
+            className="input-radio__check"
             bg="currentColor"
             as="span"
             rounded="full"
@@ -84,7 +84,7 @@ const InputRadio = forwardRef(
         </ControlBox>
         {children && (
           <Box
-            className="input-radio--label"
+            className="input-radio__label"
             ml={2}
             fontSize={size}
             userSelect="none"

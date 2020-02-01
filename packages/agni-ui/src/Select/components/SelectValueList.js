@@ -7,7 +7,7 @@ const SelectValueList = ({ children }) => {
   const { keyedOptions, valueKey, labelKey, value, uid, inputSize } = useSelectContext();
 
   return (
-    <PseudoBox as="ul" listStyleType="none" className="select--value-list" maxW="100%">
+    <PseudoBox as="ul" listStyleType="none" className="select__value-list" maxW="100%">
       {Array.isArray(value) ? (
         value.map(val => (
           <SelectValueItem

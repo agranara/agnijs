@@ -4,7 +4,7 @@ import { PseudoBox } from '../../PseudoBox';
 const SelectSelection = ({ children }) => {
   return (
     <PseudoBox
-      className="select--selection"
+      className="select__selection"
       d="flex"
       alignItems="flex-start"
       maxW="100%"

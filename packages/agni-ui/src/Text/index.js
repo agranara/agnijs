@@ -12,6 +12,7 @@ const sizes = {
 
 const Heading = forwardRef(({ size = 'xl', ...props }, ref) => (
   <Box
+    className="heading"
     ref={ref}
     as="h2"
     fontSize={sizes[size]}
@@ -28,7 +29,7 @@ Heading.displayName = 'Heading';
 
 const Text = forwardRef(({ children, ...restProps }, ref) => {
   return (
-    <Box ref={ref} as="p" fontFamily="body" {...restProps}>
+    <Box className="text" ref={ref} as="p" fontFamily="body" {...restProps}>
       {children}
     </Box>
   );

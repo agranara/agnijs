@@ -14,7 +14,7 @@ const Image = forwardRef(({ src, fallbackSrc, onError, onLoad, ignoreFallback, .
   } else {
     imageProps = { src: hasLoaded ? src : fallbackSrc };
   }
-  return <Box as={NativeImage} ref={ref} {...imageProps} {...props} />;
+  return <Box as={NativeImage} ref={ref} className="image" {...imageProps} {...props} />;
 });
 
 Image.displayName = 'Image';

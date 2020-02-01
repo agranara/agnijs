@@ -98,7 +98,7 @@ const PickerHeader = () => {
 
   const selectMonths = (
     <PickerHeaderSelect
-      className="datepicker--header-month"
+      className="datepicker__header-month"
       value={focusValue.get('month')}
       onChange={ev => handleChange(ev, 'month')}
     >
@@ -112,7 +112,7 @@ const PickerHeader = () => {
 
   const selectYears = (
     <PickerHeaderSelect
-      className="datepicker--header-year"
+      className="datepicker__header-year"
       value={focusValue.get('year')}
       onChange={ev => handleChange(ev, 'year')}
     >
@@ -126,7 +126,7 @@ const PickerHeader = () => {
 
   return (
     <PseudoBox
-      className="datepicker--header"
+      className="datepicker__header"
       d="flex"
       alignItems="center"
       pb={1}
@@ -134,7 +134,7 @@ const PickerHeader = () => {
       borderColor="gray.300"
     >
       <PickerHeaderButton
-        className="datepicker--header-prev"
+        className="datepicker__header-prev"
         onClick={ev => handleMonth(ev, -1)}
         title="Click to see previous month"
       >
@@ -143,7 +143,7 @@ const PickerHeader = () => {
       <PseudoBox px={1}>{selectMonths}</PseudoBox>
       <PseudoBox px={1}>{selectYears}</PseudoBox>
       <PickerHeaderButton
-        className="datepicker--header-next"
+        className="datepicker__header-next"
         onClick={ev => handleMonth(ev, 1)}
         title="Click to see next month"
       >

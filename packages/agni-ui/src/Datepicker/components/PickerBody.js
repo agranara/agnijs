@@ -70,7 +70,7 @@ const PickerBodyDay = ({ viewConfig, startRow, weekIndex, dayIndex, today }) => 
   return (
     <PseudoBox
       key={`view-body-${dayIndex}-${weekIndex}`}
-      className="datepicker--body-pickday"
+      className="datepicker__body-pickday"
       d="table-cell"
       role="gridcell"
       h="30px"
@@ -124,20 +124,20 @@ const PickerBody = ({ viewConfig = tableConfig.monthly }) => {
   return (
     <PseudoBox
       d="inline-table"
-      className="datepicker--body"
+      className="datepicker__body"
       css={css({
         borderCollapse: 'collapse',
         borderSpacing: 0
       })}
       role="grid"
     >
-      <PseudoBox d="table-header-group" className="datepicker--body-weeks" role="rowgroup">
-        <PseudoBox d="table-row" className="datepicker--body-weekrow" role="row">
+      <PseudoBox d="table-header-group" className="datepicker__body-weeks" role="rowgroup">
+        <PseudoBox d="table-row" className="datepicker__body-weekrow" role="row">
           {Array.from({ length: view.columns }, (_, i) => (
             <PseudoBox
               key={`view-head-${i}`}
               d="table-cell"
-              className="datepicker--body-weekday"
+              className="datepicker__body-weekday"
               role="columnheader"
               lineHeight="1"
               w="30px"
@@ -159,14 +159,14 @@ const PickerBody = ({ viewConfig = tableConfig.monthly }) => {
           ))}
         </PseudoBox>
       </PseudoBox>
-      <PseudoBox d="table-row-group" className="datepicker--body-pick" role="rowgroup">
+      <PseudoBox d="table-row-group" className="datepicker__body-pick" role="rowgroup">
         {Array.from({ length: view.rows }, (_, y) => {
           const startRow = viewConfig.startRowView(view.start, y);
           return (
             <PseudoBox
               key={`view-body-${y}`}
               d="table-row"
-              className="datepicker--body-pickweek"
+              className="datepicker__body-pickweek"
               role="row"
             >
               {Array.from({ length: view.columns }, (_, x) => {

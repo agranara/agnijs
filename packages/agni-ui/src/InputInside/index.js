@@ -15,6 +15,7 @@ const InputInside = ({
 
   return (
     <Box
+      className="input-inside"
       display="flex"
       alignItems="center"
       justifyContent="center"

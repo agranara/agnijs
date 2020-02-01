@@ -64,6 +64,7 @@ const Alert = ({
       >
         {closeable && (
           <Button
+            className="alert__close"
             onClick={handleClick}
             h={6}
             w={6}
@@ -80,19 +81,19 @@ const Alert = ({
             <FiX />
           </Button>
         )}
-        <PseudoBox className="alert--container" d="flex" flexDir="row" flexWrap="nowrap">
-          <PseudoBox className="alert--icon" py={1} mr={3} fontSize="lg">
+        <PseudoBox className="alert__container" d="flex" flexDir="row" flexWrap="nowrap">
+          <PseudoBox className="alert__icon" py={1} mr={3} fontSize="lg">
             <UsedIcon />
           </PseudoBox>
           {(title || description) && (
-            <PseudoBox className="alert--text-container" pr={3}>
+            <PseudoBox className="alert__text-container" pr={3}>
               {title && (
-                <Heading className="alert--title" size="md" fontWeight="semibold">
+                <Heading className="alert__title" size="md" fontWeight="semibold">
                   {title}
                 </Heading>
               )}
               {description && (
-                <Text className="alert--description" fontSize="md">
+                <Text className="alert__description" fontSize="md">
                   {description}
                 </Text>
               )}

@@ -10,7 +10,7 @@ const SelectPlaceholder = ({ children }) => {
       lineHeight={`calc(${inputSize.lineHeight} - 2px)`}
       fontSize={inputSize.fontSize}
       pos="absolute"
-      className="select--placeholder"
+      className="select__placeholder"
       userSelect="none"
       color="gray.500"
       d={hasValueOrSearch ? 'none' : undefined}

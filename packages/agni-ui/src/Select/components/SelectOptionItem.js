@@ -31,7 +31,7 @@ const SelectOptionItem = ({ index, style }) => {
 
   return (
     <PseudoBox
-      className={cn(['select--option-item', isFocused && 'focused', isActive && 'active'])}
+      className={cn(['select__option-item', isFocused && 'focused', isActive && 'active'])}
       style={style}
       px={inputSize.px}
       fontSize={inputSize.fontSize}

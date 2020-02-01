@@ -1,6 +1,8 @@
-import React, { forwardRef } from 'react';
+/** @jsx jsx */
+import { jsx, css } from '@emotion/core';
+import { forwardRef } from 'react';
 import { FiChevronUp, FiChevronDown } from 'react-icons/fi';
-import { Box } from '../Box';
+import { PseudoBox } from '../PseudoBox';
 import { useNumberInput } from './useInputNumber';
 import { InputNumberContext } from './InputNumberContext';
 import { InputNumberField } from './InputNumberField';
@@ -53,16 +55,26 @@ const InputNumber = forwardRef(
 
     return (
       <InputNumberContext.Provider value={{ ...ctx, size }}>
-        <Box
+        <PseudoBox
           ref={ref}
+          className="input-number"
           d="flex"
           alignItems="stretch"
           w={isFullWidth ? 'full' : null}
           pos="relative"
+          css={css({
+            '&:hover .input-number__steppers,&:focus .input-number__steppers': {
+              opacity: 1
+            },
+            '& .input-number__steppers': {
+              opacity: 0
+            }
+          })}
           {...rest}
         >
           <InputNumberField {...rest} />
-          <Box
+          <PseudoBox
+            className="input-number__steppers"
             d="flex"
             flexDirection="column"
             aria-hidden
@@ -71,6 +83,7 @@ const InputNumber = forwardRef(
             position="absolute"
             right="0px"
             height="calc(100% - 2px)"
+            transition="opacity 0.2s"
           >
             <InputNumberStepper isIncrement>
               <FiChevronUp />
@@ -78,8 +91,8 @@ const InputNumber = forwardRef(
             <InputNumberStepper isDecrement>
               <FiChevronDown />
             </InputNumberStepper>
-          </Box>
-        </Box>
+          </PseudoBox>
+        </PseudoBox>
       </InputNumberContext.Provider>
     );
   }

@@ -7,7 +7,7 @@ const SelectValueItem = ({ children }) => {
 
   return (
     <PseudoBox
-      className="select--value-item"
+      className="select__value-item"
       as="li"
       pos="relative"
       width="auto"

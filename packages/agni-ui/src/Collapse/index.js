@@ -59,7 +59,7 @@ const Collapse = forwardRef(
           }
         })}
       >
-        <Box {...rest} className={cn(['collapse-container', className])} ref={forwardedRef}>
+        <Box {...rest} className={cn(['collapse__container', className])} ref={forwardedRef}>
           {isOpenProp || isOpenState ? children : null}
         </Box>
       </AnimateHeight>

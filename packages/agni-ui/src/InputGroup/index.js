@@ -24,7 +24,14 @@ const InputGroup = forwardRef(({ children, size = 'md', ...restProps }, ref) => 
   });
 
   return (
-    <Box ref={ref} d="flex" pos="relative" alignItems="center" {...restProps}>
+    <Box
+      ref={ref}
+      d="flex"
+      pos="relative"
+      alignItems="center"
+      className="input-group"
+      {...restProps}
+    >
       {Children.map(children, child => {
         if (!isValidElement(child)) return null;
 

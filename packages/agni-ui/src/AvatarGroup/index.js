@@ -14,6 +14,7 @@ const MoreAvatarLabel = ({ size, label, ...props }) => {
 
   return (
     <Box
+      className="avatar__more"
       d="flex"
       bg={bg}
       color="inherit"
@@ -58,7 +59,7 @@ const AvatarGroup = ({ size, children, borderColor, max, spacing = -3, ...rest }
   });
 
   return (
-    <Box d="flex" alignItems="center" {...rest}>
+    <Box className="avatar__group" d="flex" alignItems="center" {...rest}>
       {clones}
     </Box>
   );

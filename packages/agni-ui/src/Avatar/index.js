@@ -98,7 +98,14 @@ const Avatar = ({ size = 'md', showBorder, name, src, borderColor, children, ...
   };
 
   return (
-    <Box fontSize={fontSize} lineHeight={_size} verticalAlign="top" {...avatarStyleProps} {...rest}>
+    <Box
+      className="avatar"
+      fontSize={fontSize}
+      lineHeight={_size}
+      verticalAlign="top"
+      {...avatarStyleProps}
+      {...rest}
+    >
       {renderChildren()}
       {children}
     </Box>
