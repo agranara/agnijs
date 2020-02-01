@@ -1,4 +1,3 @@
-import * as StyledSystem from 'styled-system';
 import { BoxProps } from '../Box';
 
 interface IFlexProps {

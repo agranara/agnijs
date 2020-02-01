@@ -27,6 +27,7 @@ export * from './PseudoBox';
 export * from './Select';
 export * from './Spinner';
 export * from './Table';
+export * from './Tag';
 export * from './Text';
 export * from './TextArea';
 export * from './theme';
