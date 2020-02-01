@@ -132,6 +132,9 @@ export const variantColors = {
   get primary() {
     return this.teal;
   },
+  get success() {
+    return this.green;
+  },
   get danger() {
     return this.red;
   },

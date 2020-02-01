@@ -7,7 +7,7 @@ const sizes = {
   '2xl': ['4xl', null, '5xl'],
   xl: ['3xl', null, '4xl'],
   lg: ['xl', null, '2xl'],
-  md: 'xl',
+  md: 'lg',
   sm: 'md',
   xs: 'sm'
 };
@@ -24,6 +24,8 @@ const Heading = forwardRef(({ size = 'xl', ...props }, ref) => (
   />
 ));
 
+Heading.displayName = 'Heading';
+
 //////////////////////////////////////////////////////////
 
 const Text = forwardRef(({ children, ...restProps }, ref) => {
@@ -33,5 +35,7 @@ const Text = forwardRef(({ children, ...restProps }, ref) => {
     </Box>
   );
 });
+
+Text.displayName = 'Text';
 
 export { Heading, Text };

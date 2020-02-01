@@ -1,4 +1,3 @@
-import * as SS from 'styled-system';
 // eslint-disable-next-line import/no-unresolved
 import { Omit } from '../common';
 
@@ -79,6 +78,7 @@ interface Colors {
   pink: ColorHues;
   primary: ColorHues;
   info: ColorHues;
+  success: ColorHues;
   warning: ColorHues;
   danger: ColorHues;
 }
@@ -212,18 +212,6 @@ export interface DefaultTheme extends Typography {
   sizes: Sizes;
   shadows: Shadows;
   space: BaseSizes;
-  icons: Record<string, Icon>;
-}
-
-interface Icon {
-  path: JSX.Element;
-  viewBox?: string;
-}
-
-export type IconsType = Record<string, Icon>;
-
-export interface CustomTheme extends SS.Theme {
-  icons: IconsType;
 }
 
 export type ITheme = DefaultTheme;

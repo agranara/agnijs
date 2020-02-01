@@ -42,10 +42,10 @@ export const boxedStyle = ({ theme, focusBorderColor, errorBorderColor }) => {
 
   return {
     ...readOnlyStyle,
-    border: '1px',
+    borderWidth: '1px',
     borderColor,
     bg,
-    boxShadow: theme.shadows.input,
+    boxShadow: 'none',
     _hover: {
       borderColor: hoverColor
     },

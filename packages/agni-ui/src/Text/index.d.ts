@@ -4,7 +4,7 @@ interface IHeadingProps {
   size?: '2xl' | 'xl' | 'lg' | 'md' | 'sm' | 'xs';
 }
 
-type HeadingProps = IHeadingProps & BoxProps;
+type HeadingProps = IHeadingProps & Omit<BoxProps, 'size'>;
 
 export const Heading: React.ForwardRefExoticComponent<HeadingProps>;
 
