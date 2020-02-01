@@ -7,6 +7,7 @@ import { preventNonNumberKey, roundToPrecision, calculatePrecision } from './uti
 const useNumberInput = ({
   value: valueProp,
   onChange,
+  onBlur,
   defaultValue,
   focusInputOnChange = true,
   clampValueOnBlur = true,
@@ -46,6 +47,8 @@ const useNumberInput = ({
   const prevNextValue = useRef(null);
 
   const shouldConvertToNumber = value => {
+    if (typeof value !== 'string') return false;
+
     const hasDot = value.indexOf('.') > -1;
     const hasTrailingZero = value.substr(value.length - 1) === '0';
     const hasTrailingDot = value.substr(value.length - 1) === '.';
@@ -153,16 +156,33 @@ const useNumberInput = ({
     return ratio;
   };
 
-  const validateAndClamp = () => {
+  const validateAndClamp = ev => {
     const maxExists = max != null;
     const minExists = min != null;
 
+    let returnedValue = value;
+
     if (maxExists && value > max) {
       updateValue(max);
+      returnedValue = max;
     }
 
     if (minExists && value < min) {
       updateValue(min);
+      returnedValue = min;
+    }
+
+    if (onBlur) {
+      onBlur(ev, returnedValue);
+    }
+  };
+
+  const handleBlur = ev => {
+    setIsFocused(false);
+    if (clampValueOnBlur) {
+      validateAndClamp(ev);
+    } else if (onBlur) {
+      onBlur(ev, value);
     }
   };
 
@@ -211,12 +231,7 @@ const useNumberInput = ({
       onFocus: () => {
         setIsFocused(true);
       },
-      onBlur: () => {
-        setIsFocused(false);
-        if (clampValueOnBlur) {
-          validateAndClamp();
-        }
-      }
+      onBlur: handleBlur
     }
   };
 };

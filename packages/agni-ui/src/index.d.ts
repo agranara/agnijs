@@ -22,6 +22,7 @@ export * from './InputText';
 export * from './LoadingPage';
 export * from './Menu';
 export * from './Nav';
+export * from './Pagination';
 export * from './Portal';
 export * from './PseudoBox';
 export * from './Select';

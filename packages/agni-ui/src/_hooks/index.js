@@ -7,3 +7,4 @@ export * from './useForkedRef';
 export * from './useHasImageLoaded';
 export * from './useLongPress';
 export * from './useOnClickOutside';
+export * from './usePrevious';

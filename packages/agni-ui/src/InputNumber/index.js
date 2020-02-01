@@ -13,6 +13,7 @@ const InputNumber = forwardRef(
     {
       value,
       onChange,
+      onBlur,
       defaultValue,
       focusInputOnChange,
       clampValueOnBlur,
@@ -48,7 +49,8 @@ const InputNumber = forwardRef(
       getAriaValueText,
       isReadOnly,
       isInvalid,
-      isDisabled
+      isDisabled,
+      onBlur
       // thousandSeparator,
       // decimalSeparator
     });

@@ -90,3 +90,7 @@ export const useOnClickOutside: (
   onClickOutside: UseOnClickOutsideHandler,
   events: DocumentAndElementEventHandlersEventMap[]
 ) => void;
+
+////////////////////////////////////////////
+
+export function usePrevious<T>(value: T): React.MutableRefObject<T>;
