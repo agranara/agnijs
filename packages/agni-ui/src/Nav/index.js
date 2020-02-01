@@ -18,7 +18,7 @@ const baseLink = theme => css`
   outline: none;
   border-bottom: 3px solid transparent;
   padding: ${theme.sizes[2]} ${theme.sizes[2]};
-  font-size: ${theme.fontSizes.sm};
+  font-size: ${theme.fontSizes.md};
   cursor: pointer;
 
   &:hover {
