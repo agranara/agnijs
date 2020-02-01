@@ -1,6 +1,4 @@
-/** @jsx jsx */
-import { jsx } from '@emotion/core';
-import { forwardRef } from 'react';
+import React, { forwardRef } from 'react';
 import { Box } from '../Box';
 import { Spinner } from '../Spinner';
 import { PseudoBox } from '../PseudoBox';

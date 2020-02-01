@@ -1,5 +1,4 @@
-/** @jsx jsx */
-import { jsx } from '@emotion/core';
+import React from 'react';
 import { Box } from '../Box';
 import { useUiTheme } from '../UiProvider';
 import { useHasImageLoaded } from '../_hooks/useHasImageLoaded';

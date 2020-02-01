@@ -1,6 +1,4 @@
-/** @jsx jsx */
-import { jsx } from '@emotion/core';
-import { forwardRef, useState } from 'react';
+import React, { forwardRef, useState } from 'react';
 import AnimateHeight from 'react-animate-height';
 import cn from 'classnames';
 import { Box } from '../Box';
