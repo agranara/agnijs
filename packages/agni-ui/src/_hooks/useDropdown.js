@@ -1,7 +1,7 @@
 import React, { useState, useRef, useCallback } from 'react';
 import { Box } from '../Box';
 import { Portal } from '../Portal';
-import { addEvent, removeEvent, useEnhancedEffect } from '../utils';
+import { useEnhancedEffect } from '../_hooks/useEnhancedEffect';
 
 const defaultEvents = ['mousedown', 'touchstart'];
 
@@ -54,12 +54,12 @@ const useDropdown = ({ ref, initialOpen, isFixed, onClose, onOpen }) => {
       }
     };
     for (const eventName of defaultEvents) {
-      addEvent(document, eventName, handler, false);
+      document.addEventListener(eventName, handler, false);
     }
 
     return () => {
       for (const eventName of defaultEvents) {
-        removeEvent(document, eventName, handler, false);
+        document.removeEventListener(eventName, handler, false);
       }
     };
   }, []);

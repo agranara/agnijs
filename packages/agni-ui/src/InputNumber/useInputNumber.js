@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 import { canUseDOM } from 'exenv';
-import { useLongPress } from '../utils';
+import { useLongPress } from '../_hooks/useLongPress';
 import { isKeyboardKey } from '../keyboard';
 import { preventNonNumberKey, roundToPrecision, calculatePrecision } from './util';
 

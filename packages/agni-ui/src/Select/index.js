@@ -1,8 +1,10 @@
 import React, { useMemo, forwardRef, useRef, useState, useEffect, useCallback } from 'react';
 import get from 'lodash.get';
 import AutoSizer from 'react-virtualized-auto-sizer';
-import { useForkedRef } from '../utils';
-import { useDropdown, useAutoId, useDebounceCallback } from '../hooks';
+import { useForkedRef } from '../_hooks/useForkedRef';
+import { useDropdown } from '../_hooks/useDropdown';
+import { useAutoId } from '../_hooks/useAutoId';
+import { useDebounceCallback } from '../_hooks/useDebounceCallback';
 import { inputSizes } from '../inputSizes';
 import { isKeyboardKey } from '../keyboard';
 import { SelectContext } from './SelectContext';

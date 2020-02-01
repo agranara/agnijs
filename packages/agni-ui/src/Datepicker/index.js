@@ -4,7 +4,7 @@ import { InputText } from '../InputText';
 import { InputGroup } from '../InputGroup';
 import { InputInside } from '../InputInside';
 import { Button } from '../Button';
-import { useForkedRef } from '../utils';
+import { useForkedRef } from '../_hooks/useForkedRef';
 import { useDatePicker } from './useDatePicker';
 import { DatepickerContext } from './DatepickerContext';
 import { PickerHeader, PickerBody, PickerFooter } from './components';

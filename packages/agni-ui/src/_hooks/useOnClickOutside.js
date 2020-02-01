@@ -1,5 +1,4 @@
 import { useRef, useEffect } from 'react';
-import { addEvent, removeEvent } from '../utils';
 
 const defaultEvents = ['mousedown', 'touchstart'];
 
@@ -19,11 +18,11 @@ const useOnClickOutside = (refs, onClickOutside, events = defaultEvents) => {
       shouldApplyCallback && savedCallback.current(ev);
     };
     for (const eventName of events) {
-      addEvent(document, eventName, handler);
+      document.addEventListener(eventName, handler);
     }
     return () => {
       for (const eventName of events) {
-        removeEvent(document, eventName, handler);
+        document.removeEventListener(eventName, handler);
       }
     };
   }, [events, refs]);

@@ -3,7 +3,8 @@
  */
 
 import React, { forwardRef, useRef, useCallback, useState } from 'react';
-import { useForkedRef, useEnhancedEffect } from '../utils';
+import { useForkedRef } from '../_hooks/useForkedRef';
+import { useEnhancedEffect } from '../_hooks/useEnhancedEffect';
 import { InputText } from '../InputText';
 
 // Corresponds to 10 frames at 60 Hz.

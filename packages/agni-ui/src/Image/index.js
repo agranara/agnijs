@@ -2,7 +2,7 @@
 import { jsx } from '@emotion/core';
 import { forwardRef } from 'react';
 import { Box } from '../Box';
-import { useHasImageLoaded } from '../hooks';
+import { useHasImageLoaded } from '../_hooks/useHasImageLoaded';
 
 const NativeImage = forwardRef(({ htmlWidth, htmlHeight, alt, ...props }, ref) => (
   <img width={htmlWidth} height={htmlHeight} ref={ref} alt={alt} {...props} />

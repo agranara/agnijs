@@ -12,7 +12,7 @@ import {
 import { Box } from '../Box';
 import { ControlBox } from '../ControlBox';
 import { VisuallyHidden } from '../VisuallyHidden';
-import { useAutoId } from '../hooks';
+import { useAutoId } from '../_hooks/useAutoId';
 import useCheckboxStyle from './styles';
 
 const InputRadio = forwardRef(

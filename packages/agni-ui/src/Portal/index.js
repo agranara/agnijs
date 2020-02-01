@@ -7,7 +7,9 @@
 
 import { Children, cloneElement, useState, forwardRef } from 'react';
 import { findDOMNode, createPortal } from 'react-dom';
-import { useForkedRef, setRef, useEnhancedEffect } from '../utils';
+import { useForkedRef } from '../_hooks/useForkedRef';
+import { useEnhancedEffect } from '../_hooks/useEnhancedEffect';
+import { setRef } from '../_refs/setRef';
 
 function getContainer(container) {
   container = typeof container === 'function' ? container() : container;

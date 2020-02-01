@@ -4,7 +4,7 @@ import React, { useState, useRef, createContext, useContext } from 'react';
 import { get } from 'styled-system';
 import { Box } from '../Box';
 import { Button } from '../Button';
-import { useDropdown } from '../hooks';
+import { useDropdown } from '../_hooks/useDropdown';
 import { useUiTheme } from '../UiProvider';
 import { sizes } from '../Button/styles';
 

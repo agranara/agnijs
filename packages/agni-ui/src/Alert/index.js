@@ -81,11 +81,11 @@ const Alert = ({
           </Button>
         )}
         <PseudoBox className="alert--container" d="flex" flexDir="row" flexWrap="nowrap">
-          <PseudoBox className="alert--icon" py={1} fontSize="lg">
+          <PseudoBox className="alert--icon" py={1} mr={3} fontSize="lg">
             <UsedIcon />
           </PseudoBox>
           {(title || description) && (
-            <PseudoBox className="alert--text-container" px={3}>
+            <PseudoBox className="alert--text-container" pr={3}>
               {title && (
                 <Heading className="alert--title" size="md" fontWeight="semibold">
                   {title}

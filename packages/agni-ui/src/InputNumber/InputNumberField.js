@@ -1,7 +1,17 @@
 import React, { forwardRef } from 'react';
-import { wrapEvent, useForkedRef } from '../utils';
+import { useForkedRef } from '../_hooks/useForkedRef';
 import { InputText } from '../InputText';
 import { useInputNumberContext } from './InputNumberContext';
+
+const wrapEvent = (theirHandler, ourHandler) => event => {
+  if (theirHandler) {
+    theirHandler(event);
+  }
+
+  if (!event.defaultPrevented) {
+    return ourHandler(event);
+  }
+};
 
 const InputNumberField = forwardRef(({ onBlur, onFocus, onKeyDown, onChange, ...props }, ref) => {
   const {

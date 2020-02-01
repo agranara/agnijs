@@ -2,7 +2,7 @@
 import { jsx } from '@emotion/core';
 import { Box } from '../Box';
 import { useUiTheme } from '../UiProvider';
-import { useHasImageLoaded } from '../hooks';
+import { useHasImageLoaded } from '../_hooks/useHasImageLoaded';
 import { useAvatarStyle, avatarSizes } from './styles';
 
 const AvatarBadge = props => {
