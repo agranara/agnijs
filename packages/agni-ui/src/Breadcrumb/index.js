@@ -1,24 +1,15 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core';
 import cn from 'classnames';
-import { forwardRef } from 'react';
+import { forwardRef, Children, isValidElement, cloneElement } from 'react';
+import { FiChevronRight } from 'react-icons/fi';
 import { Box } from '../Box';
 import { useUiTheme } from '../UiProvider';
-
-const Breadcrumb = ({ children, ...restProps }) => {
-  return (
-    <Box className="breadcrumb" d="inline-flex" alignItems="center" {...restProps}>
-      {children}
-    </Box>
-  );
-};
-
-Breadcrumb.dispayName = 'Breadcrumb';
 
 /////////////////////////////////////////////////////////////////
 
 const useBaseCss = () => {
-  const { sizes, fontSizes, lineHeights, colors } = useUiTheme();
+  const { fontSizes, lineHeights, colors } = useUiTheme();
 
   return `
     font-size: ${fontSizes.sm};
@@ -32,14 +23,6 @@ const useBaseCss = () => {
     align-items: center;
     justify-content: center;
 
-    & + & {
-      &:before {
-        content: '>';
-        padding-left: ${sizes[2]};
-        padding-right: ${sizes[2]};
-      }
-    }
-
     &:last-of-type {
       color: ${colors.primary[500]};
       font-weight: 500;
@@ -47,14 +30,14 @@ const useBaseCss = () => {
   `;
 };
 
-const BreadcrumbItem = forwardRef(
+const BreadcrumbLink = forwardRef(
   ({ as: Item = 'div', children, className, ...restProps }, forwardedRef) => {
     const cssResult = useBaseCss();
 
     return (
       <Item
         ref={forwardedRef}
-        className={cn(['breadcrumb-item', className])}
+        className={cn(['breadcrumb--link', className])}
         {...restProps}
         css={css([cssResult])}
       >
@@ -64,6 +47,52 @@ const BreadcrumbItem = forwardRef(
   }
 );
 
+BreadcrumbLink.displayName = 'BreadcrumbLink';
+
+/////////////////////////////////////////////////////////////////
+
+const BreadcrumbItem = forwardRef(
+  ({ as: Item = 'div', children, index = 0, ...restProps }, forwardedRef) => {
+    return (
+      <Item ref={forwardedRef} {...restProps}>
+        {index > 0 && (
+          <Box as="span" className="breadcrumb--divider" lineHeight="shorter" px={1} pt="3px">
+            <FiChevronRight />
+          </Box>
+        )}
+        {children}
+      </Item>
+    );
+  }
+);
+
 BreadcrumbItem.displayName = 'BreadcrumbItem';
 
-export { BreadcrumbItem, Breadcrumb };
+/////////////////////////////////////////////////////////////////
+
+const Breadcrumb = ({ children, ...restProps }) => {
+  return (
+    <Box
+      as="nav"
+      aria-label="breadcrumb"
+      className="breadcrumb"
+      d="inline-flex"
+      alignItems="center"
+      {...restProps}
+    >
+      {Children.map(children, (child, childIndex) => {
+        if (!isValidElement(child)) return;
+
+        if (child.type === BreadcrumbItem) {
+          return cloneElement(child, { index: childIndex });
+        }
+
+        return child;
+      })}
+    </Box>
+  );
+};
+
+Breadcrumb.dispayName = 'Breadcrumb';
+
+export { BreadcrumbLink, BreadcrumbItem, Breadcrumb };
