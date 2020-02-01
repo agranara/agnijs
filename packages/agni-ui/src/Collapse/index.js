@@ -1,4 +1,6 @@
-import React, { forwardRef, useState } from 'react';
+/** @jsx jsx */
+import { jsx, css } from '@emotion/core';
+import { forwardRef, useState } from 'react';
 import AnimateHeight from 'react-animate-height';
 import cn from 'classnames';
 import { Box } from '../Box';
@@ -49,13 +51,13 @@ const Collapse = forwardRef(
         applyInlineTransitions={false}
         onAnimationStart={handleAnimationStart}
         onAnimationEnd={handleAnimationEnd}
-        css={{
+        css={css({
           transition: 'height .2s ease,opacity .2s ease-in-out,transform .2s ease-in-out',
           '&.rah-animating--to-height-zero': {
             opacity: 0,
             transform: 'translateY(-0.625rem)'
           }
-        }}
+        })}
       >
         <Box {...rest} className={cn(['collapse-container', className])} ref={forwardedRef}>
           {isOpenProp || isOpenState ? children : null}
