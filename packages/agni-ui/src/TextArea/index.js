@@ -5,28 +5,8 @@
 import React, { forwardRef, useRef, useCallback, useState } from 'react';
 import { useForkedRef } from '../_hooks/useForkedRef';
 import { useEnhancedEffect } from '../_hooks/useEnhancedEffect';
+import { debounce } from '../_utils/debounce';
 import { InputText } from '../InputText';
-
-// Corresponds to 10 frames at 60 Hz.
-// A few bytes payload overhead when lodash/debounce is ~3 kB and debounce ~300 B.
-function debounce(func, wait = 166) {
-  let timeout;
-  function debounced(...args) {
-    // eslint-disable-next-line consistent-this
-    const that = this;
-    const later = () => {
-      func.apply(that, args);
-    };
-    clearTimeout(timeout);
-    timeout = setTimeout(later, wait);
-  }
-
-  debounced.clear = () => {
-    clearTimeout(timeout);
-  };
-
-  return debounced;
-}
 
 function getStyleValue(computedStyle, property) {
   return parseInt(computedStyle[property], 10) || 0;

@@ -36,7 +36,7 @@ const AvatarGroup = ({ size, children, borderColor, max, spacing = -3, ...rest }
   let count = Children.count(children);
 
   const clones = Children.map(children, (child, index) => {
-    if (!isValidElement(child)) return;
+    if (!isValidElement(child)) return null;
 
     if (max && index > max) {
       return null;
