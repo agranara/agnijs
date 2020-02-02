@@ -34,6 +34,7 @@ type UseDropdownProps = {
   ref: React.Ref<any>;
   initialOpen?: boolean;
   isFixed?: boolean;
+  isRight?: boolean;
   onOpen?: (ev?: Event) => void;
   onClose?: (ev?: Event) => void;
 };

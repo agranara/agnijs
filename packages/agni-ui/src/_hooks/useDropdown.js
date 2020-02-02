@@ -5,7 +5,7 @@ import { useEnhancedEffect } from '../_hooks/useEnhancedEffect';
 
 const defaultEvents = ['mousedown', 'touchstart'];
 
-const useDropdown = ({ ref, initialOpen, isFixed, onClose, onOpen }) => {
+const useDropdown = ({ ref, initialOpen, isFixed, isRight, onClose, onOpen }) => {
   const boxRef = useRef(null);
   const [pos, setPosition] = useState({});
   const [isOpen, setOpen] = useState(() => {
@@ -18,13 +18,15 @@ const useDropdown = ({ ref, initialOpen, isFixed, onClose, onOpen }) => {
 
     const rect = ref.current.getBoundingClientRect();
     const result = {};
-    result.left = rect.left;
+    result.left = isRight ? undefined : rect.left;
+    result.right = isRight ? document.body.scrollWidth - rect.right : undefined;
+
     result.width = rect.width || rect.right - rect.left;
     result.height = rect.height || rect.bottom - rect.top;
     result.top = isFixed ? rect.top + result.height : rect.top + scrollY + result.height;
 
     setPosition(result);
-  }, [isFixed, ref]);
+  }, [isFixed, isRight, ref]);
 
   const isEventOutsideRefs = useCallback(
     event => {
@@ -99,7 +101,8 @@ const useDropdown = ({ ref, initialOpen, isFixed, onClose, onOpen }) => {
               bg="white"
               style={{
                 top: pos.top,
-                left: pos.left
+                left: pos.left,
+                right: pos.right
               }}
               {...restProps}
             >

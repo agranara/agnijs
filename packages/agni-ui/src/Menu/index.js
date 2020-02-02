@@ -22,14 +22,15 @@ const useMenuContext = () => useContext(MenuContext);
 
 //////////////////////////////////////////////////////////////
 
-const Menu = ({ children, isFixed, ...restProps }) => {
+const Menu = ({ children, isFixed, isRight, ...restProps }) => {
   const toggleRef = useRef();
   const menuRef = useRef();
   const [isActive, setIsActive] = useState();
 
   const { Dropdown, open, close, isOpen, toggle } = useDropdown({
     ref: toggleRef,
-    isFixed
+    isFixed,
+    isRight
   });
 
   return (

@@ -44,6 +44,10 @@ const InputGroup = forwardRef(({ children, size = 'md', ...restProps }, ref) => 
           return cloneElement(child, inputProps);
         }
 
+        if (child.type === InputInside) {
+          return cloneElement(child, { size: child.props.size || size });
+        }
+
         return child;
       })}
     </Box>

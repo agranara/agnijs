@@ -16,7 +16,7 @@ const baseLink = theme => css`
   vertical-align: middle;
   line-height: normal;
   outline: none;
-  border-bottom: 3px solid transparent;
+  /* border-bottom: 3px solid transparent; */
   padding: ${theme.sizes[2]} ${theme.sizes[2]};
   font-size: ${theme.fontSizes.md};
   cursor: pointer;
