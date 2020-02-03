@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.11](https://github.com/agranara/agnijs/compare/@agnijs/agni-ui@1.1.10...@agnijs/agni-ui@1.1.11) (2020-02-03)
+
+### Features
+
+- **tabs:** added Tabs component ([331ba07](https://github.com/agranara/agnijs/commit/331ba07d98e9c0aeb5b80266da3d6045419d204c))
+
 ## [1.1.10](https://github.com/agranara/agnijs/compare/@agnijs/agni-ui@1.1.4...@agnijs/agni-ui@1.1.10) (2020-02-01)
 
 ### Bug Fixes
