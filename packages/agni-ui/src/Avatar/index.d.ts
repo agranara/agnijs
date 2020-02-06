@@ -11,5 +11,3 @@ interface IAvatarProps {
 type AvatarProps = IAvatarProps & BoxProps;
 
 export const Avatar: React.FC<AvatarProps>;
-
-export const AvatarBadge: React.FC<BoxProps>;

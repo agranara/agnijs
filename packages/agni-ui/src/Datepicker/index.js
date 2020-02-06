@@ -1,5 +1,6 @@
 import React, { forwardRef } from 'react';
 import { FiCalendar, FiX } from 'react-icons/fi';
+import { Positioner } from '../Positioner';
 import { InputText } from '../InputText';
 import { InputGroup } from '../InputGroup';
 import { InputInside } from '../InputInside';
@@ -29,7 +30,7 @@ const Datepicker = forwardRef(
     },
     ref
   ) => {
-    const { Dropdown, ...ctx } = useDatePicker({
+    const ctx = useDatePicker({
       value,
       valueFormat,
       onChange,
@@ -54,8 +55,6 @@ const Datepicker = forwardRef(
               name={name}
               className="datepicker__input-text"
               placeholder={placeholder}
-              onFocus={ctx.open}
-              onClick={ctx.open}
               {...ctx.input}
               isReadOnly
               _readOnly={{
@@ -75,11 +74,17 @@ const Datepicker = forwardRef(
               )}
             </InputInside>
           </InputGroup>
-          <Dropdown p={2}>
+          <Positioner
+            isOpen={ctx.isOpen}
+            triggerRef={ctx.ref}
+            innerRef={ctx.dropdownRef}
+            placement="bottom-start"
+            p={1}
+          >
             <PickerHeader />
             <PickerBody />
             <PickerFooter />
-          </Dropdown>
+          </Positioner>
         </React.Fragment>
       </DatepickerContext.Provider>
     );

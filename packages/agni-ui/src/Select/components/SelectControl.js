@@ -3,8 +3,10 @@ import { FiX, FiChevronDown } from 'react-icons/fi';
 import { PseudoBox } from '../../PseudoBox';
 import { useSelectContext } from '../SelectContext';
 import { Button } from '../../Button';
+import { useUiTheme } from '../../UiProvider';
 
 const SelectControl = () => {
+  const theme = useUiTheme();
   const { inputSize, hasValue, isInteractive, isClearable, handleClear } = useSelectContext();
 
   return (
@@ -14,7 +16,7 @@ const SelectControl = () => {
       pos="absolute"
       right={0}
       top={0}
-      height={inputSize.height}
+      height={`calc(${theme.sizes[inputSize.height]} - 2px)`}
       alignItems="center"
       px={2}
       className="select__control"

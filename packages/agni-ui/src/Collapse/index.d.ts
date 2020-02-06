@@ -1,4 +1,19 @@
-import { BoxProps } from '../Box';
+import { EasingFunction } from 'framer-motion';
+
+type Easing =
+  | [number, number, number, number]
+  | 'linear'
+  | 'easeIn'
+  | 'easeOut'
+  | 'easeInOut'
+  | 'circIn'
+  | 'circOut'
+  | 'circInOut'
+  | 'backIn'
+  | 'backOut'
+  | 'backInOut'
+  | 'anticipate'
+  | EasingFunction;
 
 interface ICollapseProps {
   /**
@@ -6,37 +21,25 @@ interface ICollapseProps {
    */
   isOpen?: boolean;
   /**
-   * Should animate opacity
-   */
-  animateOpacity?: boolean;
-  /**
    * Handler on animation end
-   * for 'react-animate-height' properties
+   * for 'framer-motion' properties
    */
   onAnimationEnd?(props: { newHeight: number }): void;
   /**
    * Handler on animation start
-   * for 'react-animate-height' properties
+   * for 'framer-motion' properties
    */
   onAnimationStart?(props: { newHeight: number }): void;
   /**
-   * Animation duration
+   * Animation duration in seconds
    */
   duration?: number;
   /**
-   * When 'isOpen' resulting false, this height will be used
+   * Easing animation style for transition in framer motion
    */
-  startingHeight?: number | string;
-  /**
-   * When 'isOpen' resulting true, this height will be used
-   */
-  endingHeight?: number | string;
-  /**
-   * Easing animation style
-   */
-  easing?: 'ease' | 'ease-in' | 'ease-out' | 'ease-in-out' | 'linear';
+  easing?: Easing;
 }
 
-type CollapseProps = ICollapseProps & BoxProps;
+type CollapseProps = ICollapseProps & React.HTMLAttributes<HTMLDivElement>;
 
 export const Collapse: React.ForwardRefExoticComponent<CollapseProps>;

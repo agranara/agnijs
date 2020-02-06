@@ -1,8 +1,8 @@
 import { useState, useRef } from 'react';
 import dayjs from 'dayjs';
 import 'dayjs/locale/id';
-import { useDropdown } from '../_hooks/useDropdown';
 import { isKeyboardKey } from '../keyboard';
+import { useTogglePositioner } from '../Positioner';
 
 const useDatePicker = ({
   value: valueProp,
@@ -19,11 +19,12 @@ const useDatePicker = ({
   const { current: parser } = useRef(dayjs);
   parser.locale(locale);
 
-  const inputRef = useRef();
-
   const isEmpty = typeof valueProp !== 'undefined' || valueProp !== null;
 
   const { current: isControlled } = useRef(isEmpty);
+
+  const dropdownRef = useRef(null);
+  const inputRef = useRef(null);
 
   const [valueState, setValue] = useState(() => {
     if (isEmpty) {
@@ -50,8 +51,8 @@ const useDatePicker = ({
     return parser();
   });
 
-  const { Dropdown, isOpen, open, close } = useDropdown({
-    ref: inputRef,
+  const [isOpen, handleIsOpen] = useTogglePositioner({
+    refs: [dropdownRef, inputRef],
     initialOpen: initialOpenPicker,
     onOpen: () => {
       if (value && value !== focusValue) {
@@ -73,7 +74,7 @@ const useDatePicker = ({
     prevNextValue.current = nextValue;
 
     if (closeOnSelect) {
-      close();
+      handleIsOpen(false);
     }
   };
 
@@ -87,7 +88,7 @@ const useDatePicker = ({
     updateValue(undefined);
 
     if (closeOnClear) {
-      close();
+      handleIsOpen(false);
     }
   };
 
@@ -107,7 +108,7 @@ const useDatePicker = ({
     }
 
     if (isArrowDown && !isOpen) {
-      return open();
+      return handleIsOpen(true);
     }
 
     if (isArrowUp) {
@@ -129,7 +130,7 @@ const useDatePicker = ({
       updateValue(undefined);
     }
     if (isEscape || isTab) {
-      close();
+      handleIsOpen(false);
     }
   };
 
@@ -146,18 +147,17 @@ const useDatePicker = ({
       spellCheck: 'false',
       isFocused: isOpen,
       isFocus: isOpen,
-      onFocus: open,
+      onFocus: () => handleIsOpen(true),
       onChange: () => {},
       onKeyDown: handleKeyDown
     },
-    Dropdown,
     isOpen,
     focusValue,
     setFocusValue,
-    open,
-    close,
+    handleIsOpen,
     onChange: handleChange,
-    handleClear
+    handleClear,
+    dropdownRef
   };
 };
 

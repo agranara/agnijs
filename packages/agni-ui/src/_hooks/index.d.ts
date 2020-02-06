@@ -83,15 +83,4 @@ export const useLongPress: (callback: noOp, speed: number) => UseLongPressResult
 
 ////////////////////////////////////////////
 
-type UseOnClickOutsideRefs = React.Ref<any> | React.Ref<any>[];
-type UseOnClickOutsideHandler = () => void;
-
-export const useOnClickOutside: (
-  refs: UseOnClickOutsideRefs,
-  onClickOutside: UseOnClickOutsideHandler,
-  events: DocumentAndElementEventHandlersEventMap[]
-) => void;
-
-////////////////////////////////////////////
-
 export function usePrevious<T>(value: T): React.MutableRefObject<T>;

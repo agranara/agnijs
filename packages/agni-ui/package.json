@@ -42,26 +42,28 @@
     "react-dom": "^16.8.6"
   },
   "dependencies": {
+    "@popperjs/core": "2.0.5",
     "@styled-system/css": "^5.1.4",
     "@styled-system/should-forward-prop": "^5.1.4",
-    "classnames": "^2.2.6",
-    "color": "^3.1.2",
-    "dayjs": "^1.8.19",
+    "classnames": "2.2.6",
+    "color": "3.1.2",
+    "dayjs": "1.8.20",
     "exenv": "^1.2.2",
-    "lodash.get": "^4.4.2",
-    "memoize-one": "^5.1.1",
+    "framer-motion": "1.8.3",
+    "lodash.get": "4.4.2",
+    "memoize-one": "5.1.1",
     "prop-types": "^15.7.2",
     "react-animate-height": "^2.0.20",
-    "react-icons": "^3.8.0",
-    "react-virtualized-auto-sizer": "^1.0.2",
-    "react-window": "^1.8.5",
-    "styled-system": "^5.1.4"
+    "react-icons": "3.9.0",
+    "react-virtualized-auto-sizer": "1.0.2",
+    "react-window": "1.8.5",
+    "styled-system": "5.1.4"
   },
   "gitHead": "29947082b007b2bd7b4179d3440076b71c5254e0",
   "devDependencies": {
-    "@types/color": "^3.0.1",
-    "@types/styled-system": "^5.1.4",
-    "@types/styled-system__css": "^5.0.4",
-    "@types/styled-system__should-forward-prop": "^5.1.0"
+    "@types/color": "3.0.1",
+    "@types/styled-system": "5.1.6",
+    "@types/styled-system__css": "5.0.4",
+    "@types/styled-system__should-forward-prop": "5.1.0"
   }
 }

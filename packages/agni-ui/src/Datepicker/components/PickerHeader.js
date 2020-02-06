@@ -87,9 +87,9 @@ const PickerHeader = () => {
       ev.persist();
 
       if (num > 0) {
-        setFocusValue(oldFocus => oldFocus.add(1, 'month'));
+        setFocusValue(oldFocus => oldFocus.add(num, 'month'));
       } else if (num < 0) {
-        setFocusValue(oldFocus => oldFocus.subtract(1, 'month'));
+        setFocusValue(oldFocus => oldFocus.subtract(Math.abs(num), 'month'));
       }
       focusInput();
     },

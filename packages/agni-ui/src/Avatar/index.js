@@ -4,30 +4,6 @@ import { useUiTheme } from '../UiProvider';
 import { useHasImageLoaded } from '../_hooks/useHasImageLoaded';
 import { useAvatarStyle, avatarSizes } from './styles';
 
-const AvatarBadge = props => {
-  const borderColor = 'white';
-
-  return (
-    <Box
-      position="absolute"
-      display="flex"
-      alignItems="center"
-      justifyContent="center"
-      transform="translate(25%, 25%)"
-      bottom="0"
-      right="0"
-      border="0.2em solid"
-      borderColor={borderColor}
-      rounded="full"
-      {...props}
-    />
-  );
-};
-
-AvatarBadge.displayName = 'AvatarBadge';
-
-///////////////////////////////////////////////////////////////////////
-
 const getInitials = name => {
   const [firstName, lastName] = name.split(' ');
 
@@ -114,4 +90,4 @@ const Avatar = ({ size = 'md', showBorder, name, src, borderColor, children, ...
 
 Avatar.displayName = 'Avatar';
 
-export { Avatar, AvatarBadge };
+export { Avatar };

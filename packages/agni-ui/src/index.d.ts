@@ -1,6 +1,7 @@
 export * from './_hooks';
 export * from './Alert';
 export * from './Avatar';
+export * from './AvatarBadge';
 export * from './AvatarGroup';
 export * from './BootstrapGrid';
 export * from './Box';
@@ -24,6 +25,7 @@ export * from './Menu';
 export * from './Nav';
 export * from './Pagination';
 export * from './Portal';
+export * from './Positioner';
 export * from './PseudoBox';
 export * from './Select';
 export * from './Spinner';

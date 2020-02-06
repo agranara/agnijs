@@ -1,8 +1,8 @@
 import React, { useMemo, forwardRef, useRef, useState, useEffect, useCallback } from 'react';
 import get from 'lodash.get';
 import AutoSizer from 'react-virtualized-auto-sizer';
+import { Positioner, useTogglePositioner } from '../Positioner';
 import { useForkedRef } from '../_hooks/useForkedRef';
-import { useDropdown } from '../_hooks/useDropdown';
 import { useAutoId } from '../_hooks/useAutoId';
 import { useDebounceCallback } from '../_hooks/useDebounceCallback';
 import { inputSizes } from '../inputSizes';
@@ -47,16 +47,23 @@ const Select = forwardRef(
     forwardedRef
   ) => {
     const uid = useAutoId(id);
-    const { current: isControlled } = useRef(typeof onChange === 'function');
-    const ref = useRef();
-    const forkedRef = useForkedRef(ref, forwardedRef);
+    const isControlled = useRef(typeof onChange === 'function');
     const searchRef = useRef();
-    const pickerTimeout = useRef();
+    const dropdownRef = useRef(null);
+    const selectRef = useRef(null);
     const prevNextValue = useRef(valueProp || null);
     const prevNextSearch = useRef('');
 
     const [search, setSearch] = useState('');
     const [cursor, setCursor] = useState(null);
+
+    const [isOpen, handleIsOpen] = useTogglePositioner({
+      refs: [selectRef, dropdownRef],
+      initialOpen: isInitialOpen,
+      onClose: () => {
+        setSearch('');
+      }
+    });
 
     // Initial internal value
     const [valueState, setValueState] = useState(() => {
@@ -96,12 +103,6 @@ const Select = forwardRef(
       delay: 300
     });
 
-    const { Dropdown, isOpen, open, close, reposition } = useDropdown({
-      ref,
-      initialOpen: isInitialOpen,
-      onClose: () => updateSearch('')
-    });
-
     const keyedOptions = useMemo(() => {
       return Array.isArray(options)
         ? options.reduce((acc, cur) => {
@@ -118,35 +119,30 @@ const Select = forwardRef(
 
     const inputSize = inputSizes[size];
     const isInteractive = !(readOnly || disabled);
-    const value = isControlled ? valueProp : valueState;
+    const value = isControlled.current ? valueProp : valueState;
     const hasValue = value && value !== null;
     const hasValueOrSearch = hasValue || search !== '';
 
+    // Keep prev value same as prop value
     useEffect(() => {
-      const timeout = pickerTimeout.current;
-      return () => {
-        if (timeout) {
-          clearTimeout(timeout);
-        }
-      };
-    }, []);
-
-    useEffect(() => {
-      if (prevNextValue.current !== value) {
-        prevNextValue.current = value;
+      if (isControlled.current && prevNextValue.current !== valueProp) {
+        prevNextValue.current = valueProp;
       }
-    }, [value]);
+    }, [valueProp]);
 
+    /** Handlers **/
+
+    // Update value of select
     const updateValue = nextValue => {
       if (prevNextValue.current === nextValue) return;
 
-      if (!isControlled) setValueState(nextValue);
+      if (!isControlled.current) setValueState(nextValue);
       setCursor(null);
       if (onChange) onChange(nextValue);
-      resetPosition();
       prevNextValue.current = nextValue;
     };
 
+    // Update search field
     const updateSearch = nextSearch => {
       if (prevNextSearch.current === nextSearch) return;
       const dom = searchRef.current;
@@ -157,13 +153,6 @@ const Select = forwardRef(
       debounceFilterOnSearch(nextSearch);
       setSearch(nextSearch);
       prevNextSearch.current = nextSearch;
-    };
-
-    // Set position dropdown
-    const resetPosition = () => {
-      pickerTimeout.current = setTimeout(() => {
-        reposition();
-      }, 50);
     };
 
     // Set search value onChange
@@ -185,14 +174,17 @@ const Select = forwardRef(
     };
 
     // Handle focus
-    const handleFocus = ev => {
-      if (!isInteractive) return;
-      open(ev);
+    const handleFocus = useCallback(
+      ev => {
+        if (!isInteractive) return;
+        handleIsOpen(true);
 
-      if (searchRef.current) {
-        searchRef.current.focus(ev);
-      }
-    };
+        if (searchRef.current) {
+          searchRef.current.focus(ev);
+        }
+      },
+      [handleIsOpen, isInteractive]
+    );
 
     // Handle Change option;
     const handleClickItem = (ev, nextValue) => {
@@ -202,7 +194,7 @@ const Select = forwardRef(
         updateSearch('');
       } else {
         updateValue(nextValue);
-        close();
+        handleIsOpen(false);
       }
     };
 
@@ -229,15 +221,14 @@ const Select = forwardRef(
       }
 
       if (isTab) {
-        return close();
+        return handleIsOpen(false);
       }
 
       if (isEscape) {
-        close();
+        handleIsOpen(false);
       }
 
       if (isBackspace && search === '' && hasValue) {
-        // clear
         handleClear();
       }
 
@@ -254,6 +245,8 @@ const Select = forwardRef(
         }
       }
     };
+
+    const forkedRef = useForkedRef(selectRef, forwardedRef);
 
     return (
       <SelectContext.Provider
@@ -300,7 +293,14 @@ const Select = forwardRef(
           </SelectContainer>
           <AutoSizer disableHeight>
             {({ width }) => (
-              <Dropdown role="list">
+              <Positioner
+                innerRef={dropdownRef}
+                triggerRef={selectRef}
+                isOpen={isOpen}
+                variant="dropdown"
+                placement="bottom-start"
+                role="list"
+              >
                 {filterOptions.length > 0 ? (
                   <SelectOptionList
                     width={dropdownWidth ? dropdownWidth : width}
@@ -313,7 +313,7 @@ const Select = forwardRef(
                 ) : (
                   <SelectNotFound width={width}>{notFoundText}</SelectNotFound>
                 )}
-              </Dropdown>
+              </Positioner>
             )}
           </AutoSizer>
         </React.Fragment>
