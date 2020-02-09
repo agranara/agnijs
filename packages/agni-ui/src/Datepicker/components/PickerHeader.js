@@ -3,6 +3,7 @@ import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import { useDatepickerContext } from '../DatepickerContext';
 import { months, years } from '../constants';
 import { PseudoBox } from '../../PseudoBox';
+import { useDebounceCallback } from '../../_hooks/useDebounceCallback';
 
 const PickerHeaderButton = ({ className, children, onClick, title }) => {
   return (
@@ -72,14 +73,19 @@ const PickerHeader = () => {
     }
   }, [ref]);
 
-  const handleChange = useCallback(
+  const [debounceFocus] = useDebounceCallback({
+    callback: focusInput,
+    delay: 50
+  });
+
+  const handleChangeSelect = useCallback(
     (ev, focusDate) => {
       ev.persist();
-      setFocusValue(oldFocus => oldFocus.set(focusDate, ev.target.value));
 
-      focusInput();
+      setFocusValue(oldFocus => oldFocus.set(focusDate, parseInt(ev.target.value, 10)));
+      debounceFocus();
     },
-    [focusInput, setFocusValue]
+    [debounceFocus, setFocusValue]
   );
 
   const handleMonth = useCallback(
@@ -100,7 +106,7 @@ const PickerHeader = () => {
     <PickerHeaderSelect
       className="datepicker__header-month"
       value={focusValue.get('month')}
-      onChange={ev => handleChange(ev, 'month')}
+      onChange={ev => handleChangeSelect(ev, 'month')}
     >
       {months.map(({ label, value }) => (
         <option key={`cal-m-${value}`} value={value}>
@@ -114,7 +120,7 @@ const PickerHeader = () => {
     <PickerHeaderSelect
       className="datepicker__header-year"
       value={focusValue.get('year')}
-      onChange={ev => handleChange(ev, 'year')}
+      onChange={ev => handleChangeSelect(ev, 'year')}
     >
       {years.map(year => (
         <option key={`cal-y-${year}`} value={year}>
