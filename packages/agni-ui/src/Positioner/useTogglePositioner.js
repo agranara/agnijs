@@ -5,6 +5,7 @@ const defaultEvents = ['mousedown', 'touchstart'];
 function useTogglePositioner({
   refs = [],
   initialOpen = false,
+  getIsOutside,
   onOpen,
   onClose,
   events = defaultEvents
@@ -21,17 +22,19 @@ function useTogglePositioner({
     savedOnClose.current = onClose;
   }, [onClose]);
 
+  const savedGetIsOutside = useRef(getIsOutside);
+  useEffect(() => {
+    savedGetIsOutside.current = getIsOutside;
+  }, [getIsOutside]);
+
   const [isOpen, setIsOpen] = useState(() => initialOpen || false);
 
   useEffect(() => {
     return () => {
-      for (let i = 0; i < events.length; i++) {
-        const eventName = events[i];
-        document.removeEventListener(eventName, handleClickOutside);
-      }
+      unregisterOutsideClick();
     };
     // eslint-disable-next-line no-use-before-define
-  }, [events, handleClickOutside]);
+  }, [unregisterOutsideClick]);
 
   // Handle on Click outside
   const handleClickOutside = useCallback(
@@ -42,26 +45,45 @@ function useTogglePositioner({
         if (ref.current && ref.current.contains(ev.target)) return;
       }
 
-      handleIsOpen(false);
+      if (savedGetIsOutside.current) {
+        const isOutside = savedGetIsOutside.current(ev.target);
+        if (isOutside) {
+          handleIsOpen(false);
+        }
+      } else {
+        handleIsOpen(false);
+      }
     },
     // eslint-disable-next-line no-use-before-define
     [handleIsOpen, refs]
   );
 
+  const registerOutsideClick = useCallback(() => {
+    for (let i = 0; i < events.length; i++) {
+      const eventName = events[i];
+      document.addEventListener(eventName, handleClickOutside, false);
+    }
+  }, [events, handleClickOutside]);
+
+  const unregisterOutsideClick = useCallback(() => {
+    for (let i = 0; i < events.length; i++) {
+      const eventName = events[i];
+      document.removeEventListener(eventName, handleClickOutside, false);
+    }
+  }, [events, handleClickOutside]);
+
   const handleIsOpen = useCallback(
     newIsOpen => {
       if (prevOpen.current !== newIsOpen) {
         if (newIsOpen) {
-          document.addEventListener('mousedown', handleClickOutside);
-          document.addEventListener('touchstart', handleClickOutside);
+          registerOutsideClick();
           setIsOpen(true);
 
           if (savedOnOpen.current) savedOnOpen.current();
 
           prevOpen.current = true;
         } else {
-          document.removeEventListener('mousedown', handleClickOutside);
-          document.removeEventListener('touchstart', handleClickOutside);
+          unregisterOutsideClick();
           setIsOpen(false);
 
           if (savedOnClose.current) savedOnClose.current();
@@ -70,7 +92,7 @@ function useTogglePositioner({
         }
       }
     },
-    [handleClickOutside]
+    [registerOutsideClick, unregisterOutsideClick]
   );
 
   return [isOpen, handleIsOpen];
