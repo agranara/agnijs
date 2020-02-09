@@ -1,28 +1,29 @@
-import { BoxProps } from '../Box';
-import { VariantColor } from '../theme';
+import { CSSObject } from '@emotion/core';
+import { PseudoBoxProps } from '../PseudoBox';
 
 interface IMenuProps {
-  isFixed?: boolean;
-  isRight?: boolean;
+  isActive?: boolean;
 }
 
-interface IMenuButtonProps {
-  variant?: 'solid' | 'outline' | 'link' | 'unstyled' | 'ghost';
+interface IMenuTriggerProps {
+  css?: CSSObject;
+  showCaret?: boolean;
 }
 
 interface IMenuItemProps {
-  variantColor?: VariantColor;
-  isDisabled?: boolean;
-  size?: 'xs' | 'sm' | 'md' | 'lg';
-  as?: React.ElementType<any>;
-  [key: string]: any;
+  label?: string;
+  iconLeft?: React.ReactNode;
+  iconRight?: React.ReactNode;
+  isDivider?: boolean;
+  isHeader?: boolean;
 }
 
-type MenuProps = IMenuProps & BoxProps;
-type MenuButtonProps = IMenuButtonProps & BoxProps;
+type MenuProps = IMenuProps & PseudoBoxProps;
+type MenuTriggerProps = IMenuTriggerProps & PseudoBoxProps;
+type MenuListProps = PseudoBoxProps;
 type MenuItemProps = IMenuItemProps;
 
 export const Menu: React.FC<MenuProps>;
-export const MenuButton: React.FC<MenuButtonProps>;
-export const MenuContainer: React.FC<BoxProps>;
+export const MenuTrigger: React.FC<MenuTriggerProps>;
+export const MenuList: React.FC<MenuListProps>;
 export const MenuItem: React.FC<MenuItemProps>;
