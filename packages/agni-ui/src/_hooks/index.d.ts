@@ -71,6 +71,10 @@ export const useHasImageLoaded: (prop: UseImagePropType) => boolean;
 
 ////////////////////////////////////////////
 
+export function useHover(): [React.Ref<any>, boolean];
+
+////////////////////////////////////////////
+
 type UseLongPressResult = {
   onTouchStart?: () => void;
   onMouseDown?: () => void;
