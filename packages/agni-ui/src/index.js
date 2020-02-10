@@ -35,5 +35,6 @@ export * from './Tag';
 export * from './Text';
 export * from './TextArea';
 export * from './theme';
+export * from './Toast';
 export * from './UiProvider';
 export * from './VisuallyHidden';
