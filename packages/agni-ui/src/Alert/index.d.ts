@@ -9,6 +9,7 @@ interface IAlertProps {
   isOpen?: boolean;
   afterOpen?: (isOpen: boolean) => void;
   afterClose?: (isOpen: boolean) => void;
+  iconSize?: string;
 }
 
 // type AlertProps = IAlertProps & BoxProps;
