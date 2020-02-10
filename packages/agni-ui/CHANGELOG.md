@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.12](https://github.com/agranara/agnijs/compare/@agnijs/agni-ui@1.1.11...@agnijs/agni-ui@1.1.12) (2020-02-10)
+
+### Bug Fixes
+
+- **datepicker:** fixed select month and year datepicker ([79b5a1b](https://github.com/agranara/agnijs/commit/79b5a1b115989a9510cf8ab4bccc1fb56b8ee05e))
+- **positioner:** portal container selector inside positioner ([24c0647](https://github.com/agranara/agnijs/commit/24c0647029d966e1b2fb9cb5aa6be85bc28bccc2))
+
+### Features
+
+- **positioner:** added positioner component ([7aeaa8e](https://github.com/agranara/agnijs/commit/7aeaa8e358edca5b1b01233872af8b4cdf204cab))
+- **toast:** added toast component for notification and messsage ([124e270](https://github.com/agranara/agnijs/commit/124e270fcb5a6ed758f70d162d037a6d6c70eb9f))
+
+### improvement
+
+- **menu:** enable nested submenu ([d64e45e](https://github.com/agranara/agnijs/commit/d64e45e0570f27603cfab4555ab316291b551bac))
+
+### BREAKING CHANGES
+
+- **menu:** Replace MenuButton with MenuTrigger. Replace MenuItem children properties for
+  submenu render. Replace MenuContainer with MenuList to render initial menus for menu component.
+  Currently only support click event for MenuTrigger and hover event for submenu
+
 ## [1.1.11](https://github.com/agranara/agnijs/compare/@agnijs/agni-ui@1.1.10...@agnijs/agni-ui@1.1.11) (2020-02-03)
 
 ### Features
