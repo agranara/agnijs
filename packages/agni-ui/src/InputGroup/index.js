@@ -15,11 +15,13 @@ const InputGroup = forwardRef(({ children, size = 'md', ...restProps }, ref) => 
   let paddingRight = null;
 
   Children.forEach(children, child => {
-    if (child.type === InputInside && child.props.placement === 'left') {
-      paddingLeft = paddingSize;
-    }
-    if (child.type === InputInside && child.props.placement === 'right') {
-      paddingRight = paddingSize;
+    if (isValidElement(child)) {
+      if (child.type === InputInside && child.props.placement === 'left') {
+        paddingLeft = paddingSize;
+      }
+      if (child.type === InputInside && child.props.placement === 'right') {
+        paddingRight = paddingSize;
+      }
     }
   });
 
@@ -33,7 +35,7 @@ const InputGroup = forwardRef(({ children, size = 'md', ...restProps }, ref) => 
       {...restProps}
     >
       {Children.map(children, child => {
-        if (!isValidElement(child)) return null;
+        if (!isValidElement(child)) return;
 
         if (child.type === InputText) {
           const inputProps = {
