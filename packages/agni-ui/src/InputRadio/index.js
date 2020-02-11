@@ -156,7 +156,7 @@ const InputRadioGroup = forwardRef(
     );
 
     const clones = Children.map(children, (child, index) => {
-      if (!isValidElement(child)) return null;
+      if (!isValidElement(child)) return;
 
       const isLastRadio = children.length === index + 1;
       const spacingProps = isInline ? { mr: spacing } : { mb: spacing };
