@@ -179,10 +179,9 @@ const SubMenu = ({
         role="menu"
         aria-label={label}
         tabIndex={-1}
-        zIndex="1"
+        zIndex="dropdown"
         _focus={{ outline: 0 }}
         onAnimationComplete={handleAnimationComplete}
-        usePortal={false}
       >
         {children}
       </Positioner>

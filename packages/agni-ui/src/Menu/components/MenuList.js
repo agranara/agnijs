@@ -16,7 +16,7 @@ const MenuList = ({ as: Comp = 'div', children }) => {
       id={menuUid}
       aria-labelledby={triggerUid}
       tabIndex={-1}
-      zIndex="1"
+      zIndex="dropdown"
       _focus={{ outline: 0 }}
     >
       {children}
