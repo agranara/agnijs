@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useCallback, Fragment } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { PseudoBox } from '../../PseudoBox';
 import { ToastPosition } from './ToastPosition';
 
 const ToastContainer = ({ toast }) => {
@@ -47,14 +48,14 @@ const ToastContainer = ({ toast }) => {
   };
 
   return (
-    <Fragment>
+    <PseudoBox pos="absolute" width={0} height={0} top="-100%" left="-100%">
       <ToastPosition {...composeProps('top-left')} />
       <ToastPosition {...composeProps('top-center')} />
       <ToastPosition {...composeProps('top-right')} />
       <ToastPosition {...composeProps('bottom-left')} />
       <ToastPosition {...composeProps('bottom-center')} />
       <ToastPosition {...composeProps('bottom-right')} />
-    </Fragment>
+    </PseudoBox>
   );
 };
 
