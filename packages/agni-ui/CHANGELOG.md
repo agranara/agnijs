@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.13](https://github.com/agranara/agnijs/compare/@agnijs/agni-ui@1.1.12...@agnijs/agni-ui@1.1.13) (2020-02-12)
+
+### Bug Fixes
+
+- **inputgroup:** fixed children loop check to add padding size ([972d5a1](https://github.com/agranara/agnijs/commit/972d5a1a92eabcebd96b563228168f2d801c60d8))
+- return empty when children is not valid element ([e5758a2](https://github.com/agranara/agnijs/commit/e5758a27423c452a497879ac438fba454b034ad9))
+- **menu:** fixed menu default zIndex ([b43776a](https://github.com/agranara/agnijs/commit/b43776afd1b1d5033a2e5c903c723ebfd2bf9433))
+- **positions:** fixed popper position cause document body overflowed ([fcb597b](https://github.com/agranara/agnijs/commit/fcb597b8a7f589df2e42e87840297b6600bf48c6))
+- **tabs:** tabs type definition ([e9fc93c](https://github.com/agranara/agnijs/commit/e9fc93cca1252571b2d053b329ba55b85f67f519))
+
 ## [1.1.12](https://github.com/agranara/agnijs/compare/@agnijs/agni-ui@1.1.11...@agnijs/agni-ui@1.1.12) (2020-02-10)
 
 ### Bug Fixes
