@@ -201,13 +201,18 @@ const MenuItemSingle = ({
   isDivider,
   isHeader,
   css: cssProp,
+  onClick,
   ...prop
 }) => {
   const { handleIsOpen } = useMenuContext();
 
-  const handleClick = useCallback(() => {
-    handleIsOpen(false);
-  }, [handleIsOpen]);
+  const handleClick = useCallback(
+    ev => {
+      handleIsOpen(false);
+      if (onClick) onClick(ev);
+    },
+    [handleIsOpen, onClick]
+  );
 
   return (
     <BaseMenuItem
