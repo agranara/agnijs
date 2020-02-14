@@ -3,7 +3,7 @@ import { FiX, FiChevronDown } from 'react-icons/fi';
 import { PseudoBox } from '../../PseudoBox';
 import { useSelectContext } from '../SelectContext';
 import { Button } from '../../Button';
-import { useUiTheme } from '../../UiProvider';
+import { useUiTheme } from '../../UiProvider/hooks/useUiTheme';
 
 const SelectControl = () => {
   const theme = useUiTheme();

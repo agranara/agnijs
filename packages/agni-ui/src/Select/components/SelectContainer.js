@@ -1,7 +1,7 @@
 import React, { forwardRef } from 'react';
 import cn from 'classnames';
 import { PseudoBox } from '../../PseudoBox';
-import { useUiTheme } from '../../UiProvider';
+import { useUiTheme } from '../../UiProvider/hooks/useUiTheme';
 import { baseProps, boxedStyle } from '../../InputText/styles';
 import { useSelectContext } from '../SelectContext';
 

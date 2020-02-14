@@ -1,4 +1,4 @@
-import { useUiTheme } from '../UiProvider';
+import { useUiTheme } from '../UiProvider/hooks/useUiTheme';
 import { isDarkColor } from '../theme/color-utils';
 
 // Found this on StackOverflow :)

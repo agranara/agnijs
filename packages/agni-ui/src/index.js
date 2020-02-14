@@ -8,6 +8,7 @@ export * from './Box';
 export * from './Breadcrumb';
 export * from './Button';
 export * from './Card';
+export * from './Carousel';
 export * from './Collapse';
 export * from './Container';
 export * from './ControlBox';

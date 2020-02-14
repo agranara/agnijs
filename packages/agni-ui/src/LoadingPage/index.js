@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import { jsx, css, keyframes } from '@emotion/core';
-import { useUiTheme } from '../UiProvider';
+import { useUiTheme } from '../UiProvider/hooks/useUiTheme';
 
 const pathTriangle = keyframes`
   33% {

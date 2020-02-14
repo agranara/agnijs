@@ -1,5 +1,5 @@
 import React from 'react';
-import { useUiTheme } from '../../UiProvider';
+import { useUiTheme } from '../../UiProvider/hooks/useUiTheme';
 import { PseudoBox } from '../../PseudoBox';
 import { useSelectContext } from '../SelectContext';
 

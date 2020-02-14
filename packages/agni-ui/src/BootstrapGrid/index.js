@@ -45,7 +45,7 @@ const Column = ({
       d={isDeck ? 'flex' : 'block'}
       {...colProps}
       flexDirection={isDeck ? 'column' : undefined}
-      alignItems={isDeck ? 'stretch' : 'unset'}
+      alignItems={isDeck ? 'stretch' : undefined}
       className={cn(['col', className])}
       transition="width 250ms ease"
       style={style}

@@ -1,4 +1,4 @@
-import { useUiTheme } from '../UiProvider';
+import { useUiTheme } from '../UiProvider/hooks/useUiTheme';
 
 const grayGhostStyle = {
   color: 'inherit',

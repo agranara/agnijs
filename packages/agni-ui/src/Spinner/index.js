@@ -4,7 +4,7 @@ import { get } from 'styled-system';
 import cn from 'classnames';
 import { VisuallyHidden } from '../VisuallyHidden';
 import { Box } from '../Box';
-import { useUiTheme } from '../UiProvider';
+import { useUiTheme } from '../UiProvider/hooks/useUiTheme';
 
 const spin = keyframes`
   0% {

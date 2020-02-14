@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box } from '../Box';
-import { useUiTheme } from '../UiProvider';
+import { useUiTheme } from '../UiProvider/hooks/useUiTheme';
 import { useHasImageLoaded } from '../_hooks/useHasImageLoaded';
 import { useAvatarStyle, avatarSizes } from './styles';
 

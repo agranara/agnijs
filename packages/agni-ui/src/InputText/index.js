@@ -1,7 +1,7 @@
 import React, { forwardRef } from 'react';
 import cn from 'classnames';
 import { PseudoBox } from '../PseudoBox';
-import { useUiTheme } from '../UiProvider';
+import { useUiTheme } from '../UiProvider/hooks/useUiTheme';
 import { inputSizes } from '../inputSizes';
 import { baseProps, boxedStyle, unstyledStyle } from './styles';
 

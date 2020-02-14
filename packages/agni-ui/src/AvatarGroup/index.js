@@ -1,7 +1,7 @@
 import React, { Children, cloneElement, isValidElement } from 'react';
 import { Box } from '../Box';
 import { avatarSizes } from '../Avatar/styles';
-import { useUiTheme } from '../UiProvider';
+import { useUiTheme } from '../UiProvider/hooks/useUiTheme';
 
 const MoreAvatarLabel = ({ size, label, ...props }) => {
   const borderColor = '#fff';

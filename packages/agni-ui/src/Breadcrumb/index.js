@@ -4,7 +4,7 @@ import cn from 'classnames';
 import { forwardRef, Children, isValidElement, cloneElement } from 'react';
 import { FiChevronRight } from 'react-icons/fi';
 import { Box } from '../Box';
-import { useUiTheme } from '../UiProvider';
+import { useUiTheme } from '../UiProvider/hooks/useUiTheme';
 
 /////////////////////////////////////////////////////////////////
 

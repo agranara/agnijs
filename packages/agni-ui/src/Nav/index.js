@@ -2,7 +2,7 @@
 import { jsx, css } from '@emotion/core';
 import cn from 'classnames';
 import { forwardRef } from 'react';
-import { useUiTheme } from '../UiProvider';
+import { useUiTheme } from '../UiProvider/hooks/useUiTheme';
 
 const baseLink = theme => css`
   display: inline-flex;

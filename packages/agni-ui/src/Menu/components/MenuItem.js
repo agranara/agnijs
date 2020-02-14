@@ -6,7 +6,7 @@ import { FiChevronRight } from 'react-icons/fi';
 import { PseudoBox } from '../../PseudoBox';
 import { Positioner } from '../../Positioner';
 import { useMenuContext } from '../MenuContext';
-import { useUiTheme } from '../../UiProvider';
+import { useUiTheme } from '../../UiProvider/hooks/useUiTheme';
 import { useDebounceCallback } from '../../_hooks/useDebounceCallback';
 import { VisuallyHidden } from '../../VisuallyHidden';
 

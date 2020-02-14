@@ -1,6 +1,6 @@
 import React, { forwardRef, Children, isValidElement, cloneElement } from 'react';
 import { Box } from '../Box';
-import { useUiTheme } from '../UiProvider';
+import { useUiTheme } from '../UiProvider/hooks/useUiTheme';
 import { inputSizes } from '../inputSizes';
 import { InputInside } from '../InputInside';
 import { InputText } from '../InputText';
