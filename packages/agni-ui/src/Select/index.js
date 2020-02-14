@@ -1,8 +1,8 @@
 import React, { useMemo, forwardRef, useRef, useState, useEffect, useCallback } from 'react';
 import get from 'lodash.get';
-import AutoSizer from 'react-virtualized-auto-sizer';
 import { Positioner, useTogglePositioner } from '../Positioner';
 import { useForkedRef } from '../_hooks/useForkedRef';
+import { useComponentSize } from '../_hooks/useComponentSize';
 import { useAutoId } from '../_hooks/useAutoId';
 import { useDebounceCallback } from '../_hooks/useDebounceCallback';
 import { inputSizes } from '../inputSizes';
@@ -51,6 +51,9 @@ const Select = forwardRef(
     const searchRef = useRef();
     const dropdownRef = useRef(null);
     const selectRef = useRef(null);
+
+    const { width } = useComponentSize(selectRef);
+
     const prevNextValue = useRef(valueProp || null);
     const prevNextSearch = useRef('');
 
@@ -291,31 +294,27 @@ const Select = forwardRef(
             </SelectSelection>
             <SelectControl />
           </SelectContainer>
-          <AutoSizer disableHeight>
-            {({ width }) => (
-              <Positioner
-                innerRef={dropdownRef}
-                triggerRef={selectRef}
-                isOpen={isOpen}
-                variant="dropdown"
-                placement="bottom-start"
-                role="list"
-              >
-                {filterOptions.length > 0 ? (
-                  <SelectOptionList
-                    width={dropdownWidth ? dropdownWidth : width}
-                    height={dropdownHeight}
-                    cursor={cursor}
-                    maxItemShown={maxItemShown}
-                    inputSize={inputSize}
-                    options={filterOptions}
-                  />
-                ) : (
-                  <SelectNotFound width={width}>{notFoundText}</SelectNotFound>
-                )}
-              </Positioner>
+          <Positioner
+            innerRef={dropdownRef}
+            triggerRef={selectRef}
+            isOpen={isOpen}
+            variant="dropdown"
+            placement="bottom-start"
+            role="list"
+          >
+            {filterOptions.length > 0 ? (
+              <SelectOptionList
+                width={dropdownWidth ? dropdownWidth : width}
+                height={dropdownHeight}
+                cursor={cursor}
+                maxItemShown={maxItemShown}
+                inputSize={inputSize}
+                options={filterOptions}
+              />
+            ) : (
+              <SelectNotFound width={width}>{notFoundText}</SelectNotFound>
             )}
-          </AutoSizer>
+          </Positioner>
         </React.Fragment>
       </SelectContext.Provider>
     );
