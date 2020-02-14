@@ -53,9 +53,7 @@
     "lodash.get": "4.4.2",
     "memoize-one": "5.1.1",
     "prop-types": "^15.7.2",
-    "react-animate-height": "^2.0.20",
     "react-icons": "3.9.0",
-    "react-virtualized-auto-sizer": "1.0.2",
     "react-window": "1.8.5",
     "styled-system": "5.1.4"
   },
