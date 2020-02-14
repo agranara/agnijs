@@ -5,6 +5,15 @@ export const useAutoId: (fallback?: string | null) => string | undefined;
 
 ////////////////////////////////////////////
 
+type ComponentSizeResultType = {
+  width?: number;
+  height?: number;
+};
+
+export function useComponentSize(ref: React.Ref<any>): ComponentSizeResultType;
+
+////////////////////////////////////////////
+
 type UseDebounceResult<T> = [T, () => void, () => void];
 
 interface UseDebounceOption {
