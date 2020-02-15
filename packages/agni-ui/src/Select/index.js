@@ -1,5 +1,5 @@
 import React, { useMemo, forwardRef, useRef, useState, useEffect, useCallback } from 'react';
-import get from 'lodash.get';
+import { get } from '../_utils/get';
 import { Positioner, useTogglePositioner } from '../Positioner';
 import { useForkedRef } from '../_hooks/useForkedRef';
 import { useComponentSize } from '../_hooks/useComponentSize';

@@ -17,6 +17,7 @@ import { PseudoBox } from '../PseudoBox';
 import { useUiTheme } from '../UiProvider/hooks/useUiTheme';
 import { useComponentSize } from '../_hooks/useComponentSize';
 import { useForkedRef } from '../_hooks/useForkedRef';
+import { useInterval } from '../_hooks/useInterval';
 
 const CarouselContext = createContext({});
 const useCarouselContext = () => useContext(CarouselContext);
@@ -29,7 +30,7 @@ const swipePower = (offset, velocity) => {
 };
 
 const CarouselItem = forwardRef(({ children, index, className }, forwardedRef) => {
-  const { items, activeIndex, registerItem, width, setPlaying } = useCarouselContext();
+  const { items, activeIndex, registerItem, width } = useCarouselContext();
 
   const ref = useRef(null);
   const forkedRef = useForkedRef(ref, forwardedRef);
@@ -51,8 +52,6 @@ const CarouselItem = forwardRef(({ children, index, className }, forwardedRef) =
       aria-hidden={activeIndex !== index}
       aria-roledescription="slide"
       aria-label={visualLabel}
-      onMouseEnter={() => setPlaying(false)}
-      onMouseLeave={() => setPlaying(true)}
       css={css([
         {
           display: 'block',
@@ -130,9 +129,7 @@ const CarouselIndicators = () => {
           animate={{
             backgroundColor:
               activeIndex === index ? theme.colors.primary[500] : theme.colors.gray[200],
-            transition: {
-              delay: 0
-            }
+            scale: activeIndex === index ? 1.2 : 1
           }}
           css={css([
             {
@@ -143,8 +140,7 @@ const CarouselIndicators = () => {
               marginRight: 2,
               borderRadius: theme.radii.full,
               outline: 'none',
-              userSelect: 'none',
-              transition: 'background-color ease 0.2s'
+              userSelect: 'none'
             }
           ])}
         />
@@ -247,7 +243,6 @@ const Carousel = ({
   placement = 'bottom',
   ...restProps
 }) => {
-  const intervalRef = useRef();
   const carouselRef = useRef(null);
 
   const { width } = useComponentSize(carouselRef);
@@ -259,31 +254,23 @@ const Carousel = ({
   const [[activeIndex, direction], setActiveIndex] = useState([0, 0]);
 
   const slide = useCallback(() => {
-    if (isPlaying && autoPlay) {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-      }
+    setActiveIndex(oldState => {
+      if (oldState[0] + 1 > items.length - 1) return [0, -1 * (items.length - 1)];
+      return [oldState[0] + 1, 1];
+    });
+  }, [items.length]);
 
-      intervalRef.current = setInterval(() => {
-        setActiveIndex(oldState => {
-          if (oldState[0] + 1 > items.length - 1) return [0, -1 * (items.length - 1)];
-          return [oldState[0] + 1, 1];
-        });
-      }, duration * 1000);
-    }
-  }, [isPlaying, autoPlay, duration, items.length]);
+  useInterval(
+    () => {
+      setActiveIndex(oldState => {
+        if (oldState[0] + 1 > items.length - 1) return [0, -1 * (items.length - 1)];
+        return [oldState[0] + 1, 1];
+      });
+    },
+    isPlaying && autoPlay ? duration * 1000 : null
+  );
 
   // On mount register slide and set width carousel items
-  useEffect(() => {
-    slide();
-
-    return () => {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-      }
-    };
-  }, [slide]);
-
   const registerItem = useCallback(newItemUid => {
     setItems(oldItems => {
       if (oldItems.indexOf(newItemUid) > -1) return oldItems;
@@ -293,7 +280,6 @@ const Carousel = ({
 
   const updateByDirection = useCallback(
     newDirection => {
-      slide();
       setActiveIndex(oldState => {
         let attempt = oldState[0] + newDirection;
         if (attempt > items.length - 1) {
@@ -304,16 +290,12 @@ const Carousel = ({
         return [attempt, newDirection];
       });
     },
-    [items.length, slide]
+    [items.length]
   );
 
-  const updateByIndex = useCallback(
-    newIndex => {
-      slide();
-      setActiveIndex([newIndex, 1]);
-    },
-    [slide]
-  );
+  const updateByIndex = useCallback(newIndex => {
+    setActiveIndex([newIndex, 1]);
+  }, []);
 
   return (
     <PseudoBox
@@ -329,6 +311,8 @@ const Carousel = ({
       paddingLeft={placement === 'left' && '28px'}
       paddingRight={placement === 'right' && '28px'}
       {...restProps}
+      onMouseEnter={() => setPlaying(false)}
+      onMouseLeave={() => setPlaying(true)}
     >
       <CarouselContext.Provider
         value={{

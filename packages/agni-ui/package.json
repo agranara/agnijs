@@ -50,7 +50,6 @@
     "dayjs": "1.8.20",
     "exenv": "^1.2.2",
     "framer-motion": "^1.8.4",
-    "lodash.get": "4.4.2",
     "memoize-one": "5.1.1",
     "prop-types": "^15.7.2",
     "react-icons": "3.9.0",

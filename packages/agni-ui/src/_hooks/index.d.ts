@@ -39,29 +39,6 @@ export function useDebounceValue<T>(prop: UseDebounceValueProp<T>): UseDebounceR
 
 ////////////////////////////////////////////
 
-type UseDropdownProps = {
-  ref: React.Ref<any>;
-  initialOpen?: boolean;
-  isFixed?: boolean;
-  isRight?: boolean;
-  onOpen?: (ev?: Event) => void;
-  onClose?: (ev?: Event) => void;
-};
-
-type UseDropdownResult = {
-  Dropdown: React.ReactElement;
-  isOpen: boolean;
-  toggle: () => void;
-  open: (event?: Event) => void;
-  close: (event?: Event) => void;
-  isEventOutsideRefs: (event?: Event) => boolean;
-  reposition: () => void;
-};
-
-export const useDropdown: (inputProps: UseDropdownProps) => UseDropdownResult;
-
-////////////////////////////////////////////
-
 export const useEnhancedEffect: (effect: React.EffectCallback, deps?: React.DependencyList) => void;
 
 ////////////////////////////////////////////
@@ -81,6 +58,10 @@ export const useHasImageLoaded: (prop: UseImagePropType) => boolean;
 ////////////////////////////////////////////
 
 export function useHover(): [React.Ref<any>, boolean];
+
+////////////////////////////////////////////
+
+export function useInteval(callback: Function, delay: number): void;
 
 ////////////////////////////////////////////
 
