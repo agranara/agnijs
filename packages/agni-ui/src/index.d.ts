@@ -13,6 +13,7 @@ export * from './Collapse';
 export * from './Container';
 export * from './ControlBox';
 export * from './Datepicker';
+export * from './DataGrid';
 export * from './Flex';
 export * from './Image';
 export * from './InputGroup';
