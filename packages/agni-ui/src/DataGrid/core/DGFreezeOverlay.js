@@ -1,10 +1,10 @@
 import React from 'react';
 import { useDGScrollContext } from '../context/DGScrollContext';
 
-const DGFreezeOverlay = ({ hasScrollHeader, freezeStyle, height }) => {
+const DGFreezeOverlay = ({ hasHorizontalScroll, freezeStyle, height }) => {
   const { left } = useDGScrollContext();
 
-  if (left > 0 && hasScrollHeader) {
+  if (left > 0 && hasHorizontalScroll) {
     return (
       <div
         className="datagrid__freeze-left"

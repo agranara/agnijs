@@ -12,7 +12,8 @@ const DataGrid = ({
   sortOrder,
   onSortChange,
   rowHeight = 36,
-  height = 350,
+  height,
+  heightByItem,
   sampleStart = 0,
   sampleEnd = 2,
   initialOffsetTop = 0,
@@ -27,6 +28,7 @@ const DataGrid = ({
       columns={columns}
       data={data}
       height={height}
+      heightByItem={heightByItem}
       rowHeight={rowHeight}
       emptyData={emptyData}
       isHeadless={isHeadless}

@@ -21,7 +21,8 @@ const DGContainer = ({ sampleStart, sampleEnd }) => {
     rowWidth,
     isReady,
     isHeadless,
-    hasScrollHeader,
+    hasHorizontalScroll,
+    hasVerticalScroll,
     emptyPlaceholder,
     cellComponent,
     rowComponent,
@@ -46,7 +47,7 @@ const DGContainer = ({ sampleStart, sampleEnd }) => {
           {!isHeadless && (
             <DGHeader
               uid={uid}
-              hasScrollHeader={hasScrollHeader}
+              hasVerticalScroll={hasVerticalScroll}
               columns={columns}
               columnStyle={columnStyle}
               columnDepth={columnDepth}
@@ -55,14 +56,14 @@ const DGContainer = ({ sampleStart, sampleEnd }) => {
             />
           )}
           <DGFreezeOverlay
-            hasScrollHeader={hasScrollHeader}
+            hasHorizontalScroll={hasHorizontalScroll}
             freezeStyle={freezeStyle}
             height={containerHeight}
           />
           {itemCount > 0 ? (
             <DGContent
               uid={uid}
-              hasScrollHeader={hasScrollHeader}
+              // hasVerticalScroll={hasVerticalScroll}
               isHeadless={isHeadless}
               height={containerHeight}
               rowHeight={rowHeight}
@@ -92,6 +93,8 @@ const DGContainer = ({ sampleStart, sampleEnd }) => {
         <DGInitializer
           uid={uid}
           data={data}
+          rowHeight={rowHeight}
+          height={containerHeight}
           columnFlat={columnFlat}
           columnStyle={columnStyle}
           sampleStart={sampleStart}

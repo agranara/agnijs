@@ -1,6 +1,6 @@
 export type RowDatumStyleType = {
   /** Row index */
-  index: number;
+  indexRow: number;
   /** Row record */
   record: any;
 };
@@ -11,6 +11,11 @@ export type RenderCellValueProp = {
   /** Row index */
   indexRow: number;
   /** Cell index */
+  indexCell: number;
+};
+
+export type RenderWidthProp = {
+  /** Column or cell index */
   indexCell: number;
 };
 
@@ -43,6 +48,10 @@ export type DataGridColumnType = {
   children?: DataGridColumnType[];
   /** Freeze left. When freeze left is enabled, make sure it puts on higher order of columns */
   freezeLeft?: boolean;
+  /** Set column width for header and cell */
+  width?: number;
+  /** Set column width for header and cell by function */
+  renderWidth?: (prop: RenderWidthProp) => number;
   /** Custom render value function */
   renderCellValue?: (prop: RenderCellValueProp) => JSX.Element | React.ReactNode;
   /** Cell Style Object */

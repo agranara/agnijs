@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState, useMemo, useEffect } from 'react';
+import React, { useCallback, useRef, useState, useEffect } from 'react';
 import isEqual from 'fast-deep-equal/es6/react';
 import { DGScrollContext } from '../context/DGScrollContext';
 

@@ -9,7 +9,7 @@ import { DGSortHandler } from './DGSortHandler';
 
 const DGHeader = ({
   uid,
-  hasScrollHeader,
+  hasVerticalScroll,
   columns,
   columnStyle,
   rowWidth,
@@ -124,11 +124,11 @@ const DGHeader = ({
           role="row"
           className="datagrid__header-columns"
           style={{
-            width: hasScrollHeader ? rowWidth + 17 : rowWidth
+            width: hasVerticalScroll ? rowWidth + 17 : rowWidth
           }}
         >
           {renderColumn(columns, 0)}
-          {hasScrollHeader && (
+          {hasVerticalScroll && (
             <div
               className="datagrid__header-scrolls datagrid__column-bg"
               style={{

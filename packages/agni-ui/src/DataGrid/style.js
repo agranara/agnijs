@@ -65,9 +65,9 @@ const dataGridStyle = css`
   }
 
   & .datagrid__column-bg {
-    background-image: linear-gradient(rgb(255, 255, 255), rgb(244, 245, 247));
-    box-shadow: rgba(67, 90, 111, 0.14) 0px 0px 0px 1px inset,
-      rgba(67, 90, 111, 0.06) 0px -1px 1px 0px inset;
+    background-image: linear-gradient(rgb(255, 255, 255), #f7fafc);
+    box-shadow: rgba(226, 232, 240, 0.4) 0px 0px 0px 1px inset,
+      rgba(226, 232, 240, 0.25) 0px -1px 1px 0px inset;
   }
 
   & .datagrid__column-sortable {
@@ -142,6 +142,7 @@ const dataGridStyle = css`
     white-space: nowrap;
     text-overflow: ellipsis;
     padding: 4px 8px;
+    border-bottom-width: 1px;
   }
 `;
 

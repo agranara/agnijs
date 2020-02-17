@@ -2,10 +2,22 @@ import React, { useLayoutEffect, useRef, Fragment } from 'react';
 import { get } from '../../_utils/get';
 import { Spinner } from '../../Spinner';
 
-const DGInitializer = ({ uid, data, sampleStart, sampleEnd, setMeta, columnStyle, columnFlat }) => {
+const DGInitializer = ({
+  uid,
+  data,
+  rowHeight,
+  sampleStart,
+  sampleEnd,
+  setMeta,
+  columnStyle,
+  columnFlat,
+  height
+}) => {
   const initializerRef = useRef(null);
   const columnRefs = useRef([]);
 
+  // Immediate execution after page load
+  // set width for columns from loaded sample data
   useLayoutEffect(() => {
     let totalWidth = 0;
     for (let i = 0; i < columnRefs.current.length; i++) {
@@ -23,11 +35,12 @@ const DGInitializer = ({ uid, data, sampleStart, sampleEnd, setMeta, columnStyle
     setMeta(oldState => ({
       ...oldState,
       isReady: true,
-      hasScrollHeader: hasScroll,
+      hasHorizontalScroll: hasScroll,
+      hasVerticalScroll: data.length * rowHeight > height,
       rowWidth: totalWidth
     }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [setMeta]);
+  }, [data.length, height, rowHeight, setMeta]);
 
   // Provide extension width for each cells
   // through padding styling
@@ -35,10 +48,17 @@ const DGInitializer = ({ uid, data, sampleStart, sampleEnd, setMeta, columnStyle
   for (let i = 0; i < columnFlat.length; i++) {
     const col = columnFlat[i];
 
+    let width;
+    if (col.renderWidth) {
+      width = col.renderWidth({ indexCell: i });
+    } else if (col.width) {
+      width = col.width;
+    }
+
     sampleHeader.push(
       <th
         key={`${uid}-sample-${col.key}`}
-        style={{ padding: '0.5rem 1rem', whiteSpace: 'nowrap', borderWidth: 1 }}
+        style={{ padding: '0.5rem 1rem', whiteSpace: 'nowrap', borderWidth: 1, width }}
       >
         {col.label}
       </th>
@@ -51,6 +71,7 @@ const DGInitializer = ({ uid, data, sampleStart, sampleEnd, setMeta, columnStyle
     const cells = [];
     for (let ii = 0; ii < columnFlat.length; ii++) {
       const col = columnFlat[ii];
+
       cells.push(
         <td
           key={`${i}-${ii}`}

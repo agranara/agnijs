@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, useCallback } from 'react';
 import { DGMetaContext } from '../context/DGMetaContext';
 import { useAutoId } from '../../_hooks/useAutoId';
 import { useComponentSize } from '../../_hooks/useComponentSize';
@@ -10,6 +10,7 @@ const DGMetaProvider = ({
   columns,
   data,
   height,
+  heightByItem,
   rowHeight,
   emptyData,
   getRowDatumStyle,
@@ -34,14 +35,6 @@ const DGMetaProvider = ({
     columnStyle: {}
   });
 
-  const tableRef = useRef({
-    containerHeight: height,
-    rowHeight,
-    rowComponent,
-    cellComponent,
-    getRowDatumStyle
-  });
-
   // Observe width change for data grid
   const { width: containerWidth } = useComponentSize(containerRef);
 
@@ -50,9 +43,35 @@ const DGMetaProvider = ({
   // and determine if grid content has scroll
   const [metaState, setMeta] = useState(() => ({
     isReady: false,
-    hasScrollHeader: false,
+    hasHorizontalScroll: false,
+    hasVerticalScroll: false,
     rowWidth: 0
   }));
+
+  const getContainerHeight = useCallback(() => {
+    if (height) return height;
+
+    const addItem = !isHeadless ? getArrayDepth(columns) : 0;
+    const addPixel = metaState.hasHorizontalScroll ? 17 : 0;
+
+    return (Math.min(heightByItem || 10, data.length) + addItem) * rowHeight + addPixel;
+  }, [
+    height,
+    isHeadless,
+    columns,
+    metaState.hasHorizontalScroll,
+    heightByItem,
+    rowHeight,
+    data.length
+  ]);
+
+  const tableRef = useRef({
+    containerHeight: getContainerHeight(),
+    rowHeight,
+    rowComponent,
+    cellComponent,
+    getRowDatumStyle
+  });
 
   // Update cache accordingly
   useEffect(() => {
@@ -75,8 +94,8 @@ const DGMetaProvider = ({
   }, [columns]);
 
   useEffect(() => {
-    tableRef.current.containerHeight = height;
-  }, [height]);
+    tableRef.current.containerHeight = getContainerHeight();
+  }, [getContainerHeight]);
 
   useEffect(() => {
     tableRef.current.rowHeight = rowHeight;

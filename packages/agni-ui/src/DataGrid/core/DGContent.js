@@ -1,4 +1,4 @@
-import React, { useRef, useCallback, createElement } from 'react';
+import React, { useRef, useCallback, createElement, useEffect } from 'react';
 import { get } from '../../_utils/get';
 import { useDGScrollContext } from '../context/DGScrollContext';
 
@@ -17,7 +17,6 @@ const DGContent = ({
   cellComponent,
   getRowDatumStyle,
   isHeadless,
-  hasScrollHeader,
   columnDepth,
   columnFlat,
   columnStyle,
@@ -31,6 +30,17 @@ const DGContent = ({
   const rowStyleRef = useRef({});
   const cellStyleRef = useRef({});
   const cellValueRef = useRef({});
+
+  const isRowFnElement = useRef(isFunctionElement(rowComponent));
+  const isCellFnElement = useRef(isFunctionElement(cellComponent));
+
+  useEffect(() => {
+    isRowFnElement.current = isFunctionElement(rowComponent);
+  }, [rowComponent]);
+
+  useEffect(() => {
+    isCellFnElement.current = isFunctionElement(cellComponent);
+  }, [cellComponent]);
 
   const {
     top,
@@ -182,16 +192,7 @@ const DGContent = ({
   // Get cell style from cache
   // else insert style to cache
   const getOrSetCellStyle = useCallback(
-    ({
-      cache,
-      indexRow,
-      indexCell,
-      record,
-      column,
-      rowHeight,
-      isLast = false,
-      hasScrollHeader = false
-    }) => {
+    ({ cache, indexRow, indexCell, record, column, rowHeight }) => {
       if (!cellStyleRef.current[indexRow]) {
         cellStyleRef.current[indexRow] = {};
       }
@@ -210,7 +211,7 @@ const DGContent = ({
           ...columnStyleProp,
           ...columnStyleFunc,
           left,
-          width: isLast && !hasScrollHeader ? cellWidth - 17 : cellWidth,
+          width: cellWidth,
           height: rowHeight
         };
       }
@@ -224,7 +225,7 @@ const DGContent = ({
   // else insert style to cache
   const getOrSetRowStyle = useCallback(({ index, record, rowHeight, rowStyle }) => {
     if (!rowStyleRef.current[index]) {
-      const rowStyleProps = rowStyle ? rowStyle({ index: index, record }) : {};
+      const rowStyleProps = rowStyle ? rowStyle({ indexRow: index, record }) : {};
 
       rowStyleRef.current[index] = {
         ...rowStyleProps,
@@ -266,8 +267,6 @@ const DGContent = ({
         indexRow: i,
         column: col,
         record: row,
-        isLast: j === columnFlat.length - 1,
-        hasScrollHeader,
         cache: columnStyle,
         rowHeight
       });
@@ -279,7 +278,7 @@ const DGContent = ({
         record: row
       });
 
-      const notDomProps = isFunctionElement(cellComponent)
+      const notDomProps = isCellFnElement.current
         ? {
             record: row,
             indexCell: j,
@@ -320,8 +319,8 @@ const DGContent = ({
             rowHeight,
             rowStyle: getRowDatumStyle
           }),
-          record: isFunctionElement(rowComponent) ? row : undefined,
-          indexRow: isFunctionElement(rowComponent) ? i : undefined
+          record: isRowFnElement.current ? row : undefined,
+          indexRow: isRowFnElement.current ? i : undefined
         },
         cells
       )
@@ -352,7 +351,7 @@ const DGContent = ({
           aria-rowcount={itemCount}
           aria-colcount={columnFlat.length}
           style={{
-            width: !hasScrollHeader ? rowWidth - 17 : rowWidth,
+            width: rowWidth,
             height: itemCount * rowHeight,
             pointerEvents: isScrolling ? 'none' : undefined
           }}
