@@ -1,4 +1,4 @@
-import React, { useRef, useCallback, createElement, useEffect } from 'react';
+import React, { useRef, useCallback, createElement } from 'react';
 import { get } from '../../_utils/get';
 import { useDGScrollContext } from '../context/DGScrollContext';
 
@@ -31,17 +31,6 @@ const DGContent = ({
   const cellStyleRef = useRef({});
   const cellValueRef = useRef({});
 
-  const isRowFnElement = useRef(isFunctionElement(rowComponent));
-  const isCellFnElement = useRef(isFunctionElement(cellComponent));
-
-  useEffect(() => {
-    isRowFnElement.current = isFunctionElement(rowComponent);
-  }, [rowComponent]);
-
-  useEffect(() => {
-    isCellFnElement.current = isFunctionElement(cellComponent);
-  }, [cellComponent]);
-
   const {
     top,
     left,
@@ -56,6 +45,9 @@ const DGContent = ({
     estimatedItemSize: rowHeight,
     lastMeasuredIndex: -1
   });
+
+  const isRowFnElement = isFunctionElement(rowComponent);
+  const isCellFnElement = isFunctionElement(cellComponent);
 
   const getItemMetadata = useCallback(
     index => {
@@ -278,7 +270,7 @@ const DGContent = ({
         record: row
       });
 
-      const notDomProps = isCellFnElement.current
+      const notDomProps = isCellFnElement
         ? {
             record: row,
             indexCell: j,
@@ -305,6 +297,14 @@ const DGContent = ({
         )
       );
     }
+
+    const notDomRowProps = isRowFnElement
+      ? {
+          record: row,
+          indexRow: i
+        }
+      : {};
+
     rows.push(
       createElement(
         rowComponent,
@@ -319,8 +319,7 @@ const DGContent = ({
             rowHeight,
             rowStyle: getRowDatumStyle
           }),
-          record: isRowFnElement.current ? row : undefined,
-          indexRow: isRowFnElement.current ? i : undefined
+          ...notDomRowProps
         },
         cells
       )

@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useRef, Fragment } from 'react';
+import React, { useLayoutEffect, useRef, Fragment, useEffect } from 'react';
 import { get } from '../../_utils/get';
 import { Spinner } from '../../Spinner';
 
@@ -15,6 +15,12 @@ const DGInitializer = ({
 }) => {
   const initializerRef = useRef(null);
   const columnRefs = useRef([]);
+
+  const hasVerticalScrollRef = useRef(data.length * rowHeight > height);
+
+  useEffect(() => {
+    hasVerticalScrollRef.current = data.length * rowHeight > height;
+  }, [data.length, height, rowHeight]);
 
   // Immediate execution after page load
   // set width for columns from loaded sample data
@@ -72,15 +78,32 @@ const DGInitializer = ({
     for (let ii = 0; ii < columnFlat.length; ii++) {
       const col = columnFlat[ii];
 
+      let value = get(datum, col.key) || null;
+      if (col.renderCellValue) {
+        value = col.renderCellValue({
+          record: datum,
+          indexRow: i,
+          indexCell: ii
+        });
+      }
+
       cells.push(
         <td
-          key={`${i}-${ii}`}
+          key={`${uid}-sample-cell-${i}-${ii}`}
           ref={node => {
             columnRefs.current[ii] = node;
           }}
           style={{ padding: '0.5rem 1rem', whiteSpace: 'nowrap' }}
         >
-          {get(datum, col.key)}
+          {value}
+        </td>
+      );
+    }
+
+    if (hasVerticalScrollRef.current) {
+      cells.push(
+        <td key={`${uid}-sample-row-scroll-${i}`} style={{ width: 17 }}>
+          &nbsp;
         </td>
       );
     }
@@ -93,7 +116,10 @@ const DGInitializer = ({
       <div style={{ overflow: 'auto' }} ref={initializerRef}>
         <table style={{ width: '100%' }}>
           <thead>
-            <tr>{sampleHeader}</tr>
+            <tr>
+              {sampleHeader}
+              {hasVerticalScrollRef.current && <th style={{ width: 17 }}>&nbsp;</th>}
+            </tr>
           </thead>
           <tbody>{sampleData}</tbody>
         </table>
