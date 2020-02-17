@@ -17,18 +17,23 @@ import {
   getFlatColumns,
   getLastFreezeIndex
 } from './util';
+import { useSortHandler } from './cores/useSortHandler';
 
 const DataGrid = ({
   data,
   columns,
   getRowDatumStyle,
+  sortKey: sortKeyProp,
+  sortOrder: sortOrderProp,
+  onSortChange,
   rowHeight = 36,
   height = 350,
   sampleStart = 0,
   sampleEnd = 2,
   initialOffsetTop = 0,
   initialOffsetLeft = 0,
-  emptyData = 'No data found'
+  emptyData = 'No data found',
+  isHeadless = false
 }) => {
   const uid = useAutoId();
   const theme = useUiTheme();
@@ -52,6 +57,13 @@ const DataGrid = ({
 
   // Observe width change for data grid
   const { width: containerWidth } = useComponentSize(containerRef);
+
+  // Hooks for sort handler
+  const [sortKey, sortOrder, handleSort] = useSortHandler({
+    sortKey: sortKeyProp,
+    sortOrder: sortOrderProp,
+    onSortChange
+  });
 
   // Since we using clone to measure size of columns and cells
   // setup flag to determine ready or not to be rendered for real
@@ -131,7 +143,16 @@ const DataGrid = ({
         // When horizontal scroll, set header scroll left offset directly too
         // to make sure no delay when scroll horizontally
         if (headerRef.current) {
-          headerRef.current.scrollLeft = newScrollState.left;
+          if (headerRef.current.scrollLeft !== newScrollState.left) {
+            headerRef.current.scrollLeft = newScrollState.left;
+          }
+        }
+
+        // Does the same for contentRef
+        if (contentRef.current) {
+          if (contentRef.current.scrollLeft !== newScrollState.left) {
+            contentRef.current.scrollLeft = newScrollState.left;
+          }
         }
       }
 
@@ -167,7 +188,8 @@ const DataGrid = ({
         sampleEnd,
         headerRef,
         contentRef,
-        getRowDatumStyle
+        getRowDatumStyle,
+        isHeadless
       }}
     >
       <DGContainer
@@ -199,7 +221,20 @@ const DataGrid = ({
         )}
         {isReady && (
           <Fragment>
-            <DGHeader />
+            {!isHeadless && (
+              <DGHeader sortKey={sortKey} sortOrder={sortOrder} handleSort={handleSort} />
+            )}
+            {scrollState.left > 0 && hasScrollHeader && (
+              <div
+                css={css({
+                  position: 'absolute',
+                  width: freezeStyle ? freezeStyle.width + freezeStyle.left - 1 : 0,
+                  height: height - 17,
+                  boxShadow: theme.shadows.lg,
+                  zIndex: 1
+                })}
+              />
+            )}
             {itemCountRef.current === 0 && (
               <div
                 style={{
@@ -214,17 +249,6 @@ const DataGrid = ({
               </div>
             )}
             {itemCountRef.current > 0 && <DGContent />}
-            {scrollState.left > 0 && hasScrollHeader && (
-              <div
-                css={css({
-                  position: 'absolute',
-                  width: freezeStyle ? freezeStyle.width + freezeStyle.left - 1 : 0,
-                  height: height - 17,
-                  boxShadow: theme.shadows.lg,
-                  zIndex: 1
-                })}
-              />
-            )}
           </Fragment>
         )}
       </DGContainer>

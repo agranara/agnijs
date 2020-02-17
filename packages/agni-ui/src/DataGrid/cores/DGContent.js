@@ -40,7 +40,8 @@ const DGContent = () => {
     columnStyleRef,
     columnDepth,
     hasScrollHeader,
-    getRowDatumStyle
+    getRowDatumStyle,
+    isHeadless
   } = useDataGridContext();
 
   const metadataRef = useRef({
@@ -254,7 +255,7 @@ const DGContent = () => {
     return [start, end];
   }, [getEndIndex, getStartIndex]);
 
-  const top = columnDepth * rowHeight;
+  const top = !isHeadless ? columnDepth * rowHeight : 0;
 
   const [renderStartIndex, renderEndIndex] = getRenderRange();
 
@@ -286,13 +287,14 @@ const DGContent = () => {
 
       cells.push(
         <div
+          role="cell"
           className="datagrid__cell"
           aria-colindex={j}
           key={`${uid}-cell-${i}-${j}`}
           style={{
             ...cachedCellStyle,
             left: col.freezeLeft ? cachedCellStyle.left + scrollState.left : cachedCellStyle.left,
-            zIndex: col.freezeLeft ? 1 : undefined
+            zIndex: col.freezeLeft ? 2 : undefined
           }}
         >
           {cachedValue}
@@ -301,6 +303,7 @@ const DGContent = () => {
     }
     rows.push(
       <div
+        role="row"
         className="datagrid__row"
         aria-rowindex={i}
         key={`${uid}-row-${i}`}

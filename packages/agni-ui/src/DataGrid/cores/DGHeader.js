@@ -1,8 +1,40 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core';
-import { useRef } from 'react';
+import { useRef, useCallback } from 'react';
+import { FiArrowUp, FiArrowDown } from 'react-icons/fi';
 import { useDataGridContext } from '../DataGridContext';
+import { useUiTheme } from '../../UiProvider';
 import { useForkedRef } from '../../_hooks/useForkedRef';
+import { isKeyboardKey } from '../../keyboard';
+import { SORT_ASC, SORT_DESC } from './useSortHandler';
+
+const DGSortHandler = ({ sortOrder }) => {
+  const theme = useUiTheme();
+  let sortIcon = null;
+  if (sortOrder === SORT_ASC) {
+    sortIcon = <FiArrowUp />;
+  } else if (sortOrder === SORT_DESC) {
+    sortIcon = <FiArrowDown />;
+  }
+
+  return (
+    <div
+      css={css([
+        {
+          position: 'absolute',
+          right: 2,
+          color: theme.colors.primary[500]
+        }
+      ])}
+    >
+      {sortIcon}
+    </div>
+  );
+};
+
+DGSortHandler.displayName = 'DGSortHandler';
+
+//////////////////////////////////////////////////////////
 
 const columnStyle = css`
   display: flex;
@@ -22,7 +54,7 @@ const columnBgStyle = css`
     rgba(67, 90, 111, 0.06) 0px -1px 1px 0px inset;
 `;
 
-const DGHeader = () => {
+const DGHeader = ({ sortKey, sortOrder, handleSort }) => {
   const ref = useRef();
 
   const {
@@ -38,6 +70,27 @@ const DGHeader = () => {
   } = useDataGridContext();
 
   const forkedRef = useForkedRef(ref, headerRef);
+
+  const handleClickColumn = useCallback(
+    ev => {
+      const colSortKey = ev.currentTarget.dataset ? ev.currentTarget.dataset['sortkey'] : undefined;
+      handleSort(colSortKey, sortKey, sortOrder);
+    },
+    [sortKey, sortOrder, handleSort]
+  );
+
+  const handleKeyDown = useCallback(
+    ev => {
+      const colSortKey = ev.currentTarget.dataset ? ev.currentTarget.dataset['sortkey'] : undefined;
+      if (isKeyboardKey(ev, 'Enter')) {
+        handleSort(colSortKey, sortKey, sortOrder);
+      }
+      if (isKeyboardKey(ev, 'Tab')) {
+        ev.preventDefault();
+      }
+    },
+    [handleSort, sortKey, sortOrder]
+  );
 
   let flatCellIndex = 0;
 
@@ -64,11 +117,12 @@ const DGHeader = () => {
             height: curDepth * rowHeight,
             userSelect: 'none',
             left: col.freezeLeft ? scrollState.left : undefined,
-            zIndex: col.freezeLeft ? 1 : undefined
+            zIndex: col.freezeLeft ? 2 : undefined
           }}
         >
           {col.children ? (
             <div
+              role="rowgroup"
               css={css([
                 {
                   display: 'flex',
@@ -95,6 +149,7 @@ const DGHeader = () => {
                 {col.label}
               </div>
               <div
+                role="row"
                 css={{
                   display: 'flex',
                   flexDirection: 'row',
@@ -106,6 +161,8 @@ const DGHeader = () => {
             </div>
           ) : (
             <span
+              role="columnheader"
+              tabIndex={0}
               css={css([columnStyle, columnBgStyle])}
               style={{
                 paddingLeft: 8,
@@ -116,11 +173,24 @@ const DGHeader = () => {
                 textAlign: 'center',
                 textTransform: 'uppercase',
                 fontSize: 12,
-                fontWeight: 600
+                fontWeight: 600,
+                cursor: 'pointer',
+                zIndex: col.freezeLeft ? 2 : undefined
                 // lineHeight: `${curDepth * rowHeight}px`
               }}
+              onClick={handleClickColumn}
+              onKeyDown={handleKeyDown}
+              data-sortkey={col.sortKey ? col.sortKey : col.key}
+              aria-sort={
+                sortKey === col.key && sortOrder
+                  ? sortOrder === 'asc'
+                    ? 'ascending'
+                    : 'descending'
+                  : 'none'
+              }
             >
               {col.label}
+              {sortKey === col.key && sortOrder && <DGSortHandler sortOrder={sortOrder} />}
             </span>
           )}
         </div>
@@ -152,6 +222,7 @@ const DGHeader = () => {
         }}
       >
         <div
+          role="row"
           className="datagrid__header-columns"
           css={css({
             position: 'relative',

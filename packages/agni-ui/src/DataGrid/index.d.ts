@@ -1,11 +1,11 @@
-type RowDatumStyleType = {
+export type RowDatumStyleType = {
   /** Row index */
   index: number;
   /** Row record */
   record: any;
 };
 
-type RenderCellValueProp = {
+export type RenderCellValueProp = {
   /** Row Record */
   record: any;
   /** Row index */
@@ -14,7 +14,9 @@ type RenderCellValueProp = {
   indexCell: number;
 };
 
-type DataGridColumnType = {
+type ColumnSortType = 'asc' | 'desc';
+
+export type DataGridColumnType = {
   /** Key column data to render. Required */
   key: string;
   /** Label in table header. */
@@ -31,6 +33,8 @@ type DataGridColumnType = {
   renderCellStyle?: (prop: RenderCellValueProp) => React.CSSProperties;
   /** Empty data placeholder */
   emptyData?: React.ReactNode;
+  /** Sort key than different with provided keys. */
+  sortKey?: string;
 };
 
 type DataGridProps = {
@@ -52,6 +56,14 @@ type DataGridProps = {
   initialOffsetLeft?: number;
   /** Get row style */
   getRowDatumStyle?: (prop: RowDatumStyleType) => React.CSSProperties;
+  /** Is headless */
+  isHeadless?: boolean;
+  /** Sort key based on provided columns */
+  sortKey?: string;
+  /** Sort order. For rendering icon up or down inside */
+  sortOrder?: ColumnSortType;
+  /** Handle sort change */
+  onSortChange?: (sortKey: string, sortOrder: ColumnSortType) => void;
 };
 
 export const DataGrid: React.FC<DataGridProps>;
