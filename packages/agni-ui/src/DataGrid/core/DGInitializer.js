@@ -1,42 +1,39 @@
-import React, { useLayoutEffect, useRef } from 'react';
+import React, { useLayoutEffect, useRef, Fragment } from 'react';
 import { get } from '../../_utils/get';
-import { useDataGridContext } from '../DataGridContext';
+import { Spinner } from '../../Spinner';
 
-const DGInitializer = () => {
+const DGInitializer = ({ uid, data, sampleStart, sampleEnd, setMeta, columnStyle, columnFlat }) => {
   const initializerRef = useRef(null);
   const columnRefs = useRef([]);
-  const {
-    uid,
-    setReady,
-    columnStyleRef,
-    flatColumns,
-    sampleStart,
-    data,
-    sampleEnd
-  } = useDataGridContext();
 
   useLayoutEffect(() => {
     let totalWidth = 0;
     for (let i = 0; i < columnRefs.current.length; i++) {
       const sampleCell = columnRefs.current[i];
 
-      if (!columnStyleRef.current[i]) columnStyleRef.current[i] = {};
-      columnStyleRef.current[i].width = sampleCell.offsetWidth;
-      columnStyleRef.current[i].left = totalWidth;
+      if (!columnStyle[i]) columnStyle[i] = {};
+      columnStyle[i].width = sampleCell.offsetWidth;
+      columnStyle[i].left = totalWidth;
 
       totalWidth += sampleCell.offsetWidth;
     }
 
     const hasScroll = initializerRef.current.scrollWidth > initializerRef.current.clientWidth;
 
-    setReady([true, hasScroll, totalWidth]);
-  }, [columnStyleRef, setReady]);
+    setMeta(oldState => ({
+      ...oldState,
+      isReady: true,
+      hasScrollHeader: hasScroll,
+      rowWidth: totalWidth
+    }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [setMeta]);
 
   // Provide extension width for each cells
   // through padding styling
   const sampleHeader = [];
-  for (let i = 0; i < flatColumns.length; i++) {
-    const col = flatColumns[i];
+  for (let i = 0; i < columnFlat.length; i++) {
+    const col = columnFlat[i];
 
     sampleHeader.push(
       <th
@@ -52,8 +49,8 @@ const DGInitializer = () => {
   for (let i = sampleStart; i < sampleEnd; i++) {
     const datum = data[i];
     const cells = [];
-    for (let ii = 0; ii < flatColumns.length; ii++) {
-      const col = flatColumns[ii];
+    for (let ii = 0; ii < columnFlat.length; ii++) {
+      const col = columnFlat[ii];
       cells.push(
         <td
           key={`${i}-${ii}`}
@@ -71,14 +68,19 @@ const DGInitializer = () => {
   }
 
   return (
-    <div style={{ overflow: 'auto' }} ref={initializerRef}>
-      <table style={{ width: '100%' }}>
-        <thead>
-          <tr>{sampleHeader}</tr>
-        </thead>
-        <tbody>{sampleData}</tbody>
-      </table>
-    </div>
+    <Fragment>
+      <div style={{ overflow: 'auto' }} ref={initializerRef}>
+        <table style={{ width: '100%' }}>
+          <thead>
+            <tr>{sampleHeader}</tr>
+          </thead>
+          <tbody>{sampleData}</tbody>
+        </table>
+      </div>
+      <div className="datagrid__initializer">
+        <Spinner mr={2} variantColor="primary.500" /> Setting up table
+      </div>
+    </Fragment>
   );
 };
 
