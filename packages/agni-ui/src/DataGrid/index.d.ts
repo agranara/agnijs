@@ -58,9 +58,7 @@ export type DataGridColumnType = {
   cellStyle?: React.CSSProperties;
   /** Custom style based on row record */
   renderCellStyle?: (prop: RenderCellValueProp) => React.CSSProperties;
-  /** Empty data placeholder */
-  emptyData?: React.ReactNode;
-  /** Sort key than different with provided keys. */
+  /** Sort key that different with provided keys. */
   sortKey?: string;
 };
 
@@ -69,10 +67,20 @@ type DataGridProps = {
   data: any[];
   /** Columns for datagrid. Required */
   columns: DataGridColumnType[];
+  /** Get row style based on datum, index cell and index row */
+  getRowDatumStyle?: (prop: RowDatumStyleType) => React.CSSProperties;
+  /** Sort key based on provided columns */
+  sortKey?: string;
+  /** Sort order. For rendering icon up or down inside */
+  sortOrder?: ColumnSortType;
+  /** Handle sort change */
+  onSortChange?: (sortKey: string, sortOrder: ColumnSortType) => void;
   /** Row height or each datum height in number. Default: 36 */
   rowHeight?: number;
-  /** Data grid container height. Default: 350 */
+  /** Data grid container height */
   height?: number;
+  /** Data grid container height calculated by multiply this value and row height. Default: 10 */
+  heightByItem?: number;
   /** Sample start index to make autosize columns during initial render. Default: 0 */
   sampleStart?: number;
   /** Sample end index to make autosize columns during initial render. Default: 2 */
@@ -81,20 +89,14 @@ type DataGridProps = {
   initialOffsetTop?: number;
   /** Initial scroll offset left. Default: 0 */
   initialOffsetLeft?: number;
-  /** Get row style */
-  getRowDatumStyle?: (prop: RowDatumStyleType) => React.CSSProperties;
-  /** Is headless */
+  /** Empty data placeholder. Default: 'No data found' */
+  emptyData?: React.ReactNode;
+  /** Is headless. No header rendered. Default: false */
   isHeadless?: boolean;
-  /** Sort key based on provided columns */
-  sortKey?: string;
-  /** Sort order. For rendering icon up or down inside */
-  sortOrder?: ColumnSortType;
-  /** Handle sort change */
-  onSortChange?: (sortKey: string, sortOrder: ColumnSortType) => void;
-  /** Custom row component */
-  rowComponent: React.FC<DataGridRowProps>;
-  /** Custom cell component */
-  cellComponent: React.FC<DataGridCellProps>;
+  /** Custom row component. Default: 'div' */
+  rowComponent?: React.FC<DataGridRowProps>;
+  /** Custom cell component. Default: 'div' */
+  cellComponent?: React.FC<DataGridCellProps>;
 };
 
 export const DataGrid: React.FC<DataGridProps>;
