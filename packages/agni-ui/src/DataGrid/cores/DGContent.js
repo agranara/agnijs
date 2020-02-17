@@ -13,6 +13,8 @@ const rowStyle = css`
   }
 `;
 
+const isFunctionElement = element => typeof element === 'function';
+
 /**
  * Data grid content renderer
  * Code below was derivative from react-window repository with some tweaks to suit table purpose
@@ -20,7 +22,7 @@ const rowStyle = css`
  * Thanks to react-window team
  * Original Source: https://github.com/bvaughn/react-window/blob/master/src/VariableSizeList.js
  */
-const DGContent = () => {
+const DGContent = ({ rowComponent, cellComponent }) => {
   const tableRef = useRef(null);
   const rowStyleRef = useRef({});
   const cellStyleRef = useRef({});
@@ -285,38 +287,53 @@ const DGContent = () => {
         record: row
       });
 
+      const notDomProps = isFunctionElement(cellComponent)
+        ? {
+            record: row,
+            indexCell: j,
+            indexRow: i
+          }
+        : {};
+
       cells.push(
-        <div
-          role="cell"
-          className="datagrid__cell"
-          aria-colindex={j}
-          key={`${uid}-cell-${i}-${j}`}
-          style={{
-            ...cachedCellStyle,
-            left: col.freezeLeft ? cachedCellStyle.left + scrollState.left : cachedCellStyle.left,
-            zIndex: col.freezeLeft ? 2 : undefined
-          }}
-        >
-          {cachedValue}
-        </div>
+        jsx(
+          cellComponent,
+          {
+            ...notDomProps,
+            key: `${uid}-cell-${i}-${j}`,
+            role: 'cell',
+            className: 'datagrid__cell',
+            'aria-colindex': j,
+            style: {
+              ...cachedCellStyle,
+              left: col.freezeLeft ? cachedCellStyle.left + scrollState.left : cachedCellStyle.left,
+              zIndex: col.freezeLeft ? 2 : undefined
+            }
+          },
+          cachedValue
+        )
       );
     }
     rows.push(
-      <div
-        role="row"
-        className="datagrid__row"
-        aria-rowindex={i}
-        key={`${uid}-row-${i}`}
-        css={css([rowStyle])}
-        style={getOrSetRowStyle({
-          index: i,
-          record: row,
-          rowHeight,
-          rowStyle: getRowDatumStyle
-        })}
-      >
-        {cells}
-      </div>
+      jsx(
+        rowComponent,
+        {
+          key: `${uid}-row-${i}`,
+          className: 'datagrid__row',
+          css: css([rowStyle]),
+          role: 'row',
+          'aria-rowindex': i,
+          style: getOrSetRowStyle({
+            index: i,
+            record: row,
+            rowHeight,
+            rowStyle: getRowDatumStyle
+          }),
+          record: isFunctionElement(rowComponent) ? row : undefined,
+          indexRow: isFunctionElement(rowComponent) ? i : undefined
+        },
+        cells
+      )
     );
   }
 

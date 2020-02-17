@@ -33,7 +33,9 @@ const DataGrid = ({
   initialOffsetTop = 0,
   initialOffsetLeft = 0,
   emptyData = 'No data found',
-  isHeadless = false
+  isHeadless = false,
+  rowComponent = 'div',
+  cellComponent = 'div'
 }) => {
   const uid = useAutoId();
   const theme = useUiTheme();
@@ -248,7 +250,9 @@ const DataGrid = ({
                 <em>{emptyData}</em>
               </div>
             )}
-            {itemCountRef.current > 0 && <DGContent />}
+            {itemCountRef.current > 0 && (
+              <DGContent rowComponent={rowComponent} cellComponent={cellComponent} />
+            )}
           </Fragment>
         )}
       </DGContainer>

@@ -16,6 +16,24 @@ export type RenderCellValueProp = {
 
 type ColumnSortType = 'asc' | 'desc';
 
+export type DataGridRowProps = {
+  record?: any;
+  indexRow?: number;
+  style?: React.CSSProperties;
+  role?: string;
+  'aria-rowindex'?: number;
+  className?: string;
+};
+
+export type DataGridCellProps = {
+  record?: any;
+  indexRow?: number;
+  indexCell?: number;
+  style?: React.CSSProperties;
+  role?: string;
+  'aria-colindex'?: string;
+};
+
 export type DataGridColumnType = {
   /** Key column data to render. Required */
   key: string;
@@ -64,6 +82,10 @@ type DataGridProps = {
   sortOrder?: ColumnSortType;
   /** Handle sort change */
   onSortChange?: (sortKey: string, sortOrder: ColumnSortType) => void;
+  /** Custom row component */
+  rowComponent: React.FC<DataGridRowProps>;
+  /** Custom cell component */
+  cellComponent: React.FC<DataGridCellProps>;
 };
 
 export const DataGrid: React.FC<DataGridProps>;
