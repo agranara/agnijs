@@ -109,6 +109,4 @@ const DGContainer = ({ sampleStart, sampleEnd, className }) => {
 
 DGContainer.displayName = 'DGContainer';
 
-DGContainer.whyDidYouRender = true;
-
 export { DGContainer };
