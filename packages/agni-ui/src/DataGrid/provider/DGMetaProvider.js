@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState, useCallback } from 'react';
+import React, { useRef, useState, useMemo } from 'react';
 import { DGMetaContext } from '../context/DGMetaContext';
 import { useAutoId } from '../../_hooks/useAutoId';
 import { useComponentSize } from '../../_hooks/useComponentSize';
@@ -12,7 +12,7 @@ const DGMetaProvider = ({
   height,
   heightByItem,
   rowHeight,
-  emptyData,
+  emptyData: emptyPlaceholder,
   getRowDatumStyle,
   rowComponent,
   cellComponent
@@ -20,20 +20,9 @@ const DGMetaProvider = ({
   const uid = useAutoId();
 
   const containerRef = useRef(null);
+  const cachedContainerHeight = useRef(0);
 
-  const dataRef = useRef({
-    data,
-    itemCount: data.length,
-    emptyPlaceholder: emptyData
-  });
-
-  const columnRef = useRef({
-    columns: columns,
-    columnDepth: getArrayDepth(columns),
-    columnFlat: getFlatColumns(columns),
-    columnFreeze: getLastFreezeIndex(columns),
-    columnStyle: {}
-  });
+  const columnStyleRef = useRef({});
 
   // Observe width change for data grid
   const { width: containerWidth } = useComponentSize(containerRef);
@@ -48,83 +37,61 @@ const DGMetaProvider = ({
     rowWidth: 0
   }));
 
-  const getContainerHeight = useCallback(() => {
+  const memoizeData = useMemo(() => {
+    return {
+      data,
+      itemCount: data.length
+    };
+  }, [data]);
+
+  const memoizedColumn = useMemo(() => {
+    return {
+      columns,
+      columnDepth: getArrayDepth(columns),
+      columnFlat: getFlatColumns(columns),
+      columnFreeze: getLastFreezeIndex(columns)
+    };
+  }, [columns]);
+
+  const getContainerHeight = () => {
     if (height) return height;
 
     const addItem = !isHeadless ? getArrayDepth(columns) : 0;
     const addPixel = metaState.hasHorizontalScroll ? 17 : 0;
 
-    return (Math.min(heightByItem || 10, data.length) + addItem) * rowHeight + addPixel;
-  }, [
-    height,
-    isHeadless,
-    columns,
-    metaState.hasHorizontalScroll,
-    heightByItem,
-    rowHeight,
-    data.length
-  ]);
+    const res = (Math.min(heightByItem || 10, data.length) + addItem) * rowHeight + addPixel;
 
-  const tableRef = useRef({
-    containerHeight: getContainerHeight(),
-    rowHeight,
-    rowComponent,
-    cellComponent,
-    getRowDatumStyle
-  });
+    if (res !== cachedContainerHeight.current) {
+      cachedContainerHeight.current = res;
+    }
+    return cachedContainerHeight.current;
+  };
 
-  // Update cache accordingly
-  useEffect(() => {
-    dataRef.current.itemCount = data.length;
-  }, [data.length]);
+  const containerHeight = getContainerHeight();
 
-  useEffect(() => {
-    dataRef.current.data = data;
-  }, [data]);
-
-  useEffect(() => {
-    dataRef.current.emptyPlaceholder = emptyData;
-  }, [emptyData]);
-
-  useEffect(() => {
-    columnRef.current.columns = columns;
-    columnRef.current.columnDepth = getArrayDepth(columns);
-    columnRef.current.columnFlat = getFlatColumns(columns);
-    columnRef.current.columnFreeze = getLastFreezeIndex(columns);
-  }, [columns]);
-
-  useEffect(() => {
-    tableRef.current.containerHeight = getContainerHeight();
-  }, [getContainerHeight]);
-
-  useEffect(() => {
-    tableRef.current.rowHeight = rowHeight;
-  }, [rowHeight]);
-
-  useEffect(() => {
-    tableRef.current.rowComponent = rowComponent;
-  }, [rowComponent]);
-
-  useEffect(() => {
-    tableRef.current.cellComponent = cellComponent;
-  }, [cellComponent]);
-
-  useEffect(() => {
-    tableRef.current.getRowDatumStyle = getRowDatumStyle;
-  }, [getRowDatumStyle]);
-
-  const freezeStyle = columnRef.current.columnStyle[columnRef.current.columnFreeze];
   const context = {
-    ...dataRef.current,
-    ...columnRef.current,
-    ...tableRef.current,
-    ...metaState,
+    data: memoizeData.data,
+    itemCount: memoizeData.itemCount,
+    isReady: metaState.isReady,
+    hasHorizontalScroll: metaState.hasHorizontalScroll,
+    hasVerticalScroll: metaState.hasVerticalScroll,
+    rowWidth: metaState.rowWidth,
+    rowHeight,
+    getRowDatumStyle,
+    cellComponent,
+    rowComponent,
+    columns: memoizedColumn.columns,
+    columnFlat: memoizedColumn.columnFlat,
+    columnFreeze: memoizedColumn.columnFreeze,
+    columnDepth: memoizedColumn.columnDepth,
+    columnStyle: columnStyleRef.current,
     containerWidth,
+    containerHeight,
     containerRef,
     setMeta,
     uid,
-    freezeStyle,
-    isHeadless
+    isHeadless,
+    emptyPlaceholder
   };
 
   return <DGMetaContext.Provider value={context}>{children}</DGMetaContext.Provider>;

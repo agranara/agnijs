@@ -1,6 +1,7 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core';
 import { Fragment } from 'react';
+import cn from 'classnames';
 import { useDGMetaContext } from '../context/DGMetaContext';
 import { dataGridStyle } from '../style';
 import { DGInitializer } from './DGInitializer';
@@ -8,15 +9,18 @@ import { DGHeader } from './DGHeader';
 import { DGFreezeOverlay } from './DGFreezeOverlay';
 import { DGContent } from './DGContent';
 
-const DGContainer = ({ sampleStart, sampleEnd }) => {
+const DGContainer = ({ sampleStart, sampleEnd, className }) => {
   const {
     uid,
+    data,
     itemCount,
     containerRef,
     containerHeight,
     columns,
     columnDepth,
-    freezeStyle,
+    columnStyle,
+    columnFlat,
+    columnFreeze,
     rowHeight,
     rowWidth,
     isReady,
@@ -26,17 +30,14 @@ const DGContainer = ({ sampleStart, sampleEnd }) => {
     emptyPlaceholder,
     cellComponent,
     rowComponent,
-    columnStyle,
     setMeta,
-    getRowDatumStyle,
-    data,
-    columnFlat
+    getRowDatumStyle
   } = useDGMetaContext();
 
   return (
     <div
       ref={containerRef}
-      className="datagrid"
+      className={cn(['datagrid', className])}
       css={css(dataGridStyle)}
       style={{
         height: isReady ? (itemCount > 0 ? containerHeight : rowHeight * (columnDepth + 1)) : 'auto'
@@ -57,7 +58,7 @@ const DGContainer = ({ sampleStart, sampleEnd }) => {
           )}
           <DGFreezeOverlay
             hasHorizontalScroll={hasHorizontalScroll}
-            freezeStyle={freezeStyle}
+            freezeStyle={columnStyle[columnFreeze]}
             height={containerHeight}
           />
           {itemCount > 0 ? (
@@ -107,5 +108,7 @@ const DGContainer = ({ sampleStart, sampleEnd }) => {
 };
 
 DGContainer.displayName = 'DGContainer';
+
+DGContainer.whyDidYouRender = true;
 
 export { DGContainer };

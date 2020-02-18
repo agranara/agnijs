@@ -21,7 +21,8 @@ const DataGrid = ({
   emptyData = 'No data found',
   isHeadless = false,
   rowComponent = 'div',
-  cellComponent = 'div'
+  cellComponent = 'div',
+  className
 }) => {
   return (
     <DGMetaProvider
@@ -38,7 +39,7 @@ const DataGrid = ({
     >
       <DGScrollProvider initialOffsetLeft={initialOffsetLeft} initialOffsetTop={initialOffsetTop}>
         <DGSortProvider sortKey={sortKey} sortOrder={sortOrder} onSortChange={onSortChange}>
-          <DGContainer sampleStart={sampleStart} sampleEnd={sampleEnd} />
+          <DGContainer className={className} sampleStart={sampleStart} sampleEnd={sampleEnd} />
         </DGSortProvider>
       </DGScrollProvider>
     </DGMetaProvider>

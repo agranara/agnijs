@@ -7,142 +7,140 @@ import { DGSortHandler } from './DGSortHandler';
 
 /////////////////////////////////////////////////
 
-const DGHeader = ({
-  uid,
-  hasVerticalScroll,
-  columns,
-  columnStyle,
-  rowWidth,
-  columnDepth,
-  rowHeight
-}) => {
-  const ref = useRef();
+const DGHeader = React.memo(
+  ({ uid, hasVerticalScroll, columns, columnStyle, rowWidth, columnDepth, rowHeight }) => {
+    const ref = useRef();
 
-  const { left, headerRef } = useDGScrollContext();
-  const { sortKey, sortOrder, handleSort } = useDGSortContext();
+    const { left, headerRef } = useDGScrollContext();
+    const { sortKey, sortOrder, handleSort } = useDGSortContext();
 
-  const forkedRef = useForkedRef(ref, headerRef);
+    const forkedRef = useForkedRef(ref, headerRef);
 
-  const handleClickColumn = useCallback(
-    ev => {
-      const colSortKey = ev.currentTarget.dataset ? ev.currentTarget.dataset['sortkey'] : undefined;
-      handleSort(colSortKey, sortKey, sortOrder);
-    },
-    [sortKey, sortOrder, handleSort]
-  );
-
-  const handleKeyDown = useCallback(
-    ev => {
-      const colSortKey = ev.currentTarget.dataset ? ev.currentTarget.dataset['sortkey'] : undefined;
-      if (isKeyboardKey(ev, 'Enter')) {
+    const handleClickColumn = useCallback(
+      ev => {
+        const colSortKey = ev.currentTarget.dataset
+          ? ev.currentTarget.dataset['sortkey']
+          : undefined;
         handleSort(colSortKey, sortKey, sortOrder);
-      }
-      if (isKeyboardKey(ev, 'Tab')) {
-        ev.preventDefault();
-      }
-    },
-    [handleSort, sortKey, sortOrder]
-  );
+      },
+      [sortKey, sortOrder, handleSort]
+    );
 
-  let flatCellIndex = 0;
+    const handleKeyDown = useCallback(
+      ev => {
+        const colSortKey = ev.currentTarget.dataset
+          ? ev.currentTarget.dataset['sortkey']
+          : undefined;
+        if (isKeyboardKey(ev, 'Enter')) {
+          handleSort(colSortKey, sortKey, sortOrder);
+        }
+        if (isKeyboardKey(ev, 'Tab')) {
+          ev.preventDefault();
+        }
+      },
+      [handleSort, sortKey, sortOrder]
+    );
 
-  const renderColumn = (cols, depth = 0) => {
-    const renderedColumns = [];
-    const curDepth = columnDepth - depth;
-    for (let i = 0; i < cols.length; i++) {
-      const col = cols[i];
+    let flatCellIndex = 0;
 
-      const colWidth = col.children ? undefined : columnStyle[flatCellIndex].width;
+    const renderColumn = (cols, depth = 0) => {
+      const renderedColumns = [];
+      const curDepth = columnDepth - depth;
+      for (let i = 0; i < cols.length; i++) {
+        const col = cols[i];
 
-      if (!col.children) {
-        flatCellIndex += 1;
-      }
+        const colWidth = col.children ? undefined : columnStyle[flatCellIndex].width;
 
-      renderedColumns.push(
-        <div
-          key={`${uid}-${col.key}`}
-          className="datagrid__column"
-          id={`${uid}-${col.key}`}
-          style={{
-            width: colWidth,
-            height: curDepth * rowHeight,
-            // userSelect: 'none',
-            left: col.freezeLeft ? left : undefined,
-            zIndex: col.freezeLeft ? 2 : undefined
-          }}
-        >
-          {col.children ? (
-            <div className="datagrid__columngroup" role="rowgroup">
-              <div
+        if (!col.children) {
+          flatCellIndex += 1;
+        }
+
+        renderedColumns.push(
+          <div
+            key={`${uid}-${col.key}`}
+            className="datagrid__column"
+            id={`${uid}-${col.key}`}
+            style={{
+              width: colWidth,
+              height: curDepth * rowHeight,
+              // userSelect: 'none',
+              left: col.freezeLeft ? left : undefined,
+              zIndex: col.freezeLeft ? 2 : undefined
+            }}
+          >
+            {col.children ? (
+              <div className="datagrid__columngroup" role="rowgroup">
+                <div
+                  className="datagrid__column datagrid__column-bg datagrid__column-value"
+                  style={{
+                    height: (curDepth - 1) * rowHeight
+                  }}
+                >
+                  {col.label}
+                </div>
+                <div className="datagrid__columngroup__children" role="row">
+                  {renderColumn(col.children, depth + 1)}
+                </div>
+              </div>
+            ) : (
+              <span
+                role="columnheader"
+                tabIndex={0}
                 className="datagrid__column datagrid__column-bg datagrid__column-value"
                 style={{
-                  height: (curDepth - 1) * rowHeight
+                  width: colWidth,
+                  height: curDepth * rowHeight,
+                  zIndex: col.freezeLeft ? 2 : undefined
                 }}
+                onClick={handleClickColumn}
+                onKeyDown={handleKeyDown}
+                data-sortkey={col.sortKey ? col.sortKey : col.key}
+                aria-sort={
+                  sortKey === col.key && sortOrder
+                    ? sortOrder === 'asc'
+                      ? 'ascending'
+                      : 'descending'
+                    : 'none'
+                }
               >
                 {col.label}
-              </div>
-              <div className="datagrid__columngroup__children" role="row">
-                {renderColumn(col.children, depth + 1)}
-              </div>
-            </div>
-          ) : (
-            <span
-              role="columnheader"
-              tabIndex={0}
-              className="datagrid__column datagrid__column-bg datagrid__column-value"
-              style={{
-                width: colWidth,
-                height: curDepth * rowHeight,
-                zIndex: col.freezeLeft ? 2 : undefined
-              }}
-              onClick={handleClickColumn}
-              onKeyDown={handleKeyDown}
-              data-sortkey={col.sortKey ? col.sortKey : col.key}
-              aria-sort={
-                sortKey === col.key && sortOrder
-                  ? sortOrder === 'asc'
-                    ? 'ascending'
-                    : 'descending'
-                  : 'none'
-              }
-            >
-              {col.label}
-              {sortKey === col.key && sortOrder && <DGSortHandler sortOrder={sortOrder} />}
-            </span>
-          )}
-        </div>
-      );
-    }
+                {sortKey === col.key && sortOrder && <DGSortHandler sortOrder={sortOrder} />}
+              </span>
+            )}
+          </div>
+        );
+      }
 
-    return renderedColumns;
-  };
+      return renderedColumns;
+    };
 
-  return (
-    <div className="datagrid__header">
-      <div ref={forkedRef} className="datagrid__header-pane">
-        <div
-          role="row"
-          className="datagrid__header-columns"
-          style={{
-            width: hasVerticalScroll ? rowWidth + 17 : rowWidth
-          }}
-        >
-          {renderColumn(columns, 0)}
-          {hasVerticalScroll && (
-            <div
-              className="datagrid__header-scrolls datagrid__column-bg"
-              style={{
-                lineHeight: `${columnDepth * rowHeight}px`,
-                width: 17,
-                height: columnDepth * rowHeight
-              }}
-            />
-          )}
+    return (
+      <div className="datagrid__header">
+        <div ref={forkedRef} className="datagrid__header-pane">
+          <div
+            role="row"
+            className="datagrid__header-columns"
+            style={{
+              width: hasVerticalScroll ? rowWidth + 17 : rowWidth
+            }}
+          >
+            {renderColumn(columns, 0)}
+            {hasVerticalScroll && (
+              <div
+                className="datagrid__header-scrolls datagrid__column-bg"
+                style={{
+                  lineHeight: `${columnDepth * rowHeight}px`,
+                  width: 17,
+                  height: columnDepth * rowHeight
+                }}
+              />
+            )}
+          </div>
         </div>
       </div>
-    </div>
-  );
-};
+    );
+  }
+);
 
 DGHeader.displayName = 'DGHeader';
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDGScrollContext } from '../context/DGScrollContext';
 
-const DGFreezeOverlay = ({ hasHorizontalScroll, freezeStyle, height }) => {
+const DGFreezeOverlay = React.memo(({ hasHorizontalScroll, freezeStyle, height }) => {
   const { left } = useDGScrollContext();
 
   if (left > 0 && hasHorizontalScroll) {
@@ -17,7 +17,7 @@ const DGFreezeOverlay = ({ hasHorizontalScroll, freezeStyle, height }) => {
   }
 
   return null;
-};
+});
 
 DGFreezeOverlay.displayName = 'DGFreezeOverlay';
 
