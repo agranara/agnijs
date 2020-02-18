@@ -64,7 +64,7 @@ const DGInitializer = ({
     sampleHeader.push(
       <th
         key={`${uid}-sample-${col.key}`}
-        style={{ padding: '0.5rem 1rem', whiteSpace: 'nowrap', borderWidth: 1, width }}
+        style={{ padding: '0.5rem 1.15rem', whiteSpace: 'nowrap', borderWidth: 1, width }}
       >
         {col.label}
       </th>
