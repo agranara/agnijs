@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.14](https://github.com/agranara/agnijs/compare/@agnijs/agni-ui@1.1.13...@agnijs/agni-ui@1.1.14) (2020-02-18)
+
+### Bug Fixes
+
+- **datagrid:** fix initializer not including scroll width prediction ([9b75948](https://github.com/agranara/agnijs/commit/9b759484cd4d52f6d5c7800e22a711487674cd7d))
+- **datagrid:** fix type definition does not sync with js ([8f06d34](https://github.com/agranara/agnijs/commit/8f06d34cbf35cfa00caa4562a4e88fa264a70a71))
+- **datagrid:** fix wrong implementation of V/H scroll ([067a4b9](https://github.com/agranara/agnijs/commit/067a4b970f29c414e0fb1c174233aa9462118b9c))
+- **menuitem:** fix overridden click handler from props ([f5214d2](https://github.com/agranara/agnijs/commit/f5214d248ba60cb4ecdf2b02c5e03d0972902862))
+- **spinner:** missing variantColor prop type definition ([51e4ce6](https://github.com/agranara/agnijs/commit/51e4ce62469ef4be5bad353286a9c3785f785f1c))
+
+### Features
+
+- **carousel:** added carousel component ([3606442](https://github.com/agranara/agnijs/commit/3606442561373651fee16318f5518beef74f7592))
+- **datagrid:** added DataGrid Component ([14f69ea](https://github.com/agranara/agnijs/commit/14f69ea230270cca48057433286db3f459a8cb1d))
+
 ## [1.1.13](https://github.com/agranara/agnijs/compare/@agnijs/agni-ui@1.1.12...@agnijs/agni-ui@1.1.13) (2020-02-12)
 
 ### Bug Fixes
