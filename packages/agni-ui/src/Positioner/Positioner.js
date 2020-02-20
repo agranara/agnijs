@@ -29,12 +29,6 @@ const Positioner = ({
 }) => {
   const popperRef = useRef(null);
 
-  // Did mount
-  useEffect(() => {
-    isOpen ? createPopperInstance() : destroyPopperInstance();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   // Will unmount
   useEffect(() => {
     return () => {
@@ -70,7 +64,7 @@ const Positioner = ({
 
   return (
     <Portal container={container}>
-      <AnimatePresence initial={false}>
+      <AnimatePresence initial={false} onExitComplete={handleAnimationComplete}>
         {isOpen && (
           <PseudoBox pos="absolute" width={0} height={0} top="-100%" left="-100%">
             <PseudoBox
@@ -90,7 +84,6 @@ const Positioner = ({
                 className={cn(['positioner', className])}
                 transition={{ ease: 'linear', duration }}
                 onAnimationStart={handleAnimationStart}
-                onAnimationComplete={handleAnimationComplete}
               >
                 {children}
               </motion.div>
