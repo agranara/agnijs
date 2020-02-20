@@ -1,6 +1,6 @@
 {
   "name": "@agnijs/agni-ui",
-  "version": "1.1.15",
+  "version": "1.1.16",
   "description": "Agranara UI Components",
   "keywords": [],
   "author": "Agranara <agranara.indonesia@gmail.com>",
@@ -41,13 +41,13 @@
     "react-dom": "^16.8.6"
   },
   "dependencies": {
-    "emotion-theming": "^10.0.27",
     "@popperjs/core": "2.0.6",
     "@styled-system/css": "^5.1.4",
     "@styled-system/should-forward-prop": "^5.1.4",
     "classnames": "2.2.6",
     "color": "3.1.2",
     "dayjs": "1.8.20",
+    "emotion-theming": "^10.0.27",
     "exenv": "^1.2.2",
     "fast-deep-equal": "^3.1.1",
     "framer-motion": "^1.8.4",

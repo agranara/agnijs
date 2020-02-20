@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.16](https://github.com/agranara/agnijs/compare/@agnijs/agni-ui@1.1.15...@agnijs/agni-ui@1.1.16) (2020-02-20)
+
+### Bug Fixes
+
+- **modal:** added modal component ([477d1a5](https://github.com/agranara/agnijs/commit/477d1a5faa79ca7f4d7ba13e91c4b1f9d885683d))
+
+### Features
+
+- **popup,modal:** base component Popup and Modal ([36f2b1c](https://github.com/agranara/agnijs/commit/36f2b1cc8d53b51ad8748293df72530e508b73d0))
+
 ## [1.1.15](https://github.com/agranara/agnijs/compare/@agnijs/agni-ui@1.1.14...@agnijs/agni-ui@1.1.15) (2020-02-18)
 
 **Note:** Version bump only for package @agnijs/agni-ui
