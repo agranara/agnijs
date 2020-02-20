@@ -24,6 +24,7 @@ export * from './InputRadio';
 export * from './InputText';
 export * from './LoadingPage';
 export * from './Menu';
+export * from './Modal';
 export * from './Nav';
 export * from './Pagination';
 export * from './Portal';
