@@ -107,7 +107,7 @@ interface BaseSizes {
   '64': string;
 }
 
-interface LargeSizes {
+export interface LargeSizes {
   full: string;
   '3xs': string;
   '2xs': string;
