@@ -12,16 +12,6 @@ function useTogglePositioner({
 }) {
   const prevOpen = useRef(initialOpen || false);
 
-  const savedOnOpen = useRef(onOpen);
-  useEffect(() => {
-    savedOnOpen.current = onOpen;
-  }, [onOpen]);
-
-  const savedOnClose = useRef(onClose);
-  useEffect(() => {
-    savedOnClose.current = onClose;
-  }, [onClose]);
-
   const savedGetIsOutside = useRef(getIsOutside);
   useEffect(() => {
     savedGetIsOutside.current = getIsOutside;
@@ -77,22 +67,22 @@ function useTogglePositioner({
       if (prevOpen.current !== newIsOpen) {
         if (newIsOpen) {
           registerOutsideClick();
-          setIsOpen(true);
 
-          if (savedOnOpen.current) savedOnOpen.current();
+          if (onOpen) onOpen();
+          setIsOpen(true);
 
           prevOpen.current = true;
         } else {
           unregisterOutsideClick();
-          setIsOpen(false);
 
-          if (savedOnClose.current) savedOnClose.current();
+          if (onClose) onClose();
+          setIsOpen(false);
 
           prevOpen.current = false;
         }
       }
     },
-    [registerOutsideClick, unregisterOutsideClick]
+    [onClose, onOpen, registerOutsideClick, unregisterOutsideClick]
   );
 
   return [isOpen, handleIsOpen];

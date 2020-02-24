@@ -1,15 +1,11 @@
 import React, { useRef, useEffect, useCallback } from 'react';
 import cn from 'classnames';
-import { popperGenerator, defaultModifiers } from '@popperjs/core/lib/popper-lite';
-import preventOverflow from '@popperjs/core/lib/modifiers/preventOverflow';
-import offset from '@popperjs/core/lib/modifiers/offset';
+import isEqual from 'fast-deep-equal/es6/react';
+import { createPopper } from '@popperjs/core';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Portal } from '../Portal';
 import { PseudoBox } from '../PseudoBox';
-
-const createPopper = popperGenerator({
-  defaultModifiers: [...defaultModifiers, preventOverflow, offset]
-});
+import { useComponentSize } from '../_hooks/useComponentSize';
 
 const Positioner = ({
   children,
@@ -28,6 +24,8 @@ const Positioner = ({
   ...rest
 }) => {
   const popperRef = useRef(null);
+  const triggerSize = useComponentSize(triggerRef);
+  const prevSize = useRef(null);
 
   // Will unmount
   useEffect(() => {
@@ -38,6 +36,16 @@ const Positioner = ({
       }
     };
   }, []);
+
+  useEffect(() => {
+    if (!isEqual(triggerSize, prevSize.current)) {
+      prevSize.current = triggerSize;
+
+      if (popperRef.current !== null) {
+        popperRef.current.update();
+      }
+    }
+  }, [triggerSize]);
 
   const createPopperInstance = useCallback(() => {
     popperRef.current = createPopper(triggerRef.current, innerRef.current, {
@@ -66,13 +74,21 @@ const Positioner = ({
     <Portal container={container}>
       <AnimatePresence initial={false} onExitComplete={handleAnimationComplete}>
         {isOpen && (
-          <PseudoBox pos="absolute" width={0} height={0} top="-100%" left="-100%">
+          <PseudoBox
+            className="positioner__wrapper"
+            pos="absolute"
+            width={0}
+            height={0}
+            top="-100%"
+            left="-100%"
+          >
             <PseudoBox
               bg="white"
               rounded="md"
               shadow="sm"
-              zIndex="dropdown"
+              zIndex="popover"
               borderWidth={1}
+              className={cn(['positioner', className])}
               py={1}
               {...rest}
               ref={innerRef}
@@ -81,7 +97,7 @@ const Positioner = ({
                 initial={initial}
                 animate={animate}
                 exit={exit}
-                className={cn(['positioner', className])}
+                className="positioner__content"
                 transition={{ ease: 'linear', duration }}
                 onAnimationStart={handleAnimationStart}
               >
