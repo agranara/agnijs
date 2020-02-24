@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.17](https://github.com/agranara/agnijs/compare/@agnijs/agni-ui@1.1.16...@agnijs/agni-ui@1.1.17) (2020-02-24)
+
+### Bug Fixes
+
+- **positioner:** fix z-index and update behaviour ([0a66ca8](https://github.com/agranara/agnijs/commit/0a66ca8345b0f81c462537e533e080cbc7f3a9a5))
+
 ## [1.1.16](https://github.com/agranara/agnijs/compare/@agnijs/agni-ui@1.1.15...@agnijs/agni-ui@1.1.16) (2020-02-20)
 
 ### Bug Fixes
