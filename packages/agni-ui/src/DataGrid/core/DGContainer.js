@@ -27,6 +27,7 @@ const DGContainer = ({ sampleStart, sampleEnd, className }) => {
     isHeadless,
     hasHorizontalScroll,
     hasVerticalScroll,
+    scrollbarSize,
     emptyPlaceholder,
     cellComponent,
     rowComponent,
@@ -54,12 +55,14 @@ const DGContainer = ({ sampleStart, sampleEnd, className }) => {
               columnDepth={columnDepth}
               rowWidth={rowWidth}
               rowHeight={rowHeight}
+              scrollbarSize={scrollbarSize}
             />
           )}
           <DGFreezeOverlay
             hasHorizontalScroll={hasHorizontalScroll}
             freezeStyle={columnStyle[columnFreeze]}
             height={containerHeight}
+            scrollbarSize={scrollbarSize}
           />
           {itemCount > 0 ? (
             <DGContent

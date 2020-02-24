@@ -1,6 +1,7 @@
 import React, { useLayoutEffect, useRef, Fragment, useEffect } from 'react';
 import { get } from '../../_utils/get';
 import { Spinner } from '../../Spinner';
+import { getScrollbarSize } from '../../_utils/getScrollbarSize';
 
 const DGInitializer = ({
   uid,
@@ -17,6 +18,7 @@ const DGInitializer = ({
   const columnRefs = useRef([]);
 
   const hasVerticalScrollRef = useRef(data.length * rowHeight > height);
+  const scrollbarSizeRef = useRef(0);
 
   useEffect(() => {
     hasVerticalScrollRef.current = data.length * rowHeight > height;
@@ -26,6 +28,8 @@ const DGInitializer = ({
   // set width for columns from loaded sample data
   useLayoutEffect(() => {
     let totalWidth = 0;
+    scrollbarSizeRef.current = getScrollbarSize();
+
     for (let i = 0; i < columnRefs.current.length; i++) {
       const sampleCell = columnRefs.current[i];
 
@@ -43,7 +47,8 @@ const DGInitializer = ({
       isReady: true,
       hasHorizontalScroll: hasScroll,
       hasVerticalScroll: data.length * rowHeight > height,
-      rowWidth: totalWidth
+      rowWidth: totalWidth,
+      scrollbarSize: scrollbarSizeRef.current
     }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data.length, height, rowHeight, setMeta]);
@@ -102,7 +107,14 @@ const DGInitializer = ({
 
     if (hasVerticalScrollRef.current) {
       cells.push(
-        <td key={`${uid}-sample-row-scroll-${i}`} style={{ width: 17 }}>
+        <td
+          key={`${uid}-sample-row-scroll-${i}`}
+          style={{
+            width: scrollbarSizeRef.current,
+            minWidth: scrollbarSizeRef.current,
+            maxWidth: scrollbarSizeRef.current
+          }}
+        >
           &nbsp;
         </td>
       );
@@ -118,7 +130,17 @@ const DGInitializer = ({
           <thead>
             <tr>
               {sampleHeader}
-              {hasVerticalScrollRef.current && <th style={{ width: 17 }}>&nbsp;</th>}
+              {hasVerticalScrollRef.current && (
+                <th
+                  style={{
+                    width: scrollbarSizeRef.current,
+                    minWidth: scrollbarSizeRef.current,
+                    maxWidth: scrollbarSizeRef.current
+                  }}
+                >
+                  &nbsp;
+                </th>
+              )}
             </tr>
           </thead>
           <tbody>{sampleData}</tbody>

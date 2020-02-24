@@ -37,65 +37,128 @@ export type DataGridCellProps = {
   style?: React.CSSProperties;
   role?: string;
   'aria-colindex'?: string;
+  className?: string;
 };
 
 export type DataGridColumnType = {
-  /** Key column data to render. Required */
+  /**
+   * Key column data to render. Required
+   */
   key: string;
-  /** Label in table header. */
+  /**
+   * Label in table header.
+   */
   label?: string;
-  /** Sub-column group in header */
+  /**
+   * Sub-column group in header
+   */
   children?: DataGridColumnType[];
-  /** Freeze left. When freeze left is enabled, make sure it puts on higher order of columns */
+  /**
+   * Freeze left. When freeze left is enabled
+   * make sure it puts on higher order of columns
+   */
   freezeLeft?: boolean;
-  /** Set column width for header and cell */
+  /**
+   * Set column width for header and cell
+   */
   width?: number;
-  /** Set column width for header and cell by function */
+  /**
+   * Set column width for header and cell by function
+   */
   renderWidth?: (prop: RenderWidthProp) => number;
-  /** Custom render value function */
+  /**
+   * Custom render value function
+   */
   renderCellValue?: (prop: RenderCellValueProp) => JSX.Element | React.ReactNode;
-  /** Cell Style Object */
+  /**
+   * Header column style css properties
+   */
+  headerCellStyle?: React.CSSProperties;
+  /**
+   * Cell style css properties
+   */
   cellStyle?: React.CSSProperties;
-  /** Custom style based on row record */
+  /**
+   * Custom style css properties based on row record
+   */
   renderCellStyle?: (prop: RenderCellValueProp) => React.CSSProperties;
-  /** Sort key that different with provided keys. */
+  /**
+   * Sort key that different with provided key.
+   */
   sortKey?: string;
 };
 
 type DataGridProps = {
-  /** Data source in array. Required */
+  /**
+   * Data source in array. Required
+   */
   data: any[];
-  /** Columns for datagrid. Required */
+  /**
+   * Columns for datagrid. Required
+   */
   columns: DataGridColumnType[];
-  /** Get row style based on datum, index cell and index row */
+  /**
+   * Get row style based on datum, index cell and index row
+   */
   getRowDatumStyle?: (prop: RowDatumStyleType) => React.CSSProperties;
-  /** Sort key based on provided columns */
+  /**
+   * Sort key based on provided columns
+   */
   sortKey?: string;
-  /** Sort order. For rendering icon up or down inside */
+  /**
+   * Sort order. For rendering icon up or down inside
+   */
   sortOrder?: ColumnSortType;
-  /** Handle sort change */
+  /**
+   * Handle sort change
+   */
   onSortChange?: (sortKey: string, sortOrder: ColumnSortType) => void;
-  /** Row height or each datum height in number. Default: 36 */
+  /**
+   * Row height or each datum height in number. Default: 36
+   */
   rowHeight?: number;
-  /** Data grid container height */
+  /**
+   * Data grid container height
+   */
   height?: number;
-  /** Data grid container height calculated by multiply this value and row height. Default: 10 */
+  /**
+   * Data grid container height calculated
+   * by multiply this value and row height. Default: 10
+   */
   heightByItem?: number;
-  /** Sample start index to make autosize columns during initial render. Default: 0 */
+  /**
+   * Sample start index to make autosize columns
+   * during initial render. Default: 0
+   */
   sampleStart?: number;
-  /** Sample end index to make autosize columns during initial render. Default: 2 */
+  /**
+   * Sample end index to make autosize columns
+   * during initial render. Default: 2
+   */
   sampleEnd?: number;
-  /** Initial scroll offset top. Default: 0 */
+  /**
+   * Initial scroll offset top. Default: 0
+   */
   initialOffsetTop?: number;
-  /** Initial scroll offset left. Default: 0 */
+  /**
+   * Initial scroll offset left. Default: 0
+   */
   initialOffsetLeft?: number;
-  /** Empty data placeholder. Default: 'No data found' */
+  /**
+   * Empty data placeholder. Default: 'No data found'
+   */
   emptyData?: React.ReactNode;
-  /** Is headless. No header rendered. Default: false */
+  /**
+   * Is headless, no header rendered. Default: false
+   */
   isHeadless?: boolean;
-  /** Custom row component. Default: 'div' */
+  /**
+   * Custom row component. Default: 'div'
+   */
   rowComponent?: React.FC<DataGridRowProps>;
-  /** Custom cell component. Default: 'div' */
+  /**
+   * Custom cell component. Default: 'div'
+   */
   cellComponent?: React.FC<DataGridCellProps>;
 };
 

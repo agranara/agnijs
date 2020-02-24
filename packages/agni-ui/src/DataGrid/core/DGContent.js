@@ -170,7 +170,7 @@ const DGContent = React.memo(
       }
 
       if (!cellStyleRef.current[indexRow][indexCell]) {
-        const { left, width: cellWidth } = cache[indexCell];
+        const { left: cellLeft, width: cellWidth } = cache[indexCell];
 
         const columnStyleProp = column && column.cellStyle ? column.cellStyle : {};
 
@@ -182,9 +182,10 @@ const DGContent = React.memo(
         cellStyleRef.current[indexRow][indexCell] = {
           ...columnStyleProp,
           ...columnStyleFunc,
-          left,
+          left: cellLeft,
           width: cellWidth,
-          height: rowHeight
+          height: rowHeight,
+          zIndex: column.freezeLeft ? 2 : undefined
         };
       }
 
@@ -266,8 +267,7 @@ const DGContent = React.memo(
               'aria-colindex': j,
               style: {
                 ...cachedCellStyle,
-                left: col.freezeLeft ? cachedCellStyle.left + left : cachedCellStyle.left,
-                zIndex: col.freezeLeft ? 2 : undefined
+                transform: col.freezeLeft ? `translateX(${left}px) translateZ(0)` : undefined
               }
             },
             cachedValue

@@ -8,7 +8,16 @@ import { DGSortHandler } from './DGSortHandler';
 /////////////////////////////////////////////////
 
 const DGHeader = React.memo(
-  ({ uid, hasVerticalScroll, columns, columnStyle, rowWidth, columnDepth, rowHeight }) => {
+  ({
+    uid,
+    hasVerticalScroll,
+    columns,
+    columnStyle,
+    rowWidth,
+    columnDepth,
+    rowHeight,
+    scrollbarSize
+  }) => {
     const ref = useRef();
 
     const { left, headerRef } = useDGScrollContext();
@@ -73,6 +82,7 @@ const DGHeader = React.memo(
                 <div
                   className="datagrid__column datagrid__column-bg datagrid__column-value"
                   style={{
+                    ...col.headerCellStyle,
                     height: (curDepth - 1) * rowHeight
                   }}
                 >
@@ -88,6 +98,7 @@ const DGHeader = React.memo(
                 tabIndex={0}
                 className="datagrid__column datagrid__column-bg datagrid__column-value"
                 style={{
+                  ...col.headerCellStyle,
                   width: colWidth,
                   height: curDepth * rowHeight,
                   zIndex: col.freezeLeft ? 2 : undefined
@@ -121,7 +132,7 @@ const DGHeader = React.memo(
             role="row"
             className="datagrid__header-columns"
             style={{
-              width: hasVerticalScroll ? rowWidth + 17 : rowWidth
+              width: hasVerticalScroll ? rowWidth + scrollbarSize : rowWidth
             }}
           >
             {renderColumn(columns, 0)}
@@ -130,7 +141,7 @@ const DGHeader = React.memo(
                 className="datagrid__header-scrolls datagrid__column-bg"
                 style={{
                   lineHeight: `${columnDepth * rowHeight}px`,
-                  width: 17,
+                  width: scrollbarSize,
                   height: columnDepth * rowHeight
                 }}
               />

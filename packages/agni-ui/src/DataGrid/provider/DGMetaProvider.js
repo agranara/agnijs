@@ -34,7 +34,8 @@ const DGMetaProvider = ({
     isReady: false,
     hasHorizontalScroll: false,
     hasVerticalScroll: false,
-    rowWidth: 0
+    rowWidth: 0,
+    scrollbarSize: 17
   }));
 
   const memoizeData = useMemo(() => {
@@ -57,7 +58,7 @@ const DGMetaProvider = ({
     if (height) return height;
 
     const addItem = !isHeadless ? getArrayDepth(columns) : 0;
-    const addPixel = metaState.hasHorizontalScroll ? 17 : 0;
+    const addPixel = metaState.hasHorizontalScroll ? metaState.scrollbarSize : 0;
 
     const res = (Math.min(heightByItem || 10, data.length) + addItem) * rowHeight + addPixel;
 
@@ -76,6 +77,7 @@ const DGMetaProvider = ({
     hasHorizontalScroll: metaState.hasHorizontalScroll,
     hasVerticalScroll: metaState.hasVerticalScroll,
     rowWidth: metaState.rowWidth,
+    scrollbarSize: metaState.scrollbarSize,
     rowHeight,
     getRowDatumStyle,
     cellComponent,
