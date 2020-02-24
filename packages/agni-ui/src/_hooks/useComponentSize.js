@@ -4,7 +4,8 @@
  * Original resource: https://github.com/rehooks/component-size/blob/master/index.js
  */
 
-import { useState, useCallback, useLayoutEffect } from 'react';
+import { useState, useLayoutEffect } from 'react';
+import isEqual from 'fast-deep-equal/es6/react';
 
 function getSize(el) {
   if (!el) {
@@ -21,21 +22,28 @@ function getSize(el) {
 }
 
 function useComponentSize(ref) {
-  const [size, setSize] = useState(() => getSize(ref ? ref.current : {}));
-
-  const handleResize = useCallback(
-    function handleResize() {
-      if (ref.current) {
-        setSize(getSize(ref.current));
-      }
-    },
-    [ref]
-  );
+  const [size, setSize] = useState(() => {
+    return ref ? getSize(ref.current) : getSize();
+  });
 
   useLayoutEffect(() => {
     if (!ref.current) {
       return;
     }
+
+    const handleResize = () => {
+      if (ref.current) {
+        setSize(oldSize => {
+          const result = getSize(ref.current);
+          if (isEqual(oldSize, result)) return oldSize;
+
+          return {
+            ...oldSize,
+            ...getSize(ref.current)
+          };
+        });
+      }
+    };
 
     const node = ref.current;
 
@@ -58,9 +66,9 @@ function useComponentSize(ref) {
         window.removeEventListener('resize', handleResize);
       };
     }
-  }, [handleResize, ref]);
+  }, [ref]);
 
-  return size;
+  return [size.width, size.height];
 }
 
 export { useComponentSize };

@@ -25,7 +25,7 @@ const DGMetaProvider = ({
   const columnStyleRef = useRef({});
 
   // Observe width change for data grid
-  const { width: containerWidth } = useComponentSize(containerRef);
+  const [containerWidth] = useComponentSize(containerRef);
 
   // Since we using clone to measure size of columns and cells
   // setup flag to determine ready or not to be rendered for real

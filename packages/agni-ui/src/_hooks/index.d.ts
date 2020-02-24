@@ -5,12 +5,10 @@ export const useAutoId: (fallback?: string | null) => string | undefined;
 
 ////////////////////////////////////////////
 
-type ComponentSizeResultType = {
-  width?: number;
-  height?: number;
-};
-
-export function useComponentSize(ref: React.Ref<any>): ComponentSizeResultType;
+/**
+ * Use component size to get width and height
+ */
+export function useComponentSize(ref: React.Ref<any>): [number, number];
 
 ////////////////////////////////////////////
 

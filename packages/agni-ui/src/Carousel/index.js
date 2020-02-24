@@ -245,7 +245,7 @@ const Carousel = ({
 }) => {
   const carouselRef = useRef(null);
 
-  const { width } = useComponentSize(carouselRef);
+  const [width] = useComponentSize(carouselRef);
 
   const [height, setHeight] = useState(() => '100%');
 
