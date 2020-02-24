@@ -12,6 +12,7 @@ const SelectContainer = forwardRef(({ className, children }, forwardedRef) => {
     isContainerFocus,
     onContainerFocus,
     disabled,
+    isInteractive,
     readOnly,
     name
   } = useSelectContext();
@@ -21,6 +22,7 @@ const SelectContainer = forwardRef(({ className, children }, forwardedRef) => {
       ref={forwardedRef}
       {...baseProps}
       {...boxedStyle({ theme, focusBorderColor: 'primary.500', errorBorderColor: 'danger.500' })}
+      {...(!isInteractive ? { _focus: {} } : {})}
       d="block"
       pl={inputSize.px}
       pr="42px"

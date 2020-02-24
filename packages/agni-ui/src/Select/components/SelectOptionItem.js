@@ -20,7 +20,8 @@ const SelectOptionItem = ({ index, style }) => {
   const optionValue = option[valueKey];
 
   const isFocused = index === cursor;
-  const isActive = isMulti ? value.indexOf(optionValue) > -1 : value === optionValue;
+  const isActive =
+    isMulti && Array.isArray(value) ? value.indexOf(optionValue) > -1 : value === optionValue;
 
   const handleClick = useCallback(
     ev => {
