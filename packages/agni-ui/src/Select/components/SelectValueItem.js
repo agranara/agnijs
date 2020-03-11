@@ -13,7 +13,7 @@ const SelectValueItem = ({ children, value, hasExit }) => {
   return (
     <motion.li
       className="select__value-item"
-      initial={{ opacity: 0.4, scale: 0.9 }}
+      initial={hasExit && { opacity: 0.4, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
       exit={hasExit ? { opacity: 0, scale: 0.9 } : undefined}
       transition={{ duration: 0.15 }}
@@ -64,22 +64,3 @@ const SelectValueItem = ({ children, value, hasExit }) => {
 SelectValueItem.displayName = 'SelectValueItem';
 
 export { SelectValueItem };
-
-/*
-
-    <PseudoBox
-      className="select__value-item"
-      as="li"
-      pos="relative"
-      width="auto"
-      float="left"
-      mr={1}
-      // lineHeight={`calc(${inputSize.lineHeight} - 2px)`}
-      fontSize={inputSize.fontSize}
-      userSelect="none"
-      mt="6px"
-      {...(isMulti && multiStyle)}
-    >
-    </PseudoBox>
-
-*/

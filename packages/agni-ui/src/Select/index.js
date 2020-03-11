@@ -1,4 +1,5 @@
 import React, { useMemo, forwardRef, useRef, useState, useEffect, useCallback, memo } from 'react';
+import isEqual from 'fast-deep-equal/es6/react';
 import { get } from '../_utils/get';
 import { Positioner, useTogglePositioner } from '../Positioner';
 import { useForkedRef } from '../_hooks/useForkedRef';
@@ -50,7 +51,7 @@ const Select = memo(
     ) => {
       const uid = useAutoId(id);
       const isControlled = useRef(typeof onChange === 'function');
-      const searchRef = useRef();
+      const searchRef = useRef(null);
       const dropdownRef = useRef(null);
 
       const selectRef = useRef(null);
@@ -60,6 +61,7 @@ const Select = memo(
 
       const prevNextValue = useRef(valueProp || null);
       const prevNextSearch = useRef('');
+      const prevPropOptions = useRef(options);
 
       const [search, setSearch] = useState('');
       const [cursor, setCursor] = useState(null);
@@ -93,6 +95,14 @@ const Select = memo(
       const [filterOptions, setFilterOptions] = useState(() => {
         return options || [];
       });
+
+      // Keep options in sync with props
+      useEffect(() => {
+        if (!isEqual(options, prevPropOptions.current)) {
+          prevPropOptions.current = options;
+          setFilterOptions(options);
+        }
+      }, [options]);
 
       const setFilterOnSearch = useCallback(
         searchValue => {
@@ -138,8 +148,6 @@ const Select = memo(
           prevNextValue.current = valueProp;
         }
       }, [valueProp]);
-
-      /** Handlers **/
 
       // Update value of select
       const updateValue = nextValue => {
