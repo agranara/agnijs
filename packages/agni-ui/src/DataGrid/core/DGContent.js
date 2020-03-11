@@ -17,8 +17,7 @@ const DGContent = React.memo(
     rowComponent,
     cellComponent,
     getRowDatumStyle,
-    isHeadless,
-    columnDepth,
+    contentOffsetTop,
     columnFlat,
     columnStyle,
     rowHeight,
@@ -219,8 +218,6 @@ const DGContent = React.memo(
         Math.max(0, Math.min(itemCount - 1, end + overscanForward))
       ];
     };
-
-    const contentOffsetTop = !isHeadless ? columnDepth * rowHeight : 0;
 
     const [renderStartIndex, renderEndIndex] = getRenderRange();
 

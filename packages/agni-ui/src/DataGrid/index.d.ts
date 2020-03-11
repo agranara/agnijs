@@ -153,6 +153,14 @@ type DataGridProps = {
    */
   isHeadless?: boolean;
   /**
+   * Is content loading. Add loading indicator if true. Default: false
+   */
+  isLoading?: boolean;
+  /**
+   * Loading data placeholder. Default: spinner with text
+   */
+  loadingData?: React.ReactNode;
+  /**
    * Custom row component. Default: 'div'
    */
   rowComponent?: React.FC<DataGridRowProps>;
@@ -162,4 +170,4 @@ type DataGridProps = {
   cellComponent?: React.FC<DataGridCellProps>;
 };
 
-export const DataGrid: React.FC<DataGridProps>;
+export const DataGrid: React.NamedExoticComponent<DataGridProps>;

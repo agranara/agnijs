@@ -1,8 +1,16 @@
-import React, { useRef, useState, useMemo } from 'react';
+import React, { useRef, useState, useMemo, useEffect } from 'react';
 import { DGMetaContext } from '../context/DGMetaContext';
 import { useAutoId } from '../../_hooks/useAutoId';
 import { useComponentSize } from '../../_hooks/useComponentSize';
 import { getArrayDepth, getFlatColumns, getLastFreezeIndex } from '../util';
+
+const initialMeta = {
+  isReady: false,
+  hasHorizontalScroll: false,
+  hasVerticalScroll: false,
+  rowWidth: 0,
+  scrollbarSize: 17
+};
 
 const DGMetaProvider = ({
   children,
@@ -15,12 +23,15 @@ const DGMetaProvider = ({
   emptyData: emptyPlaceholder,
   getRowDatumStyle,
   rowComponent,
-  cellComponent
+  cellComponent,
+  isLoading,
+  loadingData
 }) => {
   const uid = useAutoId();
 
   const containerRef = useRef(null);
   const cachedContainerHeight = useRef(0);
+  const prevLoading = useRef(isLoading);
 
   const columnStyleRef = useRef({});
 
@@ -30,29 +41,20 @@ const DGMetaProvider = ({
   // Since we using clone to measure size of columns and cells
   // setup flag to determine ready or not to be rendered for real
   // and determine if grid content has scroll
-  const [metaState, setMeta] = useState(() => ({
-    isReady: false,
-    hasHorizontalScroll: false,
-    hasVerticalScroll: false,
-    rowWidth: 0,
-    scrollbarSize: 17
-  }));
+  const [metaState, setMeta] = useState(() => initialMeta);
 
-  const memoizeData = useMemo(() => {
-    return {
-      data,
-      itemCount: data.length
-    };
-  }, [data]);
-
-  const memoizedColumn = useMemo(() => {
-    return {
-      columns,
-      columnDepth: getArrayDepth(columns),
-      columnFlat: getFlatColumns(columns),
-      columnFreeze: getLastFreezeIndex(columns)
-    };
-  }, [columns]);
+  // Listen to `isLoading` props, set `isReady` back to false
+  // when isLoading is true
+  // triggering 'isReady' to true triggered from `DGInitializer`
+  useEffect(() => {
+    if (isLoading !== prevLoading.current) {
+      prevLoading.current = isLoading;
+      setMeta(oldMeta => ({
+        ...oldMeta,
+        ...initialMeta
+      }));
+    }
+  }, [isLoading]);
 
   const getContainerHeight = () => {
     if (height) return height;
@@ -70,33 +72,44 @@ const DGMetaProvider = ({
 
   const containerHeight = getContainerHeight();
 
-  const context = {
-    data: memoizeData.data,
-    itemCount: memoizeData.itemCount,
-    isReady: metaState.isReady,
-    hasHorizontalScroll: metaState.hasHorizontalScroll,
-    hasVerticalScroll: metaState.hasVerticalScroll,
-    rowWidth: metaState.rowWidth,
-    scrollbarSize: metaState.scrollbarSize,
-    rowHeight,
-    getRowDatumStyle,
-    cellComponent,
-    rowComponent,
-    columns: memoizedColumn.columns,
-    columnFlat: memoizedColumn.columnFlat,
-    columnFreeze: memoizedColumn.columnFreeze,
-    columnDepth: memoizedColumn.columnDepth,
-    columnStyle: columnStyleRef.current,
-    containerWidth,
-    containerHeight,
-    containerRef,
-    setMeta,
-    uid,
-    isHeadless,
-    emptyPlaceholder
-  };
+  // Memoize recursive function
+  const columnFlat = useMemo(() => {
+    return getFlatColumns(columns);
+  }, [columns]);
 
-  return <DGMetaContext.Provider value={context}>{children}</DGMetaContext.Provider>;
+  return (
+    <DGMetaContext.Provider
+      value={{
+        data,
+        itemCount: data.length,
+        isReady: metaState.isReady,
+        hasHorizontalScroll: metaState.hasHorizontalScroll,
+        hasVerticalScroll: metaState.hasVerticalScroll,
+        rowWidth: metaState.rowWidth,
+        scrollbarSize: metaState.scrollbarSize,
+        rowHeight,
+        getRowDatumStyle,
+        cellComponent,
+        rowComponent,
+        columns,
+        columnDepth: getArrayDepth(columns),
+        columnFlat,
+        columnFreeze: getLastFreezeIndex(columns),
+        columnStyle: columnStyleRef.current,
+        containerWidth,
+        containerHeight,
+        containerRef,
+        setMeta,
+        uid,
+        isHeadless,
+        emptyPlaceholder,
+        isLoading,
+        loadingData
+      }}
+    >
+      {children}
+    </DGMetaContext.Provider>
+  );
 };
 
 DGMetaProvider.displayName = 'DGMetaProvider';
