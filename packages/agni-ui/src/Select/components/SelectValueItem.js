@@ -1,14 +1,15 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core';
+import { memo } from 'react';
 import { motion } from 'framer-motion';
 import { FiX } from 'react-icons/fi';
 import { PseudoBox } from '../../PseudoBox';
-import { useSelectContext } from '../SelectContext';
+import { useSelectMetaContext } from '../SelectMetaContext';
 import { useUiTheme } from '../../UiProvider/hooks/useUiTheme';
 
-const SelectValueItem = ({ children, value, hasExit }) => {
+const SelectValueItem = memo(({ children, value, hasExit }) => {
   const theme = useUiTheme();
-  const { inputSize, isMulti, handleClearMultiItem } = useSelectContext();
+  const { inputSize, isMulti, handleClearMultiItem } = useSelectMetaContext();
 
   return (
     <motion.li
@@ -59,8 +60,9 @@ const SelectValueItem = ({ children, value, hasExit }) => {
       )}
     </motion.li>
   );
-};
+});
 
 SelectValueItem.displayName = 'SelectValueItem';
+SelectValueItem.whyDidYouRender = true;
 
 export { SelectValueItem };

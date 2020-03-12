@@ -1,19 +1,12 @@
 import React, { useCallback } from 'react';
 import cn from 'classnames';
-import { useSelectContext } from '../SelectContext';
 import { PseudoBox } from '../../PseudoBox';
+import { useSelectContext } from '../SelectContext';
+import { useSelectMetaContext } from '../SelectMetaContext';
 
 const SelectOptionItem = ({ index, style }) => {
-  const {
-    inputSize,
-    options,
-    isMulti,
-    cursor,
-    value,
-    valueKey,
-    labelKey,
-    handleClickItem
-  } = useSelectContext();
+  const { inputSize, isMulti, valueKey, labelKey, handleClickItem } = useSelectMetaContext();
+  const { cursor, value, options } = useSelectContext();
 
   const option = options[index];
   const optionLabel = option[labelKey];

@@ -1,10 +1,7 @@
 import React from 'react';
 import { PseudoBox } from '../../PseudoBox';
-import { useSelectContext } from '../SelectContext';
 
-const SelectNotFound = ({ width, children }) => {
-  const { inputSize } = useSelectContext();
-
+const SelectNotFound = ({ width, children, inputSize }) => {
   return (
     <PseudoBox
       className="select__not-found"

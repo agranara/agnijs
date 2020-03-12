@@ -1,8 +1,8 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, memo } from 'react';
 import { FixedSizeList } from 'react-window';
 import { SelectOptionItem } from './SelectOptionItem';
 
-const SelectOptionList = ({ width, height, maxItemShown, cursor, inputSize, options }) => {
+const SelectOptionList = memo(({ width, height, maxItemShown, cursor, inputSize, options }) => {
   const listRef = useRef();
 
   useEffect(() => {
@@ -32,7 +32,7 @@ const SelectOptionList = ({ width, height, maxItemShown, cursor, inputSize, opti
       {SelectOptionItem}
     </FixedSizeList>
   );
-};
+});
 
 SelectOptionList.displayName = 'SelectOptionList';
 

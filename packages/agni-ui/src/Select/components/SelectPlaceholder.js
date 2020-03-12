@@ -1,10 +1,7 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { PseudoBox } from '../../PseudoBox';
-import { useSelectContext } from '../SelectContext';
 
-const SelectPlaceholder = ({ children }) => {
-  const { hasValueOrSearch, inputSize } = useSelectContext();
-
+const SelectPlaceholder = memo(({ hasValueOrSearch, inputSize, placeholder }) => {
   return (
     <PseudoBox
       lineHeight={`calc(${inputSize.lineHeight} - 2px)`}
@@ -15,10 +12,10 @@ const SelectPlaceholder = ({ children }) => {
       color="gray.500"
       d={hasValueOrSearch ? 'none' : undefined}
     >
-      {children}
+      {placeholder}
     </PseudoBox>
   );
-};
+});
 
 SelectPlaceholder.displayName = 'SelectPlaceholder';
 

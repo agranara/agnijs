@@ -1,13 +1,14 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { FiX, FiChevronDown } from 'react-icons/fi';
 import { PseudoBox } from '../../PseudoBox';
-import { useSelectContext } from '../SelectContext';
 import { Button } from '../../Button';
 import { useUiTheme } from '../../UiProvider/hooks/useUiTheme';
+import { useSelectMetaContext } from '../SelectMetaContext';
 
-const SelectControl = () => {
+const SelectControl = memo(() => {
   const theme = useUiTheme();
-  const { inputSize, hasValue, isInteractive, isClearable, handleClear } = useSelectContext();
+
+  const { inputSize, hasValue, isInteractive, isClearable, handleClear } = useSelectMetaContext();
 
   return (
     <PseudoBox
@@ -38,7 +39,7 @@ const SelectControl = () => {
       )}
     </PseudoBox>
   );
-};
+});
 
 SelectControl.displayName = 'SelectControl';
 
