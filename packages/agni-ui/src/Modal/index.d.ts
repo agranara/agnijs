@@ -1,7 +1,7 @@
-import { LargeSizes } from './../theme';
 import { PseudoBoxProps } from '../PseudoBox';
 import { PopupProps } from '../Popup';
 import { ButtonProps } from '../Button';
+import { LargeSizes } from './../theme';
 
 export interface IModalProps {
   /**
@@ -38,7 +38,11 @@ export interface IModalProps {
   /**
    * Modal size variant.
    */
-  size?: LargeSizes;
+  size?: keyof LargeSizes;
+  /**
+   * Modal max width in pixel
+   */
+  maxWidth?: number;
 }
 
 export type ModalProps = IModalProps & Omit<PseudoBoxProps, 'size'>;
