@@ -91,9 +91,10 @@ const Toast = ({
       exit={alertExit}
       my={1}
       variant={themeVariant}
-      children={children}
       {...(onClick ? clickProps : {})}
-    />
+    >
+      {children}
+    </BaseAlert>
   );
 };
 

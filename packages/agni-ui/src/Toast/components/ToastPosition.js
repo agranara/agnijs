@@ -52,8 +52,9 @@ const ToastPosition = ({ placement, vertical, horizontal, toasts, unregisterToas
               closeable={toast.closeable}
               unregisterToast={unregisterToast}
               placement={placement}
-              children={toast.children}
-            />
+            >
+              {toast.children}
+            </Toast>
           );
         })}
       </AnimatePresence>
