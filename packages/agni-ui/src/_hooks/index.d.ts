@@ -8,7 +8,14 @@ export const useAutoId: (fallback?: string | null) => string | undefined;
 /**
  * Use component size to get width and height
  */
-export function useComponentSize(ref: React.Ref<any>): [number, number];
+type ComponentSizeType = { width?: number; height?: number };
+export function useComponentSize<T extends HTMLElement = HTMLElement>(
+  args: HTMLElement | (() => HTMLElement) | null
+): [ComponentSizeType];
+export function useComponentSize<T extends HTMLElement = HTMLElement>(): [
+  ComponentSizeType,
+  React.MutableRefObject<T>
+];
 
 ////////////////////////////////////////////
 
@@ -16,9 +23,7 @@ type UseDebounceResult<T> = [T, () => void, () => void];
 
 interface UseDebounceOption {
   delay: number;
-  maxWait?: number;
-  leading?: boolean;
-  trailing?: boolean;
+  deps?: any[];
 }
 
 interface UseDebounceCbProp<T> extends UseDebounceOption {
@@ -30,7 +35,6 @@ export function useDebounceCallback<T>(prop: UseDebounceCbProp<T>): UseDebounceR
 
 interface UseDebounceValueProp<T> extends UseDebounceOption {
   value: T;
-  equalityFn?: (prev: T, next: T) => boolean;
 }
 
 export function useDebounceValue<T>(prop: UseDebounceValueProp<T>): UseDebounceResult<T>;
