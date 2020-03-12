@@ -1,0 +1,12 @@
+export { default as IconFileDoc } from './Doc';
+export { default as IconFileFolderBack } from './FolderBack';
+export { default as IconFileFolderClosed } from './FolderClosed';
+export { default as IconFileFolderOpened } from './FolderOpened';
+export { default as IconFileJpg } from './Jpg';
+export { default as IconFileMp3 } from './Mp3';
+export { default as IconFileMp4 } from './Mp4';
+export { default as IconFilePdf } from './Pdf';
+export { default as IconFilePpt } from './Ppt';
+export { default as IconFileUnknown } from './Unknown';
+export { default as IconFileXls } from './Xls';
+export { default as IconFileZip } from './Zip';

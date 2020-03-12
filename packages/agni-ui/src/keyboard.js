@@ -3,7 +3,7 @@
  *
  * based on https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key/Key_Values
  */
-export const isKeyboardKey = (event, name) => {
+export function isKeyboardKey(event, name) {
   if (!event.key) return;
 
   if (name === 'ArrowUp') {
@@ -27,6 +27,9 @@ export const isKeyboardKey = (event, name) => {
   if (name === 'Backspace') {
     return event.key === 'Backspace';
   }
+  if (name === 'Space') {
+    return event.key === 'Spacebar' || event.key === ' ';
+  }
 
   return event.key === name;
-};
+}
