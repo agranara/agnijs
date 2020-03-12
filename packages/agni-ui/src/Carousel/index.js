@@ -243,9 +243,7 @@ const Carousel = ({
   placement = 'bottom',
   ...restProps
 }) => {
-  const carouselRef = useRef(null);
-
-  const [width] = useComponentSize(carouselRef);
+  const [{ width }, carouselRef] = useComponentSize();
 
   const [height, setHeight] = useState(() => '100%');
 

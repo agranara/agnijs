@@ -1,74 +1,49 @@
 /**
- * Thanks to rehooks
+ * Thanks to umijs/hooks
  *
- * Original resource: https://github.com/rehooks/component-size/blob/master/index.js
+ * Original resource:
+ * https://github.com/umijs/hooks/blob/master/packages/hooks/src/useSize/index.ts
  */
+import { useState, useRef, useLayoutEffect } from 'react';
+import ResizeObserver from 'resize-observer-polyfill';
 
-import { useState, useLayoutEffect } from 'react';
-import isEqual from 'fast-deep-equal/es6/react';
-
-function getSize(el) {
-  if (!el) {
+export function useComponentSize(...args) {
+  const hasPassedInElement = args.length === 1;
+  const arg = useRef(args[0]);
+  [arg.current] = args;
+  const element = useRef();
+  const [state, setState] = useState(() => {
+    const initDOM = typeof arg.current === 'function' ? arg.current() : arg.current;
     return {
-      width: 0,
-      height: 0
+      width: (initDOM || {}).clientWidth,
+      height: (initDOM || {}).clientHeight
     };
-  }
-
-  return {
-    width: el.offsetWidth,
-    height: el.offsetHeight
-  };
-}
-
-function useComponentSize(ref) {
-  const [size, setSize] = useState(() => {
-    return ref ? getSize(ref.current) : getSize();
   });
 
   useLayoutEffect(() => {
-    if (!ref.current) {
-      return;
+    const passedInElement = typeof arg.current === 'function' ? arg.current() : arg.current;
+    const targetElement = hasPassedInElement ? passedInElement : element.current;
+    if (!targetElement) {
+      return () => {};
     }
 
-    const handleResize = () => {
-      if (ref.current) {
-        setSize(oldSize => {
-          const result = getSize(ref.current);
-          if (isEqual(oldSize, result)) return oldSize;
-
-          return {
-            ...oldSize,
-            ...getSize(ref.current)
-          };
+    const resizeObserver = new ResizeObserver(entries => {
+      entries.forEach(entry => {
+        setState({
+          width: entry.target.clientWidth,
+          height: entry.target.clientHeight
         });
-      }
-    };
-
-    const node = ref.current;
-
-    handleResize();
-
-    if (typeof ResizeObserver === 'function') {
-      let resizeObserver = new ResizeObserver(function() {
-        handleResize();
       });
-      resizeObserver.observe(node);
+    });
 
-      return () => {
-        resizeObserver.disconnect(node);
-        resizeObserver = null;
-      };
-    } else {
-      window.addEventListener('resize', handleResize);
+    resizeObserver.observe(targetElement);
+    return () => {
+      resizeObserver.disconnect();
+    };
+  }, [hasPassedInElement]);
 
-      return () => {
-        window.removeEventListener('resize', handleResize);
-      };
-    }
-  }, [ref]);
-
-  return [size.width, size.height];
+  if (hasPassedInElement) {
+    return [state];
+  }
+  return [state, element];
 }
-
-export { useComponentSize };

@@ -24,7 +24,7 @@ const Positioner = ({
   ...rest
 }) => {
   const popperRef = useRef(null);
-  const triggerSize = useComponentSize(triggerRef);
+  const [triggerSize] = useComponentSize(() => (triggerRef ? triggerRef.current : undefined));
   const prevSize = useRef(null);
 
   // Will unmount
