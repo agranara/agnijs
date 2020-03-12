@@ -3,6 +3,30 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.18](https://github.com/agranara/agnijs/compare/@agnijs/agni-ui@1.1.17...@agnijs/agni-ui@1.1.18) (2020-03-12)
+
+### Bug Fixes
+
+- **modal:** fixed modal type definition for size props ([7a0d50e](https://github.com/agranara/agnijs/commit/7a0d50e80ab19e0432d670d96829522b77dc7622))
+- **select:** fix option props not updating internal options ([8e0e076](https://github.com/agranara/agnijs/commit/8e0e07674fc58b3677cadd724628fec4f30102b1)), closes [#1](https://github.com/agranara/agnijs/issues/1)
+- **select:** fixed wrong initialization keyed options ([f3cffbf](https://github.com/agranara/agnijs/commit/f3cffbf9f26947d671cd8829981469d956bfea69))
+
+### Features
+
+- **datagrid:** added props isloading and loadingdata placeholder ([d5458ec](https://github.com/agranara/agnijs/commit/d5458ec41144b4dadfa080b203c1f6569ed21675))
+- **icon,file,upload:** added icon, fileInfo, and upload component ([6a649bd](https://github.com/agranara/agnijs/commit/6a649bd0ffacfebd4e83a5454681e66e565ff49c))
+- **modal:** added max width prop ([1dadec3](https://github.com/agranara/agnijs/commit/1dadec33627332faed956c4d24d28696eeee7cb8))
+- **usecomponentsize:** change usage ref in props to dom ([2b4dcd2](https://github.com/agranara/agnijs/commit/2b4dcd2f3de7702addc0036c4c2a3e8ee8f76946))
+
+### Performance Improvements
+
+- **select:** enable boolean option value, remove unnecessary rerender ([ce8a8e5](https://github.com/agranara/agnijs/commit/ce8a8e58a744d333a0b9a9471e2bdbbeed0e1a29))
+
+### BREAKING CHANGES
+
+- **usecomponentsize:** Props useComponentSize change from ref to optional dom, result change from
+  [width,height] to [{ width, height}, ref]
+
 ## [1.1.17](https://github.com/agranara/agnijs/compare/@agnijs/agni-ui@1.1.16...@agnijs/agni-ui@1.1.17) (2020-02-24)
 
 ### Bug Fixes
