@@ -24,7 +24,7 @@ const SelectValueList = memo(({ children }) => {
             </SelectValueItem>
           ))}
         </AnimatePresence>
-      ) : typeof value !== 'undefined' ? (
+      ) : typeof value !== 'undefined' && value !== null ? (
         <SelectValueItem
           key={`${uid}-val-${keyedOptions[getKeyedOption(value)][valueKey].toString()}`}
           value={value}

@@ -58,7 +58,6 @@ const Select = memo(
       const isControlled = useRef(typeof onChange === 'function');
       const searchRef = useRef(null);
       const dropdownRef = useRef(null);
-      const keyedRef = useRef(options);
 
       const [{ width }, selectRef] = useComponentSize();
 
@@ -122,6 +121,7 @@ const Select = memo(
       );
 
       // Keep options in sync with props
+      const keyedRef = useRef(makeKeyOptions(options));
       useEffect(() => {
         if (!isEqual(options, prevPropOptions.current)) {
           prevPropOptions.current = options;

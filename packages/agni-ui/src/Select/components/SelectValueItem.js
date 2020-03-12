@@ -63,6 +63,5 @@ const SelectValueItem = memo(({ children, value, hasExit }) => {
 });
 
 SelectValueItem.displayName = 'SelectValueItem';
-SelectValueItem.whyDidYouRender = true;
 
 export { SelectValueItem };
