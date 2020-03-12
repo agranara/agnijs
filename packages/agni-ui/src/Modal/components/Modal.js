@@ -21,6 +21,7 @@ const Modal = forwardRef(
       closeOnBackdropClick = true,
       closeOnEscape = true,
       size = 'md',
+      maxWidth,
       ...rest
     },
     forwardedRef
@@ -100,7 +101,7 @@ const Modal = forwardRef(
                 maxHeight: 'calc(100% - 64px)',
                 backgroundColor: 'white',
                 width: '100%',
-                maxWidth: theme.sizes[size],
+                maxWidth: maxWidth || theme.sizes[size],
                 borderRadius: theme.radii.md,
                 boxShadow: theme.shadows.lg
               })}
