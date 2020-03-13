@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.19](https://github.com/agranara/agnijs/compare/@agnijs/agni-ui@1.1.18...@agnijs/agni-ui@1.1.19) (2020-03-13)
+
+### Bug Fixes
+
+- **fileinfo,upload:** fix onchange handler and additional props ([fcbfda2](https://github.com/agranara/agnijs/commit/fcbfda20a71765094ac264a53d8970602878abc4))
+- **toast:** fixed toast pause timer when mouse enter/leave ([43fc5bc](https://github.com/agranara/agnijs/commit/43fc5bcce3ed976f37e376e378fa40cc71076b38))
+
 ## [1.1.18](https://github.com/agranara/agnijs/compare/@agnijs/agni-ui@1.1.17...@agnijs/agni-ui@1.1.18) (2020-03-12)
 
 ### Bug Fixes
