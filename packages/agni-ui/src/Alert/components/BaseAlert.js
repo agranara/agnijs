@@ -86,32 +86,32 @@ const BaseAlert = ({
                 )}
               </PseudoBox>
             )}
-            {closeable && (
-              <PseudoBox
-                as="button"
-                d="inline-flex"
-                type="button"
-                className="alert__close"
-                onClick={onClose}
-                h={6}
-                w={6}
-                p={0}
-                ml="auto"
-                rounded="sm"
-                fontSize="md"
-                textAlign="center"
-                alignItems="center"
-                justifyContent="center"
-                outline="none"
-                transition="all 0.2s"
-                _hover={{
-                  transform: 'scale(1.2)'
-                }}
-              >
-                <FiX />
-              </PseudoBox>
-            )}
           </Fragment>
+        )}
+        {closeable && (
+          <PseudoBox
+            as="button"
+            d="inline-flex"
+            type="button"
+            className="alert__close"
+            onClick={onClose}
+            h={6}
+            w={6}
+            p={0}
+            ml="auto"
+            rounded="sm"
+            fontSize="md"
+            textAlign="center"
+            alignItems="center"
+            justifyContent="center"
+            outline="none"
+            transition="all 0.2s"
+            _hover={{
+              transform: 'scale(1.2)'
+            }}
+          >
+            <FiX />
+          </PseudoBox>
         )}
       </PseudoBox>
     </motion.div>

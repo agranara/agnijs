@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState, memo, useCallback } from 'react';
 import { FiCheckCircle, FiInfo, FiAlertCircle, FiX } from 'react-icons/fi';
 import { BaseAlert, alertInitial, alertAnimate, alertExit } from '../../Alert/components/BaseAlert';
 import { Spinner } from '../../Spinner';
@@ -12,91 +12,108 @@ const variantIconType = {
   loading: Spinner
 };
 
-const Toast = ({
-  id,
-  title,
-  description,
-  icon,
-  variant,
-  duration,
-  unregisterToast,
-  onClick,
-  onClose,
-  closeable,
-  placement,
-  children
-}) => {
-  const timeoutRef = useRef();
+const Toast = memo(
+  ({
+    id,
+    title,
+    description,
+    icon,
+    variant,
+    duration,
+    unregisterToast,
+    onClick,
+    onClose,
+    closeable,
+    placement,
+    children
+  }) => {
+    const [paused, setPaused] = useState(false);
 
-  useEffect(() => {
-    if (duration > 0) {
-      timeoutRef.current = setTimeout(() => {
-        handleClose();
-      }, duration * 1000);
-    }
+    const timeoutRef = useRef(null);
 
-    return () => {
-      if (timeoutRef.current) {
+    useEffect(() => {
+      if (duration > 0 && !paused) {
+        timeoutRef.current = setTimeout(() => {
+          handleClose();
+        }, duration * 1000);
+      }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [paused]);
+
+    useEffect(() => {
+      return () => {
+        if (timeoutRef.current !== null) {
+          clearTimeout(timeoutRef.current);
+        }
+      };
+    }, []);
+
+    const handleClose = useCallback(() => {
+      unregisterToast(id, placement);
+
+      if (onClose) onClose();
+    }, [id, onClose, placement, unregisterToast]);
+
+    const handleMouseEnter = useCallback(() => {
+      setPaused(true);
+      if (timeoutRef.current !== null) {
         clearTimeout(timeoutRef.current);
       }
+    }, []);
+
+    const handleMouseLeave = useCallback(() => {
+      setPaused(false);
+    }, []);
+
+    const isTop = placement.includes('top');
+
+    const clickProps = {
+      tabIndex: 0,
+      onClick,
+      onKeyPress: ev => {
+        if (ev.keyCode === 13) {
+          onClick(ev);
+        }
+      }
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
-  const handleClose = () => {
-    unregisterToast(id, placement);
-
-    if (onClose) onClose();
-  };
-
-  const isTop = placement.includes('top');
-
-  const clickProps = {
-    tabIndex: 0,
-    onClick,
-    onKeyPress: ev => {
-      if (ev.keyCode === 13) {
-        onClick(ev);
+    let usedIcon = null;
+    if (icon) {
+      usedIcon = icon;
+    } else if (variantIconType[variant]) {
+      const VariantIcon = variantIconType[variant];
+      if (variant === 'loading') {
+        usedIcon = <VariantIcon size="md" />;
+      } else {
+        usedIcon = <VariantIcon />;
       }
     }
-  };
 
-  const VariantIcon = variantIconType[variant];
+    const themeVariant = variant === 'loading' ? 'primary' : variant;
 
-  const usedIcon = icon ? (
-    icon
-  ) : VariantIcon ? (
-    variant === 'loading' ? (
-      <VariantIcon size="md" />
-    ) : (
-      <VariantIcon />
-    )
-  ) : (
-    undefined
-  );
-
-  const themeVariant = variant === 'loading' ? 'primary' : variant;
-
-  return (
-    <BaseAlert
-      withPresence
-      positionTransition
-      title={title}
-      description={description}
-      icon={usedIcon}
-      closeable={closeable}
-      onClose={handleClose}
-      initial={isTop ? { ...alertInitial, y: -50 } : alertInitial}
-      animate={alertAnimate}
-      exit={alertExit}
-      my={1}
-      variant={themeVariant}
-      {...(onClick ? clickProps : {})}
-    >
-      {children}
-    </BaseAlert>
-  );
-};
+    return (
+      <BaseAlert
+        withPresence
+        positionTransition
+        title={title}
+        description={description}
+        icon={usedIcon}
+        closeable={closeable}
+        onClose={handleClose}
+        initial={isTop ? { ...alertInitial, y: -50 } : alertInitial}
+        animate={alertAnimate}
+        exit={alertExit}
+        my={1}
+        variant={themeVariant}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        {...(onClick ? clickProps : {})}
+      >
+        {children}
+      </BaseAlert>
+    );
+  }
+);
 
 Toast.displayName = 'Toast';
 
