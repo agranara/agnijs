@@ -62,6 +62,18 @@ export function isFileInRangeSize(file, min, max) {
   return true;
 }
 
-export function isImage(mimeType) {
-  return ['image/jpg', 'image/jpeg', 'image/gif', 'image/png'].indexOf(mimeType) > -1;
+export function isImage(fileName, fileType) {
+  if (fileType) {
+    return ['image/jpg', 'image/jpeg', 'image/gif', 'image/png'].indexOf(fileType) > -1;
+  }
+
+  if (fileName) {
+    const splitFilename = fileName.split('.');
+    if (splitFilename.length > 1) {
+      const ext = splitFilename[splitFilename.length - 1];
+      return ['jpg', 'png', 'svg', 'gif'].indexOf(ext) > -1;
+    }
+  }
+
+  return false;
 }

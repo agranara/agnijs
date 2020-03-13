@@ -5,15 +5,13 @@ import { centerPreviewCss, centerIconCss } from '../style';
 
 /////////////////////////////////////////////////////////////////////
 
-const InputInitialPreview = ({ isDragged }) => {
+const InputInitialPreview = ({ isDragged, dragPlaceholder, placeholder }) => {
   return (
     <div css={centerPreviewCss}>
       <div css={centerIconCss}>
         {isDragged ? <FiFilePlus strokeWidth="1" /> : <FiUploadCloud strokeWidth="1" />}
       </div>
-      <p css={{ paddingTop: 8, paddingBottom: 8 }}>
-        {isDragged ? 'Drop here' : 'Drag or click to upload pictures'}
-      </p>
+      <p css={{ paddingTop: 8, paddingBottom: 8 }}>{isDragged ? dragPlaceholder : placeholder}</p>
     </div>
   );
 };

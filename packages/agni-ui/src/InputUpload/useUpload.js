@@ -16,6 +16,11 @@ const increaseCount = () => {
   return `upload_file_${fileCount}`;
 };
 
+/**
+ * Use upload hook
+ *
+ * Original resource: https://github.com/react-dropzone/react-dropzone
+ */
 function useUpload({
   isDocumentDroppable,
   isBubblingDisabled,
@@ -291,7 +296,9 @@ function useUpload({
           dispatch(oldState => ({
             ...oldState,
             acceptedFiles,
-            rejectedFiles
+            rejectedFiles,
+            isDragged: false,
+            isFocused: false
           }));
 
           if (onDrop) {
@@ -344,9 +351,11 @@ function useUpload({
       tabIndex: -1,
       type: 'file',
       autoComplete: 'off',
+      disabled,
+      readOnly,
       ref: inputRef
     };
-  }, [accept, handleContainerDrop, handleInputClick, multiple]);
+  }, [accept, disabled, handleContainerDrop, handleInputClick, multiple, readOnly]);
 
   return {
     getRootProps,

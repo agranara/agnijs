@@ -10,13 +10,6 @@ import { PseudoBox } from '../../PseudoBox';
 import { InputInitialPreview } from './InputInitialPreview';
 import { InputDropable } from './InputDropable';
 
-const defaultListSize = {
-  sm: 24,
-  md: 12,
-  lg: 12,
-  xl: 6
-};
-
 const defaultKeyGetter = (_, index) => index;
 const defaultNameGetter = item => item.name;
 const defaultSizeGetter = item => item.size;
@@ -42,14 +35,21 @@ const InputUploadMulti = forwardRef(
       isDocumentDroppable = false,
       isBubblingDisabled = false,
       onChange,
-      initialFiles,
       keepInsertedFile = true,
-      listColSize = defaultListSize,
-      onClearItem,
-      onClickItem,
+      colSmSize = 1,
+      colMdSize = 2,
+      colLgSize = 3,
+      colXlSize = 4,
+      initialFiles,
       getInitialFileKey = defaultKeyGetter,
       getInitialFileName = defaultNameGetter,
-      getInitialFileSize = defaultSizeGetter
+      getInitialFileSize = defaultSizeGetter,
+      placeholder = 'Drag or click to upload files',
+      dragPlaceholder = 'Drop here',
+      onClickItem,
+      onClearItem,
+      onClearInitial,
+      ...restProps
     },
     forwardedRef
   ) => {
@@ -62,31 +62,28 @@ const InputUploadMulti = forwardRef(
 
     const handleDrop = useCallback(
       (dropProps, ev) => {
-        let allResult;
-        setKeepFiles(oldKeeps => {
-          const res = {
-            ...oldKeeps,
-            acceptedFiles: [...oldKeeps.acceptedFiles, ...dropProps.acceptedFiles],
-            rejectedFiles: [...oldKeeps.rejectedFiles, ...dropProps.rejectedFiles]
-          };
+        const result = keepInsertedFile
+          ? {
+              ...keepFiles,
+              acceptedFiles: [...keepFiles.acceptedFiles, ...dropProps.acceptedFiles],
+              rejectedFiles: [...keepFiles.rejectedFiles, ...dropProps.rejectedFiles]
+            }
+          : dropProps;
 
-          allResult = res;
-
-          if (keepInsertedFile) {
-            return res;
-          }
-          return dropProps.acceptedFiles;
-        });
+        setKeepFiles(result);
 
         if (onDrop) {
-          onDrop(allResult, ev);
+          onDrop(result, ev);
         }
 
         if (onChange) {
-          onChange(allResult, ev);
+          onChange(
+            result.acceptedFiles.map(item => item.file),
+            ev
+          );
         }
       },
-      [keepInsertedFile, onDrop, onChange]
+      [keepInsertedFile, onDrop, onChange, keepFiles]
     );
 
     const { getInputProps, getRootProps, isInteractive, state, promptDialog } = useUpload({
@@ -105,20 +102,38 @@ const InputUploadMulti = forwardRef(
       onDialogCancel
     });
 
-    const handleClearItem = (item, index) => {
-      let result;
-      setKeepFiles(oldFiles => {
-        result = {
-          ...oldFiles,
-          acceptedFiles: oldFiles.acceptedFiles.filter((__, i) => i !== index)
+    const handleClearItem = useCallback(
+      (item, index) => {
+        const result = {
+          ...keepFiles,
+          acceptedFiles: keepFiles.acceptedFiles.filter((__, i) => i !== index)
         };
 
-        return result;
-      });
+        setKeepFiles(result);
 
-      if (onChange) onChange(result);
-      if (onClearItem) onClearItem(item, index);
-    };
+        if (onChange) onChange(result.acceptedFiles.map(item => item.file));
+        if (onClearItem) onClearItem(item, index);
+      },
+      [keepFiles, onChange, onClearItem]
+    );
+
+    const handleClearAll = useCallback(() => {
+      const result = {
+        ...keepFiles,
+        acceptedFiles: [],
+        rejectedFiles: []
+      };
+
+      setKeepFiles(result);
+      if (onChange) onChange(result.acceptedFiles);
+    }, [keepFiles, onChange]);
+
+    const handleClearInitial = useCallback(
+      (item, index) => {
+        if (onClearInitial) onClearInitial(item, index);
+      },
+      [onClearInitial]
+    );
 
     return (
       <div className={cn(['input-upload', className])} css={{ position: 'relative' }}>
@@ -130,69 +145,91 @@ const InputUploadMulti = forwardRef(
           isDragged={state.isDragged}
           isFocused={state.isFocused}
         >
-          <InputInitialPreview isDragged={state.isDragged} />
+          <InputInitialPreview
+            isDragged={state.isDragged}
+            dragPlaceholder={dragPlaceholder}
+            placeholder={placeholder}
+            {...restProps}
+          />
         </InputDropable>
-        {keepFiles.acceptedFiles.length > 0 && (
-          <Fragment>
-            <Text my={2} fontWeight="semibold">
-              Files to upload
-            </Text>
-            <FileList
-              files={keepFiles.acceptedFiles}
-              iconSize="36px"
-              colSmSize={listColSize.sm}
-              colMdSize={listColSize.md}
-              colLgSize={listColSize.lg}
-              colXlSize={listColSize.xl}
-              getFileKey={item => item._uid}
-              getFileName={item => item.file.name}
-              getFileSize={item => item.file.size}
-              onClick={onClickItem}
+        <PseudoBox d="flex" flexDir="row" mt={1} mb={2} alignItems="center">
+          <Text fontWeight="semibold" lineHeight="normal">
+            Files to upload
+          </Text>
+          {keepFiles.acceptedFiles.length > 0 && (
+            <PseudoBox
+              ml={2}
+              pl={2}
+              borderLeftWidth="1px"
+              d="flex"
+              flexDir="row"
+              alignItems="center"
             >
-              {(_, index) => {
-                return (
-                  <PseudoBox lineHeight="none" mb={1}>
-                    <Button
-                      variant="link"
-                      variantColor="danger"
-                      size="xs"
-                      onClick={ev => handleClearItem(ev, index)}
-                      title="Delete your file"
-                    >
-                      Remove
-                    </Button>
-                  </PseudoBox>
-                );
-              }}
-            </FileList>
-          </Fragment>
-        )}
+              <Button
+                variant="link"
+                variantColor="danger"
+                onClick={handleClearAll}
+                title="Remove all files from uploader"
+              >
+                Remove All
+              </Button>
+            </PseudoBox>
+          )}
+        </PseudoBox>
+        <FileList
+          files={keepFiles.acceptedFiles}
+          iconSize="36px"
+          colSmSize={colSmSize}
+          colMdSize={colMdSize}
+          colLgSize={colLgSize}
+          colXlSize={colXlSize}
+          getFileKey={item => item._uid}
+          getFileName={item => item.file.name}
+          getFileSize={item => item.file.size}
+          onClick={onClickItem}
+        >
+          {(item, index) => {
+            return (
+              <PseudoBox lineHeight="none" mb={1}>
+                <Button
+                  variant="link"
+                  variantColor="danger"
+                  size="xs"
+                  onClick={() => handleClearItem(item, index)}
+                  title="Remove file from uploader"
+                >
+                  Remove
+                </Button>
+              </PseudoBox>
+            );
+          }}
+        </FileList>
         {Array.isArray(initialFiles) && initialFiles.length > 0 && (
           <Fragment>
-            <Text my={2} fontWeight="semibold">
+            <Text mt={1} mb={2} fontWeight="semibold">
               Files already uploaded
             </Text>
             <FileList
               files={initialFiles}
               iconSize="36px"
-              colSmSize={listColSize.sm}
-              colMdSize={listColSize.md}
-              colLgSize={listColSize.lg}
-              colXlSize={listColSize.xl}
+              colSmSize={colSmSize}
+              colMdSize={colMdSize}
+              colLgSize={colLgSize}
+              colXlSize={colXlSize}
               getFileKey={getInitialFileKey}
               getFileName={getInitialFileName}
               getFileSize={getInitialFileSize}
               onClick={onClickItem}
             >
-              {(_, index) => {
+              {(item, index) => {
                 return (
                   <PseudoBox lineHeight="none" mb={1}>
                     <Button
                       variant="link"
                       variantColor="danger"
                       size="xs"
-                      onClick={ev => handleClearItem(ev, index)}
-                      title="Delete your file"
+                      onClick={() => handleClearInitial(item, index)}
+                      title="Delete uploaded file"
                     >
                       Remove
                     </Button>

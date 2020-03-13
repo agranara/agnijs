@@ -13,11 +13,10 @@ const defaultSizeGetter = item => item.size;
 const FileList = ({
   files,
   iconSize = 'lg',
-  colXlSize = 24,
-  colLgSize = 24,
-  colMdSize = 24,
-  colSmSize = 24,
-  totalColumn = 24,
+  colXlSize = 1,
+  colLgSize = 1,
+  colMdSize = 1,
+  colSmSize = 1,
   getFileKey = defaultKeyGetter,
   getFileName = defaultNameGetter,
   getFileSize = defaultSizeGetter,
@@ -41,7 +40,7 @@ const FileList = ({
   if (!Array.isArray(files)) return null;
 
   const getResponsiveCss = (size, unit) => {
-    const w = (100 / totalColumn) * unit;
+    const w = (1 / unit) * 100;
 
     return {
       [`@media (min-width: ${theme.sizes[size]})`]: {

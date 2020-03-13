@@ -1,34 +1,52 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core';
-import { forwardRef, useImperativeHandle, useCallback, useRef, useState } from 'react';
+import {
+  forwardRef,
+  useImperativeHandle,
+  useCallback,
+  useRef,
+  useState,
+  Fragment,
+  useEffect
+} from 'react';
 import cn from 'classnames';
+import { FiX } from 'react-icons/fi';
 import useUpload from '../useUpload';
+import { Button } from '../../Button';
 import { isImage } from '../util';
 import { centerPreviewCss, backgroundImageCss } from '../style';
 import { FileItem } from '../../FileInfo/components/FileItem';
 import { InputInitialPreview } from './InputInitialPreview';
 import { InputDropable } from './InputDropable';
 
-const InputFilePreview = ({ file, fileUrl, showImagePreview, height, maxViewWidth }) => {
-  if (!file || file === null) {
+const InputFilePreview = ({
+  fileName,
+  fileType,
+  fileSize,
+  fileUrl,
+  showImagePreview,
+  height,
+  maxPreviewWidth
+}) => {
+  if (!fileName || fileName === null) {
     return null;
   }
 
-  const isUseBackground = fileUrl && showImagePreview && isImage(file.type);
+  const isUseBackground = fileUrl && showImagePreview && isImage(fileName, fileType);
 
   return (
     <div className="input-upload__preview" css={centerPreviewCss}>
       <FileItem
-        fileName={file.name}
-        fileSize={file.size}
+        fileName={fileName}
+        fileSize={fileSize}
         direction="column"
         infoDirection="row"
         iconSize="50px"
         icon={
           isUseBackground ? (
             <div
-              aria-label={file.name}
-              css={css([backgroundImageCss, { height: height - 28, maxWidth: maxViewWidth }])}
+              aria-label={fileName}
+              css={css([backgroundImageCss, { height: height - 28, maxWidth: maxPreviewWidth }])}
               style={{ backgroundImage: `url(${fileUrl})` }}
             />
           ) : (
@@ -43,6 +61,13 @@ InputFilePreview.displayName = 'InputFilePreview';
 
 /////////////////////////////////////////////
 
+const initialFileState = {
+  previewUrl: undefined,
+  name: undefined,
+  size: undefined,
+  path: undefined
+};
+
 /**
  * Input Upload
  */
@@ -52,7 +77,6 @@ const InputUploadSingle = forwardRef(
       className,
       accept,
       disabled = false,
-      readOnly = false,
       height = 150,
       minSize = 0,
       maxSize = Infinity,
@@ -64,29 +88,57 @@ const InputUploadSingle = forwardRef(
       isDocumentDroppable = false,
       isBubblingDisabled = false,
       onChange,
-      initialFile,
-      initialFileUrl,
+      initialFileName,
+      initialFileSize,
+      initialFilePath,
       showImagePreview = true,
-      maxViewWidth = 320
+      maxPreviewWidth = 320,
+      placeholder = 'Drag or click to upload files',
+      dragPlaceholder = 'Drop here',
+      ...restProps
     },
     forwardedRef
   ) => {
-    const [previewUrl, setPreviewUrl] = useState(null);
+    const getInitialFile = useCallback(() => {
+      const res = { ...initialFileState };
+
+      if (initialFileName) {
+        res.name = initialFileName;
+      }
+      if (initialFileSize) {
+        res.size = initialFileSize;
+      }
+      if (initialFilePath) {
+        res.previewUrl = initialFilePath;
+        res.path = initialFilePath;
+      }
+      return res;
+    }, [initialFileName, initialFilePath, initialFileSize]);
+
+    const [keepFile, setKeepFile] = useState(() => {
+      return getInitialFile();
+    });
+
+    const prevFilePath = useRef(initialFilePath);
 
     const fileReader = useRef(new FileReader());
 
     const readFile = item => {
       return new Promise((resolve, reject) => {
-        fileReader.current.onload = e => {
-          resolve(e.target.result);
-        };
+        if (!item) {
+          resolve(undefined);
+        } else {
+          fileReader.current.onload = e => {
+            resolve(e.target.result);
+          };
 
-        fileReader.current.onerror = () => {
-          fileReader.current.abort();
-          reject('Error while reading file');
-        };
+          fileReader.current.onerror = () => {
+            fileReader.current.abort();
+            reject('Error while reading file');
+          };
 
-        fileReader.current.readAsDataURL(item.file);
+          fileReader.current.readAsDataURL(item.file);
+        }
       });
     };
 
@@ -94,30 +146,35 @@ const InputUploadSingle = forwardRef(
       (dropProps, ev) => {
         const { acceptedFiles } = dropProps;
 
-        const onlyImagesPreview = acceptedFiles.filter(item => isImage(item.file.type));
+        const onlyImagesPreviews =
+          acceptedFiles.length > 0 ? acceptedFiles.filter(item => isImage(item.file.type)) : [];
 
-        Promise.all(onlyImagesPreview.map(readFile)).then(files => {
-          // Only set last files as preview file in upload single file
-          let dataUrl = undefined;
-          if (showImagePreview) {
-            dataUrl = files.length > 0 ? files[files.length - 1] : undefined;
-            setPreviewUrl(dataUrl);
-          }
+        const previewItem = onlyImagesPreviews[Math.min(onlyImagesPreviews.length - 1, 0)];
 
-          if (onDrop) {
-            onDrop(dropProps, ev);
-          }
+        if (onDrop) {
+          onDrop(dropProps, ev);
+        }
 
-          if (onChange) {
-            onChange(
-              {
-                ...dropProps,
-                dataUrl
-              },
-              ev
-            );
-          }
-        });
+        readFile(previewItem)
+          .then(previewFile => {
+            // Only set last file as preview in upload single file
+            const res = {
+              previewUrl: undefined,
+              name: dropProps.acceptedFiles[0].file.name,
+              size: dropProps.acceptedFiles[0].file.size,
+              path: dropProps.acceptedFiles[0].file.path
+            };
+            if (showImagePreview) {
+              res.previewUrl = previewFile || undefined;
+            }
+
+            setKeepFile(res);
+
+            if (onChange) {
+              onChange(dropProps.acceptedFiles[0].file, ev, dropProps);
+            }
+          })
+          .catch();
       },
       [onDrop, onChange, showImagePreview]
     );
@@ -130,7 +187,6 @@ const InputUploadSingle = forwardRef(
       maxSize,
       accept,
       disabled,
-      readOnly,
       onDragEnter,
       onDragOver,
       onDragLeave,
@@ -140,8 +196,30 @@ const InputUploadSingle = forwardRef(
 
     useImperativeHandle(forwardedRef, () => ({ promptDialog }), [promptDialog]);
 
-    const item = state.acceptedFiles[0] ? state.acceptedFiles[0].file : initialFile;
-    const fileUrl = previewUrl || initialFileUrl;
+    useEffect(() => {
+      if (initialFilePath !== prevFilePath.current) {
+        prevFilePath.current = initialFilePath;
+        setKeepFile(getInitialFile());
+      }
+    }, [getInitialFile, initialFilePath]);
+
+    const handleClearItem = useCallback(
+      ev => {
+        ev.preventDefault();
+        ev.stopPropagation();
+
+        prevFilePath.current = initialFileState.path;
+        setKeepFile(initialFileState);
+
+        if (onChange) {
+          onChange(null, ev, {
+            acceptedFiles: [],
+            rejectedFiles: []
+          });
+        }
+      },
+      [onChange]
+    );
 
     return (
       <div className={cn(['input-upload', className])} css={{ position: 'relative' }}>
@@ -152,18 +230,38 @@ const InputUploadSingle = forwardRef(
           isInteractive={isInteractive}
           isDragged={state.isDragged}
           isFocused={state.isFocused}
+          {...restProps}
         >
-          {item ? (
-            <InputFilePreview
-              file={item}
-              fileUrl={fileUrl}
-              isDragged={state.isDragged}
-              showImagePreview={showImagePreview}
-              height={height}
-              maxViewWidth={maxViewWidth}
-            />
+          {keepFile.name ? (
+            <Fragment>
+              <InputFilePreview
+                fileName={keepFile.name}
+                fileSize={keepFile.size}
+                fileUrl={keepFile.previewUrl}
+                isDragged={state.isDragged}
+                showImagePreview={showImagePreview}
+                height={height}
+                maxPreviewWidth={maxPreviewWidth}
+              />
+              <Button
+                pos="absolute"
+                top={2}
+                right={2}
+                p={1}
+                size="xs"
+                variantColor="danger"
+                onClick={handleClearItem}
+                title="Click to remove file"
+              >
+                <FiX />
+              </Button>
+            </Fragment>
           ) : (
-            <InputInitialPreview isDragged={state.isDragged} />
+            <InputInitialPreview
+              isDragged={state.isDragged}
+              dragPlaceholder={dragPlaceholder}
+              placeholder={placeholder}
+            />
           )}
         </InputDropable>
       </div>

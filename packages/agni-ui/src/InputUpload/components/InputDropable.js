@@ -10,7 +10,8 @@ const InputDropable = ({
   height,
   isInteractive,
   isDragged,
-  isFocused
+  isFocused,
+  ...restProps
 }) => {
   const theme = useUiTheme();
 
@@ -42,7 +43,6 @@ const InputDropable = ({
       })}
     >
       <input
-        type="file"
         css={{
           display: 'none',
           position: 'absolute',
@@ -53,6 +53,7 @@ const InputDropable = ({
           appearance: 'none',
           visibility: 'hidden'
         }}
+        {...restProps}
         {...getInputProps()}
         className="input-upload__file"
       />

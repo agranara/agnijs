@@ -34,7 +34,6 @@ interface IFileListProps {
   colLgSize?: number;
   colMdSize?: number;
   colSmSize?: number;
-  totalColumn?: number;
   getFileKey?: (item: FileListType, index: number) => string;
   getFileName?: (item: FileListType, index: number) => string;
   getFileSize?: (item: FileListType, index: number) => number;

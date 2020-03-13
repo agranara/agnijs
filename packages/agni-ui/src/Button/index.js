@@ -72,7 +72,7 @@ const Button = forwardRef(
             </Box>
           )
         ) : (
-          <Box as="span" className="button__content" lineHeight="0" alignSelf="center">
+          <Box as="span" className="button__content" lineHeight="none" alignSelf="center">
             {children}
           </Box>
         )}
