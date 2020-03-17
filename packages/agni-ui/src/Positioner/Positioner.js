@@ -23,29 +23,35 @@ const Positioner = ({
   onAnimationComplete,
   ...rest
 }) => {
+  const timeoutRef = useRef(null);
   const popperRef = useRef(null);
   const [triggerSize] = useComponentSize(() => (triggerRef ? triggerRef.current : undefined));
   const prevSize = useRef(null);
 
-  // Will unmount
-  useEffect(() => {
-    return () => {
-      if (popperRef.current !== null) {
-        popperRef.current.destroy();
-        popperRef.current = null;
-      }
-    };
-  }, []);
+  const prevOpen = useRef(isOpen);
 
   useEffect(() => {
     if (!isEqual(triggerSize, prevSize.current)) {
       prevSize.current = triggerSize;
 
       if (popperRef.current !== null) {
-        popperRef.current.update();
+        popperRef.current.forceUpdate();
       }
     }
   }, [triggerSize]);
+
+  // Will unmount
+  useEffect(() => {
+    return () => {
+      if (popperRef.current !== null) {
+        popperRef.current.destroy();
+      }
+
+      if (timeoutRef.current !== null) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []);
 
   const createPopperInstance = useCallback(() => {
     popperRef.current = createPopper(triggerRef.current, innerRef.current, {
@@ -53,6 +59,17 @@ const Positioner = ({
       strategy: 'fixed',
       placement
     });
+
+    // Monkey patch to trigger modifiers flip when animation started
+    if (timeoutRef.current !== null) {
+      clearTimeout(timeoutRef.current);
+    }
+
+    timeoutRef.current = setTimeout(() => {
+      if (popperRef.current !== null) {
+        popperRef.current.forceUpdate();
+      }
+    }, 10);
   }, [gap, innerRef, placement, triggerRef]);
 
   const destroyPopperInstance = useCallback(() => {
@@ -63,11 +80,19 @@ const Positioner = ({
   }, []);
 
   const handleAnimationStart = useCallback(() => {
-    if (isOpen) createPopperInstance();
+    // Prevent triggered more than once
+    if (isOpen && prevOpen.current !== isOpen) {
+      prevOpen.current = isOpen;
+      createPopperInstance();
+    }
   }, [createPopperInstance, isOpen]);
 
   const handleAnimationComplete = useCallback(() => {
-    if (!isOpen) destroyPopperInstance();
+    // Prevent triggered more than once
+    if (!isOpen && prevOpen.current !== isOpen) {
+      prevOpen.current = isOpen;
+      destroyPopperInstance();
+    }
   }, [destroyPopperInstance, isOpen]);
 
   return (
