@@ -1,6 +1,6 @@
 import { theme as defaultTheme } from '../theme';
 
-class ToastTheme {
+class UiTheme {
   constructor() {
     this.theme = defaultTheme;
   }
@@ -14,6 +14,6 @@ class ToastTheme {
   }
 }
 
-const toastTheme = new ToastTheme();
+const uiTheme = new UiTheme();
 
-export { toastTheme };
+export { uiTheme };

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Global, css } from '@emotion/core';
 import { ThemeProvider } from 'emotion-theming';
 import { theme as defaultTheme } from '../../theme';
-import { toastTheme } from '../../Toast/toastTheme';
+import { uiTheme } from '../uiTheme';
 
 const preflightCss = css`
   /* normalize */
@@ -343,7 +343,7 @@ const providerCss = (theme = defaultTheme) => {
 
 const UiProvider = ({ theme = defaultTheme, children }) => {
   useEffect(() => {
-    toastTheme.setTheme(theme);
+    uiTheme.setTheme(theme);
   }, [theme]);
 
   return (
