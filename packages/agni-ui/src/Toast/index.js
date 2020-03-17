@@ -3,6 +3,7 @@ import { jsx, css, Global } from '@emotion/core';
 import ReactDOM from 'react-dom';
 import { UiProvider } from '../UiProvider';
 import { ToastContainer } from './components/ToastContainer';
+import { toastTheme } from './toastTheme';
 
 const CONTAINER_ID = 'toast__container';
 let toastCount = 0;
@@ -40,7 +41,7 @@ const toast = (description, options) => {
   const toast = { id: counter, description, ...defaultOption, ...options };
 
   ReactDOM.render(
-    <UiProvider theme={options && options.theme ? options.theme : undefined}>
+    <UiProvider theme={options && options.theme ? options.theme : toastTheme.getTheme()}>
       <Global
         styles={css`
           #${containerId} {
