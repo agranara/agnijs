@@ -8,7 +8,6 @@
   "license": "MIT",
   "source": "src/index.js",
   "main": "dist/index.js",
-  "main:src": "src/index.js",
   "umd:main": "dist/index.umd.js",
   "sideEffects": false,
   "publishConfig": {
