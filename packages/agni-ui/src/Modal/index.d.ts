@@ -43,6 +43,14 @@ export interface IModalProps {
    * Modal max width in pixel
    */
   maxWidth?: number;
+  /**
+   * On animation started (appearing or exiting)
+   */
+  onAnimationStart?: () => void;
+  /**
+   * On popup exited completely
+   */
+  onAnimationCompleted?: PopupProps['onAnimationCompleted'];
 }
 
 export type ModalProps = IModalProps & Omit<PseudoBoxProps, 'size'>;
@@ -60,3 +68,20 @@ export const ModalHeader: React.FC<PseudoBoxProps>;
 export const ModalBody: React.FC<PseudoBoxProps>;
 export const ModalFooter: React.FC<PseudoBoxProps>;
 export const ModalClose: React.FC<ButtonProps>;
+
+//////////////////////////
+
+type ConfirmProps = {
+  title?: string;
+  icon?: React.ReactNode;
+  content?: string;
+  onOkay?: () => Promise<void>;
+  okayText?: string;
+  okayProps?: ButtonProps;
+  onCancel?: () => Promise<void>;
+  cancelText?: string;
+  cancelProps?: ButtonProps;
+};
+
+// Modal confirmation shorthand
+export function confirm(props: ConfirmProps): () => void;

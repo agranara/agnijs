@@ -40,6 +40,7 @@ const Popup = forwardRef(
       isBackdropHidden = false,
       closeOnBackdropClick = true,
       closeOnEscape = true,
+      onAnimationComplete,
       ...rest
     },
     forwardedRef
@@ -155,7 +156,7 @@ const Popup = forwardRef(
 
     return (
       <Portal ref={handlePortalRef} isDisabled={!usePortal} container={container}>
-        <AnimatePresence>
+        <AnimatePresence onExitComplete={onAnimationComplete}>
           {isOpen && (
             <PseudoBox
               ref={ref}

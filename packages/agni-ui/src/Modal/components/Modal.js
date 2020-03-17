@@ -22,6 +22,8 @@ const Modal = forwardRef(
       closeOnEscape = true,
       size = 'md',
       maxWidth,
+      onAnimationStart,
+      onAnimationComplete,
       ...rest
     },
     forwardedRef
@@ -71,6 +73,7 @@ const Modal = forwardRef(
           closeOnEscape={closeOnEscape}
           onClose={onClose}
           onEscapeKeyDown={onEscapeKeyDown}
+          onAnimationComplete={onAnimationComplete}
           {...rest}
         >
           <PseudoBox
@@ -105,6 +108,7 @@ const Modal = forwardRef(
                 borderRadius: theme.radii.md,
                 boxShadow: theme.shadows.lg
               })}
+              onAnimationStart={onAnimationStart}
             >
               {children}
             </motion.div>

@@ -79,6 +79,10 @@ interface IPopupProps {
    * If `true`, pressing `ESCAPE` key will fire `onClose` callback.
    */
   closeOnEscape?: boolean;
+  /**
+   * On popup exited completely
+   */
+  onAnimationCompleted?: () => void;
 }
 
 type PopupProps = IPopupProps & PseudoBoxProps;
