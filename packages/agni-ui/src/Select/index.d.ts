@@ -95,6 +95,6 @@ type ISelectProps<T> = {
   positionerProps?: PositionerProps;
 };
 
-type SelectComponent<T = any> = React.FC<ISelectProps<T>>;
+type SelectComponent<T = any> = React.ForwardRefExoticComponent<ISelectProps<T>>;
 
 export const Select: SelectComponent;
