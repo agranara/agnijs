@@ -92,19 +92,16 @@ const Select = memo(
 
       const makeKeyOptions = useCallback(
         options => {
-          return Array.isArray(options)
-            ? options.reduce((acc, cur, index) => {
-                const currentValue = get(cur, valueKey);
-                const val = getKeyedOption(currentValue);
-                return {
-                  ...acc,
-                  [val]: {
-                    ...cur,
-                    cursor: index
-                  }
-                };
-              }, {})
-            : {};
+          if (Array.isArray(options)) {
+            const reduced = {};
+            for (let j = 0; j < options.length; j++) {
+              const opt = options[j];
+              reduced[getKeyedOption(get(opt, valueKey))] = { ...opt, cursor: j };
+            }
+            return reduced;
+          }
+
+          return {};
         },
         [valueKey]
       );
@@ -112,7 +109,8 @@ const Select = memo(
       // Keep options in sync with props
       const keyedRef = useRef(makeKeyOptions(options));
       useEffect(() => {
-        if (!isEqual(options, prevPropOptions.current)) {
+        const equal = isEqual(options, prevPropOptions.current);
+        if (!equal) {
           prevPropOptions.current = options;
           keyedRef.current = makeKeyOptions(options);
           setFilterOptions(options);
