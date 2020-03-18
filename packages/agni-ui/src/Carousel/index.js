@@ -9,8 +9,10 @@ import {
   useContext,
   useCallback,
   useRef,
-  useEffect,
-  Fragment
+  Fragment,
+  Children,
+  isValidElement,
+  cloneElement
 } from 'react';
 import { motion } from 'framer-motion';
 import { PseudoBox } from '../PseudoBox';
@@ -30,15 +32,10 @@ const swipePower = (offset, velocity) => {
 };
 
 const CarouselItem = forwardRef(({ children, index, className }, forwardedRef) => {
-  const { items, activeIndex, registerItem, width } = useCarouselContext();
+  const { items, activeIndex, width } = useCarouselContext();
 
   const ref = useRef(null);
   const forkedRef = useForkedRef(ref, forwardedRef);
-
-  useEffect(() => {
-    registerItem(index);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const isActive = index === activeIndex;
 
@@ -248,8 +245,11 @@ const Carousel = ({
   const [height, setHeight] = useState(() => '100%');
 
   const [isPlaying, setPlaying] = useState(() => autoPlay || false);
-  const [items, setItems] = useState([]);
   const [[activeIndex, direction], setActiveIndex] = useState([0, 0]);
+
+  const items = Children.toArray(children).filter(
+    child => isValidElement(child) && child.type === CarouselItem
+  );
 
   const slide = useCallback(() => {
     setActiveIndex(oldState => {
@@ -267,14 +267,6 @@ const Carousel = ({
     },
     isPlaying && autoPlay ? duration * 1000 : null
   );
-
-  // On mount register slide and set width carousel items
-  const registerItem = useCallback(newItemUid => {
-    setItems(oldItems => {
-      if (oldItems.indexOf(newItemUid) > -1) return oldItems;
-      return [...oldItems, newItemUid];
-    });
-  }, []);
 
   const updateByDirection = useCallback(
     newDirection => {
@@ -294,6 +286,21 @@ const Carousel = ({
   const updateByIndex = useCallback(newIndex => {
     setActiveIndex([newIndex, 1]);
   }, []);
+
+  const style = {
+    width: width ? width * items.length : '100%',
+    height,
+    display: 'flex',
+    flexDirection: 'row'
+  };
+
+  const carouselItems = Children.map(children, (child, index) => {
+    if (!isValidElement(child) || child.type !== CarouselItem) return;
+
+    return cloneElement(child, {
+      index
+    });
+  });
 
   return (
     <PseudoBox
@@ -316,7 +323,6 @@ const Carousel = ({
         value={{
           slide,
           activeIndex,
-          registerItem,
           items,
           setPlaying,
           isPlaying,
@@ -337,8 +343,8 @@ const Carousel = ({
               role="region"
               aria-live="off"
               className="carousel__list"
-              animate={{ x: activeIndex * width * -1 }}
-              style={{ width: width * items.length, height, display: 'flex', flexDirection: 'row' }}
+              animate={{ x: width ? activeIndex * width * -1 : 0 }}
+              style={style}
               transition={{
                 x: { type: 'spring', stiffness: 300, damping: 200 }
               }}
@@ -357,7 +363,7 @@ const Carousel = ({
                 }
               }}
             >
-              {children}
+              {carouselItems}
             </motion.div>
           </PseudoBox>
         </Fragment>
