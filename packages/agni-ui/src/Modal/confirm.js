@@ -26,6 +26,7 @@ const Confirmation = forwardRef(
     forwardedRef
   ) => {
     const [isOpen, setOpen] = useState(true);
+    const [isLoading, setLoading] = useState(false);
     const prevOpen = useRef(true);
 
     const timeout = useRef(null);
@@ -35,6 +36,9 @@ const Confirmation = forwardRef(
       () => ({
         close: () => {
           setOpen(false);
+        },
+        toggleLoading: () => {
+          setLoading(true);
         }
       }),
       []
@@ -71,6 +75,7 @@ const Confirmation = forwardRef(
         onClose={handleClose}
         onAnimationStart={handleAnimationStart}
         onAnimationComplete={handleAnimationComplete}
+        className="confirmation"
       >
         <ModalBody pb={1} pt={6} px={6}>
           <PseudoBox d="flex" flexDir="row">
@@ -92,7 +97,14 @@ const Confirmation = forwardRef(
           </PseudoBox>
         </ModalBody>
         <ModalFooter borderTopWidth={0} pt={1} pb={4} px={6} textAlign="right">
-          <Button variant="solid" variantColor="primary" mx={1} {...okayProps} onClick={handleOkay}>
+          <Button
+            variant="solid"
+            variantColor="primary"
+            mx={1}
+            {...okayProps}
+            isDisabled={isLoading}
+            onClick={handleOkay}
+          >
             {okayText}
           </Button>
           <Button
@@ -100,6 +112,7 @@ const Confirmation = forwardRef(
             variantColor="danger"
             mx={1}
             {...cancelProps}
+            isDisabled={isLoading}
             onClick={handleCancel}
           >
             {cancelText}
@@ -109,6 +122,10 @@ const Confirmation = forwardRef(
     );
   }
 );
+
+Confirmation.displayName = 'Confirmation';
+
+//////////////////////////////////////////////
 
 const confirm = ({ onOkay, onCancel, ...restProps }) => {
   const div = document.createElement('div');
@@ -132,6 +149,7 @@ const confirm = ({ onOkay, onCancel, ...restProps }) => {
   }
 
   async function handleOkay() {
+    nodeRef.toggleLoading();
     if (onOkay) {
       await onOkay();
     }
@@ -139,6 +157,7 @@ const confirm = ({ onOkay, onCancel, ...restProps }) => {
   }
 
   async function handleCancel() {
+    nodeRef.toggleLoading();
     if (onCancel) {
       await onCancel();
     }

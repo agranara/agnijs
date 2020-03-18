@@ -72,14 +72,41 @@ export const ModalClose: React.FC<ButtonProps>;
 //////////////////////////
 
 type ConfirmProps = {
+  /**
+   * Confirmation title
+   */
   title?: string;
+  /**
+   * Custom icon for confirmation. Default: FiAlertCircle
+   */
   icon?: React.ReactNode;
+  /**
+   * Content of confirmation
+   */
   content?: string;
+  /**
+   * On okay button clicked
+   */
   onOkay?: () => Promise<void>;
+  /**
+   * Button okay text. Default: 'Yes'
+   */
   okayText?: string;
+  /**
+   * Button okay props, same as `Button` props
+   */
   okayProps?: ButtonProps;
+  /**
+   * On cancel button clicked
+   */
   onCancel?: () => Promise<void>;
+  /**
+   * Button cancel text. Default: 'No'
+   */
   cancelText?: string;
+  /**
+   * Button cancel properties
+   */
   cancelProps?: ButtonProps;
 };
 
