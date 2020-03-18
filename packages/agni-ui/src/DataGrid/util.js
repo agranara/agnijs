@@ -49,7 +49,7 @@ export function getFlatColumns(source, key = 'children', parent = null) {
 }
 
 export function getLastFreezeIndex(source, startResult = 0, previousFreeze = false) {
-  let result = startResult;
+  let result = -1;
 
   for (let i = 0; i < source.length; i++) {
     const col = source[i];
