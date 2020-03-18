@@ -18,6 +18,7 @@ export * from './Flex';
 export * from './FileInfo';
 export * from './Icon';
 export * from './Image';
+export * from './InputCheckbox';
 export * from './InputGroup';
 export * from './InputInside';
 export * from './InputLabel';
