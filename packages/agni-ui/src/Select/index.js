@@ -68,14 +68,6 @@ const Select = memo(
       const [search, setSearch] = useState('');
       const [cursor, setCursor] = useState(null);
 
-      const [isOpen, handleIsOpen] = useTogglePositioner({
-        refs: [selectRef, dropdownRef],
-        initialOpen: isInitialOpen,
-        onClose: () => {
-          updateSearch('');
-        }
-      });
-
       // Initial internal value
       const [valueState, setValueState] = useState(() => {
         if (isMulti) {
@@ -93,12 +85,6 @@ const Select = memo(
         return undefined;
       });
 
-      // Signaling to parent about select value
-      useImperativeHandle(forwardedRef, () => ({
-        focus: handleFocus,
-        value
-      }));
-
       // Debouncing filter options
       const [filterOptions, setFilterOptions] = useState(() => {
         return options || [];
@@ -107,12 +93,15 @@ const Select = memo(
       const makeKeyOptions = useCallback(
         options => {
           return Array.isArray(options)
-            ? options.reduce((acc, cur) => {
+            ? options.reduce((acc, cur, index) => {
                 const currentValue = get(cur, valueKey);
                 const val = getKeyedOption(currentValue);
                 return {
                   ...acc,
-                  [val]: cur
+                  [val]: {
+                    ...cur,
+                    cursor: index
+                  }
                 };
               }, {})
             : {};
@@ -152,6 +141,34 @@ const Select = memo(
         ? Array.isArray(value) && value.length > 0
         : typeof value !== 'undefined' && value !== null;
       const hasValueOrSearch = hasValue || search !== '';
+
+      // Signaling to parent about select value
+      useImperativeHandle(forwardedRef, () => ({
+        focus: handleFocus,
+        value
+      }));
+
+      const [isOpen, handleIsOpen] = useTogglePositioner({
+        refs: [selectRef, dropdownRef],
+        initialOpen: isInitialOpen,
+        onOpen: () => {
+          if (cursor === null) {
+            const firstValue = Array.isArray(value)
+              ? value.length > 0
+                ? value[0]
+                : undefined
+              : value;
+
+            const keyedValue = get(keyedRef.current, getKeyedOption(firstValue));
+            if (keyedValue) {
+              setCursor(keyedValue.cursor);
+            }
+          }
+        },
+        onClose: () => {
+          updateSearch('');
+        }
+      });
 
       // Keep prev value same as prop value
       useEffect(() => {

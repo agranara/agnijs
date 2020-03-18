@@ -36,8 +36,8 @@ const SelectOptionItem = ({ index, style }) => {
       userSelect="none"
       onClick={handleClick}
       _active={{
-        bg: 'primary.500',
-        color: 'white'
+        bg: 'primary.100',
+        fontWeight: 'semibold'
       }}
       _focus={{
         bg: 'primary.100'
