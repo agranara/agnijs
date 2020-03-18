@@ -1,5 +1,6 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core';
+import cn from 'classnames';
 import {
   forwardRef,
   useRef,
@@ -34,6 +35,7 @@ const InputRadio = forwardRef(
       onBlur,
       onFocus,
       children,
+      className,
       ...rest
     },
     ref
@@ -46,7 +48,7 @@ const InputRadio = forwardRef(
 
     return (
       <Box
-        className="input-radio"
+        className={cn(['input-radio', className])}
         as="label"
         display="inline-flex"
         verticalAlign="top"
@@ -114,6 +116,7 @@ const InputRadioGroup = forwardRef(
       value: valueProp,
       spacing = 2,
       children,
+      className,
       ...rest
     },
     ref
@@ -136,7 +139,8 @@ const InputRadioGroup = forwardRef(
     // If no name is passed, we'll generate a random, unique name
     const _name = useAutoId(name);
 
-    // Calling focus() on the radiogroup should focus on the selected option or first enabled option
+    // Calling focus() on the radiogroup should focus
+    // on the selected option or first enabled option
     useImperativeHandle(
       ref,
       () => ({
@@ -155,14 +159,20 @@ const InputRadioGroup = forwardRef(
       []
     );
 
+    const validChildren = Children.toArray(children).filter(child => isValidElement(child));
+
     const clones = Children.map(children, (child, index) => {
       if (!isValidElement(child)) return;
 
-      const isLastRadio = children.length === index + 1;
+      const isLastRadio = validChildren.length === index + 1;
       const spacingProps = isInline ? { mr: spacing } : { mb: spacing };
 
       return (
-        <Box display={isInline ? 'inline-block' : 'block'} {...(!isLastRadio && spacingProps)}>
+        <Box
+          className="input-radio-group__wrapper"
+          display={isInline ? 'inline-block' : 'block'}
+          {...(!isLastRadio && spacingProps)}
+        >
           {cloneElement(child, {
             size: child.props.size || size,
             variantColor: child.props.variantColor || variantColor,
@@ -175,7 +185,12 @@ const InputRadioGroup = forwardRef(
     });
 
     return (
-      <Box ref={rootRef} role="radiogroup" className="input-radio-group" {...rest}>
+      <Box
+        ref={rootRef}
+        role="radiogroup"
+        className={cn(['input-radio-group', className])}
+        {...rest}
+      >
         {clones}
       </Box>
     );
