@@ -32,6 +32,7 @@ export * from './Menu';
 export * from './Modal';
 export * from './Nav';
 export * from './Pagination';
+export * from './Popover';
 export * from './Portal';
 export * from './Positioner';
 export * from './PseudoBox';
