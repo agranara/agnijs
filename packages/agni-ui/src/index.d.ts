@@ -26,6 +26,7 @@ export * from './InputNumber';
 export * from './InputRadio';
 export * from './InputText';
 export * from './InputUpload';
+export * from './List';
 export * from './LoadingPage';
 export * from './Menu';
 export * from './Modal';
