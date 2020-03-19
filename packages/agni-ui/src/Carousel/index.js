@@ -112,7 +112,7 @@ const CarouselIndicators = () => {
     >
       {items.map((uid, index) => (
         <motion.button
-          key={`car_indicator-${uid}`}
+          key={`car_indicator-${index}`}
           type="button"
           className="carousel__indicators-item"
           title={`Go to slide ${index + 1}`}
