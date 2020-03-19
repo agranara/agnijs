@@ -1,4 +1,6 @@
-import React, { useRef, useEffect, useCallback } from 'react';
+/** @jsx jsx */
+import { jsx } from '@emotion/core';
+import { useRef, useEffect, useCallback } from 'react';
 import cn from 'classnames';
 import isEqual from 'fast-deep-equal/es6/react';
 import { createPopper } from '@popperjs/core';
@@ -6,6 +8,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { Portal } from '../Portal';
 import { PseudoBox } from '../PseudoBox';
 import { useComponentSize } from '../_hooks/useComponentSize';
+import getPopperArrowStyle from './style';
 
 const Positioner = ({
   children,
@@ -21,6 +24,8 @@ const Positioner = ({
   gap = 4,
   className,
   onAnimationComplete,
+  hasArrow,
+  arrowBackground,
   ...rest
 }) => {
   const timeoutRef = useRef(null);
@@ -117,6 +122,7 @@ const Positioner = ({
               py={1}
               {...rest}
               ref={innerRef}
+              css={getPopperArrowStyle({ hasArrow, arrowBackground })}
             >
               <motion.div
                 initial={initial}
@@ -126,6 +132,7 @@ const Positioner = ({
                 transition={{ ease: 'linear', duration }}
                 onAnimationStart={handleAnimationStart}
               >
+                {hasArrow && <PseudoBox data-popper-arrow="" role="presentation" bg="inherit" />}
                 {children}
               </motion.div>
             </PseudoBox>
