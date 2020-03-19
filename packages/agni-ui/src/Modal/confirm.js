@@ -26,7 +26,8 @@ const Confirmation = forwardRef(
     forwardedRef
   ) => {
     const [isOpen, setOpen] = useState(true);
-    const [isLoading, setLoading] = useState(false);
+    const [isLoadingOkay, setLoadingOkay] = useState(false);
+    const [isLoadingCancel, setLoadingCancel] = useState(false);
     const prevOpen = useRef(true);
 
     const timeout = useRef(null);
@@ -37,8 +38,11 @@ const Confirmation = forwardRef(
         close: () => {
           setOpen(false);
         },
-        toggleLoading: () => {
-          setLoading(true);
+        toggleLoadingOkay: () => {
+          setLoadingOkay(oldLoading => !oldLoading);
+        },
+        toggleLoadingCancel: () => {
+          setLoadingCancel(oldLoading => !oldLoading);
         }
       }),
       []
@@ -102,7 +106,8 @@ const Confirmation = forwardRef(
             variantColor="primary"
             mx={1}
             {...okayProps}
-            isDisabled={isLoading}
+            isLoading={isLoadingOkay}
+            isDisabled={isLoadingOkay || isLoadingCancel}
             onClick={handleOkay}
           >
             {okayText}
@@ -112,7 +117,8 @@ const Confirmation = forwardRef(
             variantColor="danger"
             mx={1}
             {...cancelProps}
-            isDisabled={isLoading}
+            isLoading={isLoadingCancel}
+            isDisabled={isLoadingOkay || isLoadingCancel}
             onClick={handleCancel}
           >
             {cancelText}
@@ -149,18 +155,20 @@ const confirm = ({ onOkay, onCancel, ...restProps }) => {
   }
 
   async function handleOkay() {
-    nodeRef.toggleLoading();
+    nodeRef.toggleLoadingOkay();
     if (onOkay) {
       await onOkay();
     }
+    nodeRef.toggleLoadingOkay();
     handleClose();
   }
 
   async function handleCancel() {
-    nodeRef.toggleLoading();
+    nodeRef.toggleLoadingCancel();
     if (onCancel) {
       await onCancel();
     }
+    nodeRef.toggleLoadingCancel();
     handleClose();
   }
 
