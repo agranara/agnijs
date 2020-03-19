@@ -55,7 +55,7 @@ const useDatePicker = ({
       return 'MMMM YYYY';
     }
     if (mode === 'week') {
-      return 'YYYY-w';
+      return '[Week] w - YYYY';
     }
 
     return 'DD MMMM YYYY';
