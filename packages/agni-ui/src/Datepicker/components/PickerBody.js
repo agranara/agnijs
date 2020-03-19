@@ -1,29 +1,9 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core';
+import { memo } from 'react';
 import { PseudoBox } from '../../PseudoBox';
 import { useDatepickerContext } from '../DatepickerContext';
-
-const tableConfig = {
-  monthly: {
-    startView: val => val.startOf('month').startOf('week'),
-    endView: val =>
-      val
-        .endOf('month')
-        .add(1, 'week')
-        .startOf('week'),
-    rowsView: (start, end) => end.diff(start, 'week'),
-    // eslint-disable-next-line no-unused-vars
-    columnsView: (start, end) => 7,
-
-    startRowView: (val, y) => val.add(y, 'week'),
-    startCellView: (val, x) => val.add(x, 'day'),
-
-    headerFormat: (val, i) => val.add(i, 'day').format('dd'),
-    headerFormatTitle: (val, i) => val.add(i, 'day').format('dddd'),
-    cellFormat: val => val.format('D'),
-    cellFullFormat: val => val.format('dddd, DD MMM YYYY')
-  }
-};
+import { viewMode } from '../constants';
 
 ///////////////////////////////////////////////////////////////////
 
@@ -37,7 +17,7 @@ const selectorStyle = {
 
 const cursorStyle = {
   color: 'black',
-  bg: 'primary.300',
+  bg: 'primary.200',
   _hover: {
     bg: 'primary.300'
   }
@@ -62,10 +42,14 @@ const PickerBodyDay = ({ viewConfig, startRow, weekIndex, dayIndex, today }) => 
   const day = viewConfig.startCellView(startRow, dayIndex);
   const formatDay = viewConfig.cellFullFormat(day);
 
-  const isSameDay = day.isSame(value, 'day');
-  const isSameMonth = day.isSame(focusValue, 'month');
-  const isCursorDay = day.isSame(focusValue, 'day');
-  const isTodayNoValue = day.isSame(today, 'day') && !value;
+  const isSameCell = viewConfig.sameCellSelector(day, value);
+  const isSameView = viewConfig.sameViewSelector(day, focusValue);
+  const isSameCursor = viewConfig.sameCursorSelector(day, focusValue);
+  const isCurrentNoValue = viewConfig.sameCurrentSelector(day, today) && !value;
+
+  const handleChange = () => {
+    onChange(day);
+  };
 
   return (
     <PseudoBox
@@ -74,24 +58,24 @@ const PickerBodyDay = ({ viewConfig, startRow, weekIndex, dayIndex, today }) => 
       d="table-cell"
       role="gridcell"
       h="30px"
-      w="30px"
+      minW="30px"
       verticalAlign="middle"
       textAlign="center"
       lineHeight="1"
       outline="none"
-      onClick={() => onChange(day)}
+      onClick={handleChange}
       tabIndex={-1}
       title={formatDay}
       aria-label={formatDay}
-      aria-selected={isSameDay}
+      aria-selected={isSameCell}
       cursor="pointer"
       userSelect="none"
     >
       <PseudoBox
         {...baseStyle}
-        {...(isSameMonth && monthStyle)}
-        {...(isCursorDay && cursorStyle)}
-        {...((isSameDay || isTodayNoValue) && selectorStyle)}
+        {...(isSameView && monthStyle)}
+        {...(isSameCursor && cursorStyle)}
+        {...((isSameCell || isCurrentNoValue) && selectorStyle)}
         rounded="md"
         py="7px"
         verticalAlign="middle"
@@ -106,8 +90,10 @@ PickerBodyDay.displayName = 'PickerBodyDay';
 
 ///////////////////////////////////////////////////////////////////
 
-const PickerBody = ({ viewConfig = tableConfig.monthly }) => {
-  const { focusValue, parser } = useDatepickerContext();
+const PickerBody = memo(() => {
+  const { focusValue, parser, mode } = useDatepickerContext();
+
+  const viewConfig = viewMode[mode];
 
   const today = parser();
 
@@ -125,40 +111,44 @@ const PickerBody = ({ viewConfig = tableConfig.monthly }) => {
     <PseudoBox
       d="inline-table"
       className="datepicker__body"
+      w="full"
+      my={1}
       css={css({
         borderCollapse: 'collapse',
         borderSpacing: 0
       })}
       role="grid"
     >
-      <PseudoBox d="table-header-group" className="datepicker__body-weeks" role="rowgroup">
-        <PseudoBox d="table-row" className="datepicker__body-weekrow" role="row">
-          {Array.from({ length: view.columns }, (_, i) => (
-            <PseudoBox
-              key={`view-head-${i}`}
-              d="table-cell"
-              className="datepicker__body-weekday"
-              role="columnheader"
-              lineHeight="1"
-              w="30px"
-              h="30px"
-              textAlign="center"
-              verticalAlign="middle"
-              textTransform="none"
-            >
+      {viewConfig.headerFormat && (
+        <PseudoBox d="table-header-group" className="datepicker__body-weeks" role="rowgroup">
+          <PseudoBox d="table-row" className="datepicker__body-weekrow" role="row">
+            {Array.from({ length: view.columns }, (_, i) => (
               <PseudoBox
-                as="abbr"
-                outline="none"
-                fontWeight="semibold"
-                textDecoration="none !important"
-                title={viewConfig.headerFormatTitle(view.start, i)}
+                key={`view-head-${i}`}
+                d="table-cell"
+                className="datepicker__body-weekday"
+                role="columnheader"
+                lineHeight="1"
+                w="30px"
+                h="30px"
+                textAlign="center"
+                verticalAlign="middle"
+                textTransform="none"
               >
-                {viewConfig.headerFormat(view.start, i)}
+                <PseudoBox
+                  as="abbr"
+                  outline="none"
+                  fontWeight="semibold"
+                  textDecoration="none !important"
+                  title={viewConfig.headerFormatTitle(view.start, i)}
+                >
+                  {viewConfig.headerFormat(view.start, i)}
+                </PseudoBox>
               </PseudoBox>
-            </PseudoBox>
-          ))}
+            ))}
+          </PseudoBox>
         </PseudoBox>
-      </PseudoBox>
+      )}
       <PseudoBox d="table-row-group" className="datepicker__body-pick" role="rowgroup">
         {Array.from({ length: view.rows }, (_, y) => {
           const startRow = viewConfig.startRowView(view.start, y);
@@ -187,7 +177,7 @@ const PickerBody = ({ viewConfig = tableConfig.monthly }) => {
       </PseudoBox>
     </PseudoBox>
   );
-};
+});
 
 PickerBody.displayName = 'PickerBody';
 

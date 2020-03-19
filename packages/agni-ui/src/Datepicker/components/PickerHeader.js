@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, memo } from 'react';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import { useDatepickerContext } from '../DatepickerContext';
 import { months, years } from '../constants';
@@ -14,8 +14,8 @@ const PickerHeaderButton = ({ className, children, onClick, title }) => {
       type="button"
       px={0}
       py={0}
-      w="30px"
-      h="30px"
+      w="24px"
+      h="24px"
       fontSize="16px"
       fontWeight="bold"
       lineHeight="1"
@@ -64,8 +64,27 @@ PickerHeaderSelect.displayName = 'PickerHeaderSelect';
 
 /////////////////////////////////////////////////////////////
 
-const PickerHeader = () => {
-  const { focusValue, setFocusValue, ref } = useDatepickerContext();
+const unitMaps = {
+  date: {
+    unit: 'month',
+    multiplier: 1
+  },
+  year: {
+    unit: 'year',
+    multiplier: 10
+  },
+  month: {
+    unit: 'year',
+    multiplier: 1
+  },
+  week: {
+    unit: 'month',
+    multiplier: 1
+  }
+};
+
+const PickerHeader = memo(() => {
+  const { focusValue, setFocusValue, ref, mode } = useDatepickerContext();
 
   const focusInput = useCallback(() => {
     if (ref) {
@@ -88,18 +107,20 @@ const PickerHeader = () => {
     [debounceFocus, setFocusValue]
   );
 
-  const handleMonth = useCallback(
+  const handleRange = useCallback(
     (ev, num) => {
       ev.persist();
 
+      const { unit, multiplier } = unitMaps[mode];
+
       if (num > 0) {
-        setFocusValue(oldFocus => oldFocus.add(num, 'month'));
+        setFocusValue(oldFocus => oldFocus.add(num * multiplier, unit));
       } else if (num < 0) {
-        setFocusValue(oldFocus => oldFocus.subtract(Math.abs(num), 'month'));
+        setFocusValue(oldFocus => oldFocus.subtract(Math.abs(num) * multiplier, unit));
       }
       focusInput();
     },
-    [focusInput, setFocusValue]
+    [focusInput, setFocusValue, mode]
   );
 
   const selectMonths = (
@@ -141,23 +162,46 @@ const PickerHeader = () => {
     >
       <PickerHeaderButton
         className="datepicker__header-prev"
-        onClick={ev => handleMonth(ev, -1)}
+        onClick={ev => handleRange(ev, -1)}
         title="Click to see previous month"
       >
         <FiChevronLeft />
       </PickerHeaderButton>
-      <PseudoBox px={1}>{selectMonths}</PseudoBox>
-      <PseudoBox px={1}>{selectYears}</PseudoBox>
+      <PseudoBox
+        d="flex"
+        flexDir="row"
+        flexWrap="wrap"
+        flexGrow={1}
+        flexShrink={1}
+        textAlign="center"
+        alignItems="center"
+        justifyContent="center"
+      >
+        {(mode === 'date' || mode === 'week') && (
+          <React.Fragment>
+            <PseudoBox px={1}>{selectMonths}</PseudoBox>
+            <PseudoBox px={1}>{selectYears}</PseudoBox>
+          </React.Fragment>
+        )}
+        {mode === 'year' && (
+          <React.Fragment>
+            {focusValue.get('year') - (focusValue.get('year') % 10)}
+            {' - '}
+            {focusValue.get('year') - (focusValue.get('year') % 10) + 9}
+          </React.Fragment>
+        )}
+        {mode === 'month' && focusValue.get('year')}
+      </PseudoBox>
       <PickerHeaderButton
         className="datepicker__header-next"
-        onClick={ev => handleMonth(ev, 1)}
+        onClick={ev => handleRange(ev, 1)}
         title="Click to see next month"
       >
         <FiChevronRight />
       </PickerHeaderButton>
     </PseudoBox>
   );
-};
+});
 
 PickerHeader.displayName = 'PickerHeader';
 

@@ -5,6 +5,7 @@ import { InputText } from '../InputText';
 import { InputGroup } from '../InputGroup';
 import { InputInside } from '../InputInside';
 import { Button } from '../Button';
+import { PseudoBox } from '../PseudoBox';
 import { useForkedRef } from '../_hooks/useForkedRef';
 import { useDatePicker } from './useDatePicker';
 import { DatepickerContext } from './DatepickerContext';
@@ -19,13 +20,16 @@ const Datepicker = forwardRef(
       onChange,
       value,
       valueFormat,
-      locale,
+      locale = 'id',
       isReadOnly,
       isDisabled,
-      initialOpenPicker,
+      initialOpenPicker = false,
+
       visualFormat,
-      closeOnClear,
-      closeOnSelect,
+      closeOnClear = true,
+      closeOnSelect = true,
+      mode = 'date',
+      customParser,
       ...rest
     },
     ref
@@ -40,13 +44,15 @@ const Datepicker = forwardRef(
       closeOnSelect,
       locale,
       initialOpenPicker,
-      visualFormat
+      visualFormat,
+      mode,
+      customParser
     });
 
     const forkedRef = useForkedRef(ref, ctx.ref);
 
     return (
-      <DatepickerContext.Provider value={{ ...ctx }}>
+      <DatepickerContext.Provider value={ctx}>
         <React.Fragment>
           <InputGroup className="datepicker">
             <InputText
@@ -79,12 +85,12 @@ const Datepicker = forwardRef(
             triggerRef={ctx.ref}
             innerRef={ctx.dropdownRef}
             placement="bottom-start"
-            p={1}
-            textAlign="center"
           >
-            <PickerHeader />
-            <PickerBody />
-            <PickerFooter />
+            <PseudoBox w="full" p={1} textAlign="center" minW="200px">
+              <PickerHeader />
+              <PickerBody />
+              <PickerFooter />
+            </PseudoBox>
           </Positioner>
         </React.Fragment>
       </DatepickerContext.Provider>

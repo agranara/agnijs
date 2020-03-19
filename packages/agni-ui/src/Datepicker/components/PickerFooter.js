@@ -7,7 +7,7 @@ const PickerFooter = () => {
   const { onChange, parser } = useDatepickerContext();
   return (
     <Box>
-      <Button mt={2} isFullWidth size="sm" onClick={() => onChange(parser())}>
+      <Button isFullWidth size="sm" onClick={() => onChange(parser())}>
         Today
       </Button>
     </Box>

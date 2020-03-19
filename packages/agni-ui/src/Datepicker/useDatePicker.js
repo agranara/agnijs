@@ -1,51 +1,100 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useMemo } from 'react';
 import dayjs from 'dayjs';
 import 'dayjs/locale/id';
+import weekOfYear from 'dayjs/plugin/weekOfYear';
+import advancedFormat from 'dayjs/plugin/advancedFormat';
 import { isKeyboardKey } from '../keyboard';
 import { useTogglePositioner } from '../Positioner';
+
+dayjs.extend(weekOfYear);
+dayjs.extend(advancedFormat);
 
 const useDatePicker = ({
   value: valueProp,
   onChange,
   isReadOnly,
   isDisabled,
-  closeOnClear = true,
-  closeOnSelect = true,
-  locale = 'id',
-  valueFormat = 'YYYY-MM-DD',
-  initialOpenPicker = false,
-  visualFormat = 'DD MMMM YYYY'
+  closeOnClear,
+  closeOnSelect,
+  locale,
+  initialOpenPicker,
+  valueFormat: valueFormatProp,
+  visualFormat: visualFormatProp,
+  mode,
+  customParser
 }) => {
   const { current: parser } = useRef(dayjs);
   parser.locale(locale);
 
-  const isEmpty = typeof valueProp !== 'undefined' || valueProp !== null;
+  const { current: isControlled } = useRef(typeof valueProp !== 'undefined' || valueProp !== null);
 
-  const { current: isControlled } = useRef(isEmpty);
+  const valueFormat = useMemo(() => {
+    if (valueFormatProp) {
+      return valueFormatProp;
+    }
+    if (mode === 'year') {
+      return 'YYYY';
+    }
+    if (mode === 'month') {
+      return 'YYYY-MM';
+    }
+    if (mode === 'week') {
+      return 'YYYY-w';
+    }
+    return 'YYYY-MM-DD';
+  }, [mode, valueFormatProp]);
+
+  const visualFormat = useMemo(() => {
+    if (visualFormatProp) {
+      return visualFormatProp;
+    }
+    if (mode === 'year') {
+      return 'YYYY';
+    }
+    if (mode === 'month') {
+      return 'MMMM YYYY';
+    }
+    if (mode === 'week') {
+      return 'YYYY-w';
+    }
+
+    return 'DD MMMM YYYY';
+  }, [mode, visualFormatProp]);
 
   const dropdownRef = useRef(null);
   const inputRef = useRef(null);
 
+  const getParsed = val => {
+    if (customParser) {
+      return customParser(parser, val);
+    }
+
+    if (mode === 'week' && typeof val === 'string' && val) {
+      const splitted = val.split('-');
+      const year = splitted[0];
+      const week = splitted[1];
+      return parser(year, 'YYYY').week(week);
+    }
+
+    return parser(val, valueFormat);
+  };
+
   const [valueState, setValue] = useState(() => {
-    if (isEmpty) {
-      return parser(valueProp, valueFormat);
+    if (isControlled) {
+      return getParsed(valueProp);
     }
     return undefined;
   });
 
   // When controlled, check value prop, when present, format to dayjs
   // else use undefined as intended
-  const value = isControlled
-    ? valueProp
-      ? parser(valueProp, valueFormat)
-      : undefined
-    : valueState;
+  const value = isControlled ? (valueProp ? getParsed(valueProp) : undefined) : valueState;
 
   const prevNextValue = useRef(valueProp);
 
   const [focusValue, setFocusValue] = useState(() => {
-    if (isEmpty) {
-      return parser(valueProp, valueFormat);
+    if (isControlled) {
+      return getParsed(valueProp);
     }
 
     return parser();
@@ -157,7 +206,8 @@ const useDatePicker = ({
     handleIsOpen,
     onChange: handleChange,
     handleClear,
-    dropdownRef
+    dropdownRef,
+    mode
   };
 };
 
