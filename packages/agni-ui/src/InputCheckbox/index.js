@@ -78,7 +78,7 @@ const InputCheckbox = forwardRef(
           aria-checked={isIndeterminate ? 'mixed' : isChecked}
         />
         <ControlBox className="input-checkbox__box" {...styleProps} type="checkbox">
-          {isIndeterminate ? <FiMinus /> : <FiCheck />}
+          {isIndeterminate ? <FiMinus /> : <FiCheck strokeWidth="3" />}
         </ControlBox>
         {children && (
           <Box
