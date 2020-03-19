@@ -1,10 +1,20 @@
 import { BoxProps } from '../Box';
-import { VariantColor } from '../theme';
 
 interface ISpinnerProps {
+  /**
+   * Hidden label for accessibility purpose
+   * (WA-ARIA label)
+   */
   label?: string;
+  /**
+   * Spinner size
+   */
   size?: 'xs' | 'sm' | 'md' | 'lg';
-  variantColor?: VariantColor;
+  /**
+   * Variant color with its density as defined inside theme
+   * eg: 'primary.500', 'warning.50', 'danger.100', black, etc
+   */
+  variantColor?: string;
 }
 
 type SpinnerProps = ISpinnerProps & Omit<BoxProps, 'size'>;
