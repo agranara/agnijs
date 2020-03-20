@@ -3,6 +3,35 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.20](https://github.com/agranara/agnijs/compare/@agnijs/agni-ui@1.1.19...@agnijs/agni-ui@1.1.20) (2020-03-20)
+
+### Bug Fixes
+
+- **carousel:** fixed width carousel initially throw NaN ([6adafc2](https://github.com/agranara/agnijs/commit/6adafc21bf7e1f370f2f2fd6fe6b3b08a7852e4e))
+- **carousel:** fixed wrong key usage inside carousel indicators ([2ad0f63](https://github.com/agranara/agnijs/commit/2ad0f63c58e9790cb566c71a1a35124fbfdcf4d6))
+- **confirm:** added loading state when clicking okay or cancel ([b999af9](https://github.com/agranara/agnijs/commit/b999af938243431638458bb3b60f4fc44cc4d029))
+- **datagrid:** fixed freeze column start index search from -1 ([0f6e666](https://github.com/agranara/agnijs/commit/0f6e666701fa996bf879eb9d820111dc9e04e357))
+- **datepicker:** fixed selector year in mode 'month' datepicker ([6b33a38](https://github.com/agranara/agnijs/commit/6b33a38bb28995c00654075e94d11fdfd7bc5820))
+- **input-radio:** fix classname addition in input-radio and its group ([618d099](https://github.com/agranara/agnijs/commit/618d09959627a666ff923e0b7de9c46952a1fc74))
+- **modal:** added disabled state inside confirmation modal ([e5ee3e0](https://github.com/agranara/agnijs/commit/e5ee3e09369ed899f2b1e4a623c9edd13712e027))
+- **positioner:** fixed popper and framer weird behaviour on end window ([90bacef](https://github.com/agranara/agnijs/commit/90bacef9b837fba3e6ebf9952c0667c73a369c73))
+- **select:** fixed scroll focus on open if select has value ([31d1398](https://github.com/agranara/agnijs/commit/31d13982adaa0e0303da86fb66fdbcdc658a52bb))
+- **toast:** use theme set at 'UiProvider' as fallback theme in toast ([ba1ad46](https://github.com/agranara/agnijs/commit/ba1ad46b62f99c294544f1526e7e6ec218ec64d4))
+- **uitheme:** change filename to store shared ui theme inside UiProvider ([dac652c](https://github.com/agranara/agnijs/commit/dac652cd26df9946c71b8cc78928955a3c47bdb6))
+
+### Features
+
+- **datepicker:** added datepicker mode 'week', 'year', and 'month' ([ccbf176](https://github.com/agranara/agnijs/commit/ccbf1769fb69f05629c088fc281231a99644ae5b))
+- **input-checkbox:** added input checkbox feature ([6480b4c](https://github.com/agranara/agnijs/commit/6480b4c101efc1a504d1c0cecd710f37da0228b1))
+- **list:** added list component ([8a6098b](https://github.com/agranara/agnijs/commit/8a6098b1b5b20be880b2014abedccfd3b7f9e002))
+- **modal:** added confirm dialog inside modal component variant ([39b03a8](https://github.com/agranara/agnijs/commit/39b03a8465647e8ec3aa67f3089d989f4db74b60))
+- **popover:** added popover/tooltip component ([8ba5c56](https://github.com/agranara/agnijs/commit/8ba5c564e5ed775af1882f91ec728db26cce980e))
+- **positioner:** added arrow style for positioner ([d24fbcc](https://github.com/agranara/agnijs/commit/d24fbcccdfd4f071fcd6156e67f26e6603993c72))
+
+### Performance Improvements
+
+- **select:** replace 'array.reduce' with 'for-loop' for map options ([e580d22](https://github.com/agranara/agnijs/commit/e580d2280004cdd154f5a47304e14c01a766910c))
+
 ## [1.1.19](https://github.com/agranara/agnijs/compare/@agnijs/agni-ui@1.1.18...@agnijs/agni-ui@1.1.19) (2020-03-13)
 
 ### Bug Fixes
