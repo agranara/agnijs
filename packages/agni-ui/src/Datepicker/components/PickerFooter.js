@@ -6,7 +6,7 @@ import { useDatepickerContext } from '../DatepickerContext';
 const PickerFooter = () => {
   const { onChange, parser } = useDatepickerContext();
   return (
-    <Box>
+    <Box className="datepicker__footer" px={1}>
       <Button isFullWidth size="sm" onClick={() => onChange(parser())}>
         Today
       </Button>

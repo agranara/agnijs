@@ -1,9 +1,10 @@
 import React, { useCallback, memo } from 'react';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
+import { useDebounceCallback } from '../../_hooks/useDebounceCallback';
+import { PseudoBox } from '../../PseudoBox';
+import { InputText } from '../../InputText';
 import { useDatepickerContext } from '../DatepickerContext';
 import { months, years } from '../constants';
-import { PseudoBox } from '../../PseudoBox';
-import { useDebounceCallback } from '../../_hooks/useDebounceCallback';
 
 const PickerHeaderButton = ({ className, children, onClick, title }) => {
   return (
@@ -14,8 +15,8 @@ const PickerHeaderButton = ({ className, children, onClick, title }) => {
       type="button"
       px={0}
       py={0}
-      w="24px"
-      h="24px"
+      w="28px"
+      h="28px"
       fontSize="16px"
       fontWeight="bold"
       lineHeight="1"
@@ -44,19 +45,9 @@ PickerHeaderButton.displayName = 'PickerHeaderButton';
 
 const PickerHeaderSelect = ({ children, className, onChange, value }) => {
   return (
-    <PseudoBox
-      as="select"
-      w="full"
-      height="30px"
-      fontSize="md"
-      lineHeight="1"
-      verticalAlign="middle"
-      className={className}
-      value={value}
-      onChange={onChange}
-    >
+    <InputText as="select" size="sm" className={className} value={value} onChange={onChange}>
       {children}
-    </PseudoBox>
+    </InputText>
   );
 };
 
@@ -156,9 +147,11 @@ const PickerHeader = memo(() => {
       className="datepicker__header"
       d="flex"
       alignItems="center"
-      pb={1}
-      borderBottom="1px"
-      borderColor="gray.300"
+      pt={1}
+      pb={2}
+      px={2}
+      borderBottomWidth="1px"
+      // borderColor="gray.300"
     >
       <PickerHeaderButton
         className="datepicker__header-prev"
@@ -179,10 +172,11 @@ const PickerHeader = memo(() => {
       >
         {(mode === 'date' || mode === 'week') && (
           <React.Fragment>
-            <PseudoBox px={1}>{selectMonths}</PseudoBox>
-            <PseudoBox px={1}>{selectYears}</PseudoBox>
+            <PseudoBox px="1px">{selectMonths}</PseudoBox>
+            <PseudoBox px="1px">{selectYears}</PseudoBox>
           </React.Fragment>
         )}
+        {mode === 'month' && <PseudoBox px="1px">{selectYears}</PseudoBox>}
         {mode === 'year' && (
           <React.Fragment>
             {focusValue.get('year') - (focusValue.get('year') % 10)}
@@ -190,7 +184,6 @@ const PickerHeader = memo(() => {
             {focusValue.get('year') - (focusValue.get('year') % 10) + 9}
           </React.Fragment>
         )}
-        {mode === 'month' && focusValue.get('year')}
       </PseudoBox>
       <PickerHeaderButton
         className="datepicker__header-next"

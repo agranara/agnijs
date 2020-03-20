@@ -86,7 +86,7 @@ const Datepicker = forwardRef(
             innerRef={ctx.dropdownRef}
             placement="bottom-start"
           >
-            <PseudoBox w="full" p={1} textAlign="center" minW="200px">
+            <PseudoBox w="full" textAlign="center" minW="200px">
               <PickerHeader />
               <PickerBody />
               <PickerFooter />

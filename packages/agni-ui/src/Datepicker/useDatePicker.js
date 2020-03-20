@@ -189,7 +189,7 @@ const useDatePicker = ({
     parser,
     updateValue,
     input: {
-      value: value ? value.format(visualFormat) : '',
+      value: parser.isDayjs(value) ? value.format(visualFormat) : '',
       readOnly: isReadOnly,
       disabled: isDisabled,
       autoComplete: 'off',

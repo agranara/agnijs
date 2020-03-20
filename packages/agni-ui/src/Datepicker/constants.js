@@ -18,6 +18,37 @@ export const months = [
 
 export const years = Array.from({ length: 150 }, (_, i) => i + 1950);
 
+// Styling
+
+export const selectorStyle = {
+  color: 'white',
+  bg: 'primary.500',
+  _hover: {
+    bg: 'primary.500'
+  }
+};
+
+export const cursorStyle = {
+  color: 'black',
+  bg: 'primary.200',
+  _hover: {
+    bg: 'primary.300'
+  }
+};
+
+export const baseStyle = {
+  color: 'gray.300',
+  bg: 'white'
+};
+
+export const monthStyle = {
+  color: 'black',
+  bg: 'white',
+  _hover: {
+    bg: 'gray.200'
+  }
+};
+
 // Date view configuration
 const dateView = {
   startView: val => val.startOf('month').startOf('week'),
@@ -26,7 +57,8 @@ const dateView = {
       .endOf('month')
       .add(1, 'week')
       .startOf('week'),
-  rowsView: (start, end) => end.diff(start, 'week'),
+  // eslint-disable-next-line no-unused-vars
+  rowsView: (start, end) => 6,
   // eslint-disable-next-line no-unused-vars
   columnsView: (start, end) => 7,
 
@@ -95,7 +127,8 @@ const weekView = {
       .endOf('month')
       .add(1, 'week')
       .startOf('week'),
-  rowsView: (start, end) => end.diff(start, 'week'),
+  // eslint-disable-next-line no-unused-vars
+  rowsView: (start, end) => 6,
   // eslint-disable-next-line no-unused-vars
   columnsView: (start, end) => 1,
 
@@ -126,7 +159,7 @@ const weekView = {
   headerFormatTitle: (val, i) => {
     return `${val.add(i, 'day').format('dddd')} - ${val.add(i + 6, 'day').format('dddd')}`;
   },
-  cellFormat: val => {
+  cellFormat: (val, compareVal) => {
     const headerWeeks = [];
     headerWeeks.push(
       <PseudoBox w={30} lineHeight="16px" key="header-week" mr={2} color="gray.300">
@@ -134,10 +167,12 @@ const weekView = {
       </PseudoBox>
     );
     for (let j = 0; j < 7; j++) {
-      const weekName = val.add(j, 'day').format('DD');
+      const day = val.add(j, 'day');
+      const dayName = day.format('DD');
+      const isSame = day.isSame(compareVal, 'month');
       headerWeeks.push(
-        <PseudoBox w={30} lineHeight="16px" key={j}>
-          {weekName}
+        <PseudoBox w={30} lineHeight="16px" key={j} color={isSame ? 'black' : 'gray.300'}>
+          {dayName}
         </PseudoBox>
       );
     }
