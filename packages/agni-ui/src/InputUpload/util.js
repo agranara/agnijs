@@ -64,14 +64,16 @@ export function isFileInRangeSize(file, min, max) {
 
 export function isImage(fileName, fileType) {
   if (fileType) {
-    return ['image/jpg', 'image/jpeg', 'image/gif', 'image/png'].indexOf(fileType) > -1;
+    return (
+      ['image/jpg', 'image/jpeg', 'image/svg+xml', 'image/gif', 'image/png'].indexOf(fileType) > -1
+    );
   }
 
   if (fileName) {
     const splitFilename = fileName.split('.');
     if (splitFilename.length > 1) {
       const ext = splitFilename[splitFilename.length - 1];
-      return ['jpg', 'png', 'svg', 'gif'].indexOf(ext) > -1;
+      return ['jpg', 'jpeg', 'svg', 'gif', 'png'].indexOf(ext) > -1;
     }
   }
 

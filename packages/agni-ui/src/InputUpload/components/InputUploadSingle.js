@@ -147,7 +147,9 @@ const InputUploadSingle = forwardRef(
         const { acceptedFiles } = dropProps;
 
         const onlyImagesPreviews =
-          acceptedFiles.length > 0 ? acceptedFiles.filter(item => isImage(item.file.type)) : [];
+          acceptedFiles.length > 0
+            ? acceptedFiles.filter(item => isImage(item.file.name, item.file.type))
+            : [];
 
         const previewItem = onlyImagesPreviews[Math.min(onlyImagesPreviews.length - 1, 0)];
 
