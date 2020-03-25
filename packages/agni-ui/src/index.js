@@ -14,6 +14,7 @@ export * from './Container';
 export * from './ControlBox';
 export * from './Datepicker';
 export * from './DataGrid';
+export * from './Drawer';
 export * from './Flex';
 export * from './FileInfo';
 export * from './Icon';

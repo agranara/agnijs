@@ -27,6 +27,7 @@ const FocusTrap = ({
   // can be removed once we drop support for non ref forwarding class components
   const handleOwnRef = useCallback(instance => {
     // #StrictMode ready
+    // eslint-disable-next-line react/no-find-dom-node
     rootRef.current = findDOMNode(instance);
   }, []);
   const handleRef = useForkedRef(children.ref, handleOwnRef);
