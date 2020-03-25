@@ -5,37 +5,6 @@ import { LargeSizes } from './../theme';
 
 export interface IModalProps {
   /**
-   * Indicates if popup is shown when `true`
-   */
-  isOpen: PopupProps['isOpen'];
-  /**
-   * If backdrop should be hidden
-   */
-  isBackdropHidden?: PopupProps['isBackdropHidden'];
-  /**
-   * Callback on close function from inside popup component
-   * It triggered when `closeOnBackdropClick` value is `true`
-   * or `closeOnEscape` value is `true`.
-   */
-  onClose?: PopupProps['onClose'];
-  /**
-   * Callback on click backdrop component.
-   * Only occur when `isBackdropHidden` value is `true`
-   */
-  onBackdropClick?: PopupProps['onBackdropClick'];
-  /**
-   * Callback function when `ESCAPE` key pressed.
-   */
-  onEscapeKeyDown?: PopupProps['onEscapeKeyDown'];
-  /**
-   * If `true`, clicking the backdrop will fire `onClose` callback.
-   */
-  closeOnBackdropClick?: PopupProps['closeOnBackdropClick'];
-  /**
-   * If `true`, pressing `ESCAPE` key will fire `onClose` callback.
-   */
-  closeOnEscape?: PopupProps['closeOnEscape'];
-  /**
    * Modal size variant.
    */
   size?: keyof LargeSizes;
@@ -47,13 +16,9 @@ export interface IModalProps {
    * On animation started (appearing or exiting)
    */
   onAnimationStart?: () => void;
-  /**
-   * On popup exited completely
-   */
-  onAnimationCompleted?: PopupProps['onAnimationCompleted'];
 }
 
-export type ModalProps = IModalProps & Omit<PseudoBoxProps, 'size'>;
+export type ModalProps = IModalProps & PopupProps;
 
 /**
  * Modal component

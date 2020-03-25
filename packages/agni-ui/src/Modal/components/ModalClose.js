@@ -1,4 +1,5 @@
 import React from 'react';
+import cn from 'classnames';
 import { FiX } from 'react-icons/fi';
 import { Button } from '../../Button';
 import { useModalContext } from '../ModalContext';
@@ -25,6 +26,7 @@ const ModalClose = ({ children, className, onClick, ...rest }) => {
       fontSize="18px"
       minW="26px"
       lineHeight="1"
+      className={cn(['modal__close', className])}
       onClick={handleClick}
       {...rest}
     >
