@@ -42,8 +42,8 @@ const InputText = forwardRef(
         {...baseProps}
         {...(variantType === 'boxed' && boxedStyle(passedProps))}
         {...(variantType === 'unstyled' && unstyledStyle)}
-        {...restProps}
         {...inputSize}
+        {...restProps}
         pl={pl || inputSize.px}
         pr={pr || inputSize.px}
         disabled={disabled}

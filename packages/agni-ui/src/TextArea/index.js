@@ -116,7 +116,7 @@ const TextArea = forwardRef((props, forwardedRef) => {
         py="7px"
         h="auto"
         minH="36px"
-        lineHeight="short"
+        lineHeight="base"
         value={value}
         onChange={handleChange}
         placeholder={placeholder}
@@ -139,7 +139,7 @@ const TextArea = forwardRef((props, forwardedRef) => {
         py="7px"
         h="auto"
         minH="36px"
-        lineHeight="short"
+        lineHeight="base"
         style={{
           // Visibility needed to hide the extra text area on iPads
           visibility: 'hidden',
