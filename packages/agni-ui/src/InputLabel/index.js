@@ -1,15 +1,19 @@
 import React, { forwardRef } from 'react';
 import { Box } from '../Box';
 
-const RequiredIndicator = props => {
-  return <Box as="span" ml={1} color="red.500" aria-hidden="true" children="*" {...props} />;
+const RequiredIndicator = ({ children = '*', ...restProps }) => {
+  return (
+    <Box as="span" ml={1} color="red.500" aria-hidden="true" {...restProps}>
+      {children}
+    </Box>
+  );
 };
 
 RequiredIndicator.displayName = 'RequiredIndicator';
 
 ///////////////////////////////////////////////////////////
 
-const InputLabel = forwardRef(({ children, isRow, ...props }, ref) => {
+const InputLabel = forwardRef(({ children, isRow, isRequired, ...props }, ref) => {
   return (
     <Box
       ref={ref}
@@ -27,7 +31,7 @@ const InputLabel = forwardRef(({ children, isRow, ...props }, ref) => {
       {...props}
     >
       {children}
-      {props.isRequired && <RequiredIndicator />}
+      {isRequired && <RequiredIndicator />}
     </Box>
   );
 });
