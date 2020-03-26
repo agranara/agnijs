@@ -5,7 +5,7 @@
  * @return {string} Humanize file size
  */
 export function fileSizeConvert(fileSize) {
-  if (Number.isNaN(fileSize)) {
+  if (typeof fileSize === 'undefined' || fileSize === null || Number.isNaN(fileSize)) {
     return fileSize || '';
   }
 

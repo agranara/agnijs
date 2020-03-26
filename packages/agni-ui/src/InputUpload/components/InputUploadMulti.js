@@ -53,8 +53,6 @@ const InputUploadMulti = forwardRef(
     },
     forwardedRef
   ) => {
-    useImperativeHandle(forwardedRef, () => ({ promptDialog }), [promptDialog]);
-
     const [keepFiles, setKeepFiles] = useState({
       acceptedFiles: [],
       rejectedFiles: []
@@ -101,6 +99,8 @@ const InputUploadMulti = forwardRef(
       onDrop: handleDrop,
       onDialogCancel
     });
+
+    useImperativeHandle(forwardedRef, () => ({ promptDialog }), [promptDialog]);
 
     const handleClearItem = useCallback(
       (item, index) => {
