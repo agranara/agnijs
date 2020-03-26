@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.21](https://github.com/agranara/agnijs/compare/@agnijs/agni-ui@1.1.20...@agnijs/agni-ui@1.1.21) (2020-03-26)
+
+### Bug Fixes
+
+- **file-info:** fixed check when filesize undefined ([383b2fa](https://github.com/agranara/agnijs/commit/383b2fad837cb842aa2e7801adacafc9e71f8ccb))
+- **file-info:** fixed handler file size conversion if NaN ([fab77d2](https://github.com/agranara/agnijs/commit/fab77d26fe08a165eb5f9a8fb9359893906e6866))
+- **input-label:** fixed input label required props ([accdc42](https://github.com/agranara/agnijs/commit/accdc42afdc82de5574ec57db10b25612ed5a100))
+- **input-number:** fixed isControlled check based on onChange props ([34d7bf0](https://github.com/agranara/agnijs/commit/34d7bf04a51edbb8e108bc2fcaad6b91888d032c))
+- **input-number:** fixed wrong check for a11y valuetext ([9fe9a50](https://github.com/agranara/agnijs/commit/9fe9a507467a302000ea9373945b41b2967aac14))
+- **input-radio:** fixed isControlled, when valueProp empty initially ([78adb35](https://github.com/agranara/agnijs/commit/78adb35620869e6214ddf2b0daca00b1f2c4cba3))
+- **textarea:** fixed line-height TextArea using InputText component ([afe89b3](https://github.com/agranara/agnijs/commit/afe89b357d99f47310c6a8dedad41773c31a6548))
+- **upload:** fixed preview image not shown ([4e7db3f](https://github.com/agranara/agnijs/commit/4e7db3f084415e95a4c52b9b4504f8e15a56d7ca))
+
+### Features
+
+- **drawer:** added drawer component ([e376ae5](https://github.com/agranara/agnijs/commit/e376ae571bb84ceed90e38ed82ec21a959d325a3))
+
 ## [1.1.20](https://github.com/agranara/agnijs/compare/@agnijs/agni-ui@1.1.19...@agnijs/agni-ui@1.1.20) (2020-03-20)
 
 ### Bug Fixes
