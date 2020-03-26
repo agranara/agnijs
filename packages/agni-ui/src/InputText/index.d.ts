@@ -1,9 +1,21 @@
 import { PseudoBoxProps } from '../PseudoBox';
 
-interface IInputTextProps {
+interface IInputTextProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> {
+  /**
+   * Is input text focused. Default: false
+   */
   isFocus?: boolean;
+  /**
+   * Is input text full width. Default: false
+   */
   isFullWidth?: boolean;
-  size?: 'xs' | 'sm' | 'md' | 'lg';
+  /**
+   * Input text size
+   */
+  size?: 'sm' | 'md' | 'lg';
+  /**
+   * Variant input text box
+   */
   variantType?: 'boxed' | 'unstyled';
 }
 

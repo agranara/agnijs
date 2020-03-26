@@ -1,7 +1,8 @@
 import { BoxProps } from '../Box';
+import { IInputTextProps } from '../InputText';
 
 interface IInputGroupProps {
-  size?: 'xs' | 'sm' | 'md' | 'lg';
+  size?: IInputTextProps['size'];
 }
 
 type InputGroupProps = IInputGroupProps & BoxProps;

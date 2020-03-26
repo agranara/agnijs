@@ -1,7 +1,13 @@
 import { BoxProps } from '../Box';
 
 interface IInputLabelProps {
+  /**
+   * Is input label displayed inline?
+   */
   isRow?: boolean;
+  /**
+   * Is input label required?
+   */
   isRequired?: boolean;
 }
 
