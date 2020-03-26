@@ -21,7 +21,7 @@ const useNumberInput = ({
   isInvalid,
   isDisabled
 }) => {
-  const { current: isControlled } = useRef(valueProp != null);
+  const { current: isControlled } = useRef(typeof onChange === 'function');
 
   const defaultPrecision = Math.max(calculatePrecision(stepProp), 0);
   const precision = precisionProp || defaultPrecision;
