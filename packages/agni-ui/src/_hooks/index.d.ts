@@ -19,8 +19,6 @@ export function useComponentSize<T extends HTMLElement = HTMLElement>(): [
 
 ////////////////////////////////////////////
 
-type UseDebounceResult<T> = [T, () => void, () => void];
-
 interface UseDebounceOption {
   delay: number;
   deps?: any[];
@@ -29,7 +27,9 @@ interface UseDebounceOption {
 interface UseDebounceCbProp<T> extends UseDebounceOption {
   callback: T;
 }
-export function useDebounceCallback<T>(prop: UseDebounceCbProp<T>): UseDebounceResult<T>;
+
+type DebounceCancel = () => void;
+export function useDebounceCallback<T>(prop: UseDebounceCbProp<T>): [T, DebounceCancel];
 
 ////////////////////////////////////////////
 
@@ -37,7 +37,7 @@ interface UseDebounceValueProp<T> extends UseDebounceOption {
   value: T;
 }
 
-export function useDebounceValue<T>(prop: UseDebounceValueProp<T>): UseDebounceResult<T>;
+export function useDebounceValue<T>(prop: UseDebounceValueProp<T>): [T];
 
 ////////////////////////////////////////////
 
