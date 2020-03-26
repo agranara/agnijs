@@ -224,7 +224,7 @@ const useNumberInput = ({
       'aria-disabled': isDisabled,
       'aria-valuenow': value,
       'aria-invalid': isInvalid || isOutOfRange,
-      ...(getAriaValueText && { 'aria-valuetext': ariaValueText }),
+      ...(ariaValueText !== null && { 'aria-valuetext': ariaValueText }),
       readOnly: isReadOnly,
       disabled: isDisabled,
       autoComplete: 'off',
