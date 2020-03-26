@@ -8,7 +8,8 @@ import {
   useImperativeHandle,
   cloneElement,
   isValidElement,
-  Children
+  Children,
+  useEffect
 } from 'react';
 import { Box } from '../Box';
 import { ControlBox } from '../ControlBox';
@@ -121,7 +122,7 @@ const InputRadioGroup = forwardRef(
     },
     ref
   ) => {
-    const { current: isControlled } = useRef(valueProp != null);
+    const { current: isControlled } = useRef(typeof onChange === 'function');
     const [value, setValue] = useState(defaultValue || null);
     const _value = isControlled ? valueProp : value;
     const rootRef = useRef();
