@@ -5,6 +5,10 @@
  * @return {string} Humanize file size
  */
 export function fileSizeConvert(fileSize) {
+  if (Number.isNaN(fileSize)) {
+    return fileSize || '';
+  }
+
   const str = fileSize.toFixed(0);
 
   if (str.length < 3) {
