@@ -9,6 +9,8 @@ import { useTogglePositioner } from '../Positioner';
 dayjs.extend(weekOfYear);
 dayjs.extend(advancedFormat);
 
+const isNullOrEmpty = val => typeof val === 'undefined' || val === null;
+
 const useDatePicker = ({
   value: valueProp,
   onChange,
@@ -26,7 +28,7 @@ const useDatePicker = ({
   const { current: parser } = useRef(dayjs);
   parser.locale(locale);
 
-  const { current: isControlled } = useRef(typeof valueProp !== 'undefined' || valueProp !== null);
+  const { current: isControlled } = useRef(!isNullOrEmpty(valueProp));
 
   const valueFormat = useMemo(() => {
     if (valueFormatProp) {
@@ -110,7 +112,7 @@ const useDatePicker = ({
     }
   });
 
-  const updateValue = nextValue => {
+  const updateValue = (nextValue, shouldClose = true) => {
     if (prevNextValue.current === nextValue) return;
 
     const converted = nextValue ? nextValue.format(valueFormat) : nextValue;
@@ -122,8 +124,9 @@ const useDatePicker = ({
 
     prevNextValue.current = nextValue;
 
-    if (closeOnSelect) {
+    if (closeOnSelect && isOpen && !isNullOrEmpty(nextValue) && shouldClose) {
       handleIsOpen(false);
+      inputRef.current.blur();
     }
   };
 
@@ -134,10 +137,13 @@ const useDatePicker = ({
   const handleClear = ev => {
     ev.preventDefault();
 
-    updateValue(undefined);
+    updateValue(undefined, false);
 
     if (closeOnClear) {
       handleIsOpen(false);
+      inputRef.current.blur();
+    } else if (!isOpen) {
+      handleIsOpen(true);
     }
   };
 
@@ -180,6 +186,7 @@ const useDatePicker = ({
     }
     if (isEscape || isTab) {
       handleIsOpen(false);
+      inputRef.current.blur();
     }
   };
 

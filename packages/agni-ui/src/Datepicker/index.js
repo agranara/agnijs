@@ -23,10 +23,12 @@ const Datepicker = forwardRef(
       locale = 'id',
       isReadOnly,
       isDisabled,
+      isClearable = true,
       initialOpenPicker = false,
+      size,
 
       visualFormat,
-      closeOnClear = true,
+      closeOnClear = false,
       closeOnSelect = true,
       mode = 'date',
       customParser,
@@ -54,7 +56,7 @@ const Datepicker = forwardRef(
     return (
       <DatepickerContext.Provider value={ctx}>
         <React.Fragment>
-          <InputGroup className="datepicker">
+          <InputGroup className="datepicker" size={size}>
             <InputText
               ref={forkedRef}
               id={id}
@@ -72,9 +74,13 @@ const Datepicker = forwardRef(
             />
             <InputInside placement="right">
               {ctx.value ? (
-                <Button size="xs" variantColor="danger" p={1} onClick={ctx.handleClear}>
-                  <FiX />
-                </Button>
+                <React.Fragment>
+                  {isClearable && (
+                    <Button size="xs" variantColor="danger" p={1} onClick={ctx.handleClear}>
+                      <FiX />
+                    </Button>
+                  )}
+                </React.Fragment>
               ) : (
                 <FiCalendar />
               )}

@@ -35,6 +35,10 @@ interface IDatepickerProps {
    */
   isDisabled?: boolean;
   /**
+   * Is clear button shown. Default: true
+   */
+  isClearable?: boolean;
+  /**
    * Is picker opened initially. Default false
    */
   initialOpenPicker?: boolean;
