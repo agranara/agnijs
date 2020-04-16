@@ -3,6 +3,31 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.23](https://github.com/agranara/agnijs/compare/@agnijs/agni-ui@1.1.22...@agnijs/agni-ui@1.1.23) (2020-04-16)
+
+
+### Bug Fixes
+
+* **breadcrumb:** fixed breadcrumb item and link applied css ([b5bca5d](https://github.com/agranara/agnijs/commit/b5bca5d9b0e529d12f1d90c7cfc752dc4971cf2a))
+* **card:** change to forwardref for card components ([773ba66](https://github.com/agranara/agnijs/commit/773ba66ae3cf33379317d1a4692a09afa77ac1f0))
+* **datagrid:** added column info for cell related render function ([065b719](https://github.com/agranara/agnijs/commit/065b719dd24d047f9a24904d82456ff8e64a7c4d)), closes [#5](https://github.com/agranara/agnijs/issues/5)
+* **datagrid:** fixed scrollbar size not applied to header ([74d064c](https://github.com/agranara/agnijs/commit/74d064cc625ce82c3bebe368b07c22c1b86430d4))
+* **datepicker:** handling null initial value ([25228d0](https://github.com/agranara/agnijs/commit/25228d0653c8e80e29a1f51dec7e563d2de4e200)), closes [#4](https://github.com/agranara/agnijs/issues/4)
+* **inputnumber:** fix keyboard binding inside InputNumber ([57f8798](https://github.com/agranara/agnijs/commit/57f87984fd35df997aa52c1272fda9e5ef4c8f35))
+* **inputtext:** fixed readonly and disabled style ([4932d33](https://github.com/agranara/agnijs/commit/4932d33863ca28a9b201c994aec8c5aa08c52410))
+* **select:** select placeholder overflow and label value getter handling ([3a13ce7](https://github.com/agranara/agnijs/commit/3a13ce740cfcc37c847edbe11788c8c190f8634e))
+* **usecomponentsize:** improve useComponentSize hook ([b2a9fda](https://github.com/agranara/agnijs/commit/b2a9fda56800a2ccbb209b0f528d8f07dd23973f))
+
+
+### Features
+
+* **inputnumber:** added custom thousand and decimal separator ([cd756cd](https://github.com/agranara/agnijs/commit/cd756cd6495d6c8ec2253c9ae7d241e371f17e67))
+
+
+
+
+
+
 ## [1.1.22](https://github.com/agranara/agnijs/compare/@agnijs/agni-ui@1.1.21...@agnijs/agni-ui@1.1.22) (2020-03-29)
 
 **Note:** Version bump only for package @agnijs/agni-ui
