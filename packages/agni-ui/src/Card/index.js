@@ -1,13 +1,14 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import cn from 'classnames';
 import { Box } from '../Box';
 import { Heading, Text } from '../Text';
 
 /////////////////////////////////////////////////////////////////
 
-const Card = ({ children, className, ...cardProps }) => {
+const Card = forwardRef(({ children, className, ...cardProps }, forwardedRef) => {
   return (
     <Box
+      ref={forwardedRef}
       d="flex"
       flexDirection="column"
       flexWrap="wrap"
@@ -24,15 +25,16 @@ const Card = ({ children, className, ...cardProps }) => {
       {children}
     </Box>
   );
-};
+});
 
 Card.displayName = 'Card';
 
 /////////////////////////////////////////////////////////////////
 
-const CardHead = ({ children, className, ...headerProps }) => {
+const CardHead = forwardRef(({ children, className, ...headerProps }, forwardedRef) => {
   return (
     <Box
+      ref={forwardedRef}
       p={3}
       bg="gray.50"
       d="flex"
@@ -48,15 +50,16 @@ const CardHead = ({ children, className, ...headerProps }) => {
       {children}
     </Box>
   );
-};
+});
 
 CardHead.displayName = 'CardHead';
 
 /////////////////////////////////////////////////////////////////
 
-const CardBody = ({ children, className, ...bodyProps }) => {
+const CardBody = forwardRef(({ children, className, ...bodyProps }, forwardedRef) => {
   return (
     <Box
+      ref={forwardedRef}
       p={3}
       borderBottomLeftRadius="md"
       borderBottomRightRadius="md"
@@ -69,15 +72,16 @@ const CardBody = ({ children, className, ...bodyProps }) => {
       {children}
     </Box>
   );
-};
+});
 
 CardBody.displayName = 'CardBody';
 
 /////////////////////////////////////////////////////////////////
 
-const CardTitle = ({ children, className, ...titleProps }) => {
+const CardTitle = forwardRef(({ children, className, ...titleProps }, forwardedRef) => {
   return (
     <Heading
+      ref={forwardedRef}
       as="div"
       size="sm"
       fontWeight="semibold"
@@ -87,69 +91,80 @@ const CardTitle = ({ children, className, ...titleProps }) => {
       {children}
     </Heading>
   );
-};
+});
 
 CardTitle.displayName = 'CardTitle';
 
 /////////////////////////////////////////////////////////////////
 
-const CardSubtitle = ({ children, className, ...subtitleProps }) => {
+const CardSubtitle = forwardRef(({ children, className, ...subtitleProps }, forwardedRef) => {
   return (
-    <Text as="div" fontSize="sm" {...subtitleProps} className={cn(['card-subtitle', className])}>
+    <Text
+      ref={forwardedRef}
+      as="div"
+      fontSize="sm"
+      {...subtitleProps}
+      className={cn(['card-subtitle', className])}
+    >
       {children}
     </Text>
   );
-};
+});
 
 CardSubtitle.displayName = 'CardSubtitle';
 
 /////////////////////////////////////////////////////////////////
 
-const CardOption = ({ children, className, ...optionProps }) => {
+const CardOption = forwardRef(({ children, className, ...optionProps }, forwardedRef) => {
   return (
-    <Box ml="auto" {...optionProps} className={cn(['card-options', className])}>
+    <Box ref={forwardedRef} ml="auto" {...optionProps} className={cn(['card-options', className])}>
       {children}
     </Box>
   );
-};
+});
 
 CardOption.displayName = 'CardOption';
 
 /////////////////////////////////////////////////////////////////
 
-const CardSimple = ({
-  children,
-  cardProps = {},
-  headProps = {},
-  title,
-  titleProps = {},
-  subtitle,
-  subtitleProps = {},
-  options,
-  optionProps = {},
-  bodyProps = {}
-}) => {
-  const hasHead = !!title || !!subtitle || !!options;
+const CardSimple = forwardRef(
+  (
+    {
+      children,
+      cardProps = {},
+      headProps = {},
+      title,
+      titleProps = {},
+      subtitle,
+      subtitleProps = {},
+      options,
+      optionProps = {},
+      bodyProps = {}
+    },
+    forwardedRef
+  ) => {
+    const hasHead = !!title || !!subtitle || !!options;
 
-  return (
-    <Card {...cardProps}>
-      {hasHead && (
-        <CardHead {...headProps}>
-          {title && <CardTitle {...titleProps}>{title}</CardTitle>}
-          {subtitle && <CardSubtitle {...subtitleProps}>{subtitle}</CardSubtitle>}
-          {options && <CardOption {...optionProps}>{options}</CardOption>}
-        </CardHead>
-      )}
-      <CardBody
-        {...bodyProps}
-        borderTopLeftRadius={hasHead ? 0 : 'md'}
-        borderTopRightRadius={hasHead ? 0 : 'md'}
-      >
-        {children}
-      </CardBody>
-    </Card>
-  );
-};
+    return (
+      <Card ref={forwardedRef} {...cardProps}>
+        {hasHead && (
+          <CardHead {...headProps}>
+            {title && <CardTitle {...titleProps}>{title}</CardTitle>}
+            {subtitle && <CardSubtitle {...subtitleProps}>{subtitle}</CardSubtitle>}
+            {options && <CardOption {...optionProps}>{options}</CardOption>}
+          </CardHead>
+        )}
+        <CardBody
+          {...bodyProps}
+          borderTopLeftRadius={hasHead ? 0 : 'md'}
+          borderTopRightRadius={hasHead ? 0 : 'md'}
+        >
+          {children}
+        </CardBody>
+      </Card>
+    );
+  }
+);
 
 CardSimple.displayName = 'CardSimple';
 

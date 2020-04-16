@@ -1,11 +1,11 @@
 import { BoxProps } from '../Box';
 
-export const Card: React.FC<BoxProps>;
-export const CardHead: React.FC<BoxProps>;
-export const CardBody: React.FC<BoxProps>;
-export const CardTitle: React.FC<BoxProps>;
-export const CardSubtitle: React.FC<BoxProps>;
-export const CardOption: React.FC<BoxProps>;
+export const Card: React.ForwardRefExoticComponent<BoxProps>;
+export const CardHead: React.ForwardRefExoticComponent<BoxProps>;
+export const CardBody: React.ForwardRefExoticComponent<BoxProps>;
+export const CardTitle: React.ForwardRefExoticComponent<BoxProps>;
+export const CardSubtitle: React.ForwardRefExoticComponent<BoxProps>;
+export const CardOption: React.ForwardRefExoticComponent<BoxProps>;
 
 export interface ICardSimple {
   title?: JSX.Element;
@@ -19,4 +19,4 @@ export interface ICardSimple {
   bodyProps?: BoxProps;
 }
 
-export const CardSimple: React.FC<ICardSimple>;
+export const CardSimple: React.ForwardRefExoticComponent<ICardSimple>;
