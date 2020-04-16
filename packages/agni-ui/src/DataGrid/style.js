@@ -146,6 +146,7 @@ const dataGridStyle = css`
     text-overflow: ellipsis;
     padding: 4px 8px;
     border-bottom-width: 1px;
+    overflow: hidden;
   }
 `;
 

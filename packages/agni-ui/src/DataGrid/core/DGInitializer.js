@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useRef, Fragment, useEffect } from 'react';
+import React, { useLayoutEffect, useRef, Fragment, useEffect, useState } from 'react';
 import { get } from '../../_utils/get';
 import { Spinner } from '../../Spinner';
 import { getScrollbarSize } from '../../_utils/getScrollbarSize';
@@ -17,18 +17,22 @@ const DGInitializer = ({
   const initializerRef = useRef(null);
   const columnRefs = useRef([]);
 
-  const hasVerticalScrollRef = useRef(data.length * rowHeight > height);
-  const scrollbarSizeRef = useRef(0);
+  const prevSize = useRef(data.length * rowHeight > height);
+  const [hasVerticalScroll, setVerticalScroll] = useState(() => data.length * rowHeight > height);
+
+  const scrollbarSize = getScrollbarSize();
 
   useEffect(() => {
-    hasVerticalScrollRef.current = data.length * rowHeight > height;
+    if (prevSize.current !== data.length * rowHeight > height) {
+      prevSize.current = data.length * rowHeight > height;
+      setVerticalScroll(data.length * rowHeight > height);
+    }
   }, [data.length, height, rowHeight]);
 
   // Immediate execution after page load
   // set width for columns from loaded sample data
   useLayoutEffect(() => {
     let totalWidth = 0;
-    scrollbarSizeRef.current = getScrollbarSize();
 
     for (let i = 0; i < columnRefs.current.length; i++) {
       const sampleCell = columnRefs.current[i];
@@ -47,8 +51,7 @@ const DGInitializer = ({
       isReady: true,
       hasHorizontalScroll: hasScroll,
       hasVerticalScroll: data.length * rowHeight > height,
-      rowWidth: totalWidth,
-      scrollbarSize: scrollbarSizeRef.current
+      rowWidth: totalWidth
     }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data.length, height, rowHeight, setMeta]);
@@ -105,14 +108,14 @@ const DGInitializer = ({
       );
     }
 
-    if (hasVerticalScrollRef.current) {
+    if (hasVerticalScroll) {
       cells.push(
         <td
           key={`${uid}-sample-row-scroll-${i}`}
           style={{
-            width: scrollbarSizeRef.current,
-            minWidth: scrollbarSizeRef.current,
-            maxWidth: scrollbarSizeRef.current
+            width: scrollbarSize,
+            minWidth: scrollbarSize,
+            maxWidth: scrollbarSize
           }}
         >
           &nbsp;
@@ -130,12 +133,12 @@ const DGInitializer = ({
           <thead>
             <tr>
               {sampleHeader}
-              {hasVerticalScrollRef.current && (
+              {hasVerticalScroll && (
                 <th
                   style={{
-                    width: scrollbarSizeRef.current,
-                    minWidth: scrollbarSizeRef.current,
-                    maxWidth: scrollbarSizeRef.current
+                    width: scrollbarSize,
+                    minWidth: scrollbarSize,
+                    maxWidth: scrollbarSize
                   }}
                 >
                   &nbsp;

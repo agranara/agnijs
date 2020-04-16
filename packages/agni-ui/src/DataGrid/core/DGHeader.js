@@ -58,7 +58,11 @@ const DGHeader = React.memo(
       for (let i = 0; i < cols.length; i++) {
         const col = cols[i];
 
-        const colWidth = col.children ? undefined : columnStyle[flatCellIndex].width;
+        const colWidth = col.children
+          ? undefined
+          : columnStyle[flatCellIndex]
+          ? columnStyle[flatCellIndex].width
+          : 'auto';
 
         if (!col.children) {
           flatCellIndex += 1;
