@@ -56,6 +56,7 @@ const SelectContainer = memo(
         name={name}
         width="100%"
         onKeyDown={onSearchKeyDown}
+        overflow="hidden"
       >
         <PseudoBox
           className="select__selection"
