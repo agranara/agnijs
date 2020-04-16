@@ -153,6 +153,7 @@ const DGContent = React.memo(
       if (column.renderCellValue) {
         result = column.renderCellValue({
           record,
+          column,
           indexRow,
           indexCell
         });
@@ -175,7 +176,7 @@ const DGContent = React.memo(
 
         const columnStyleFunc =
           column && column.renderCellStyle
-            ? column.renderCellStyle({ indexCell, indexRow, record })
+            ? column.renderCellStyle({ indexCell, indexRow, record, column })
             : {};
 
         cellStyleRef.current[indexRow][indexCell] = {
@@ -248,6 +249,7 @@ const DGContent = React.memo(
         const notDomProps = isCellFnElement
           ? {
               record: row,
+              column: col,
               indexCell: j,
               indexRow: i
             }

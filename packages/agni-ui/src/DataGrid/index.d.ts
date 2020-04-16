@@ -8,6 +8,8 @@ export type RowDatumStyleType = {
 export type RenderCellValueProp = {
   /** Row Record */
   record: any;
+  /** Column info */
+  column: any;
   /** Row index */
   indexRow: number;
   /** Cell index */
@@ -22,21 +24,64 @@ export type RenderWidthProp = {
 type ColumnSortType = 'asc' | 'desc';
 
 export type DataGridRowProps = {
+  /**
+   * Datum / record item from data
+   */
   record?: any;
+  /**
+   * Row index
+   */
   indexRow?: number;
+  /**
+   * Applied style to row
+   */
   style?: React.CSSProperties;
+  /**
+   * Role row
+   */
   role?: string;
+  /**
+   * WA-ARIA row index
+   */
   'aria-rowindex'?: number;
+  /**
+   * Additional className
+   */
   className?: string;
 };
 
 export type DataGridCellProps = {
+  /**
+   * Datum / record item from data
+   */
   record?: any;
+  /**
+   * Column info
+   */
+  column?: any;
+  /**
+   * Row index
+   */
   indexRow?: number;
+  /**
+   * Cell index
+   */
   indexCell?: number;
+  /**
+   * Applied style to cell
+   */
   style?: React.CSSProperties;
+  /**
+   * Applied role to cell
+   */
   role?: string;
+  /**
+   * Applied WA-ARIA colindex
+   */
   'aria-colindex'?: string;
+  /**
+   * Applied className
+   */
   className?: string;
 };
 
