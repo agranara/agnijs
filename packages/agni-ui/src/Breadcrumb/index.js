@@ -4,17 +4,17 @@ import cn from 'classnames';
 import { forwardRef, Children, isValidElement, cloneElement } from 'react';
 import { FiChevronRight } from 'react-icons/fi';
 import { Box } from '../Box';
+import { PseudoBox } from '../PseudoBox';
 import { useUiTheme } from '../UiProvider/hooks/useUiTheme';
 
 /////////////////////////////////////////////////////////////////
 
 const useBaseCss = () => {
-  const { fontSizes, lineHeights, colors } = useUiTheme();
+  const { fontSizes, lineHeights } = useUiTheme();
 
   return `
     font-size: ${fontSizes.sm};
     display: inline-flex;
-    vertical-align: middle;
     outline: none;
     user-select: none;
     position: relative;
@@ -22,11 +22,6 @@ const useBaseCss = () => {
     transition: all 250ms;
     align-items: center;
     justify-content: center;
-
-    &:last-of-type {
-      color: ${colors.primary[500]};
-      font-weight: 500;
-    }
   `;
 };
 
@@ -54,14 +49,21 @@ BreadcrumbLink.displayName = 'BreadcrumbLink';
 const BreadcrumbItem = forwardRef(
   ({ as: Item = 'div', children, index = 0, ...restProps }, forwardedRef) => {
     return (
-      <Item ref={forwardedRef} {...restProps}>
+      <PseudoBox
+        as={Item}
+        ref={forwardedRef}
+        d="flex"
+        alignItems="center"
+        {...restProps}
+        _last={{ color: 'primary.500', fontWeight: '500' }}
+      >
         {index > 0 && (
-          <Box as="span" className="breadcrumb__divider" lineHeight="shorter" px={1} pt="3px">
+          <Box as="span" className="breadcrumb__divider" px={1} pt="2px">
             <FiChevronRight />
           </Box>
         )}
         {children}
-      </Item>
+      </PseudoBox>
     );
   }
 );
@@ -76,7 +78,7 @@ const Breadcrumb = ({ children, ...restProps }) => {
       as="nav"
       aria-label="breadcrumb"
       className="breadcrumb"
-      d="inline-flex"
+      d="flex"
       alignItems="center"
       {...restProps}
     >
