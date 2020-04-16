@@ -22,6 +22,7 @@ const selected = '&[aria-selected=true]';
 const invalid = '&[aria-invalid=true]';
 const pressed = '&[aria-pressed=true]';
 const readOnly = '&[aria-readonly=true], &[readonly]';
+const readOnlyFocus = '&[aria-readonly=true]:focus, &[readonly].focused';
 const first = '&:first-of-type';
 const last = '&:last-of-type';
 const expanded = '&[aria-expanded=true]';
@@ -46,6 +47,7 @@ const PseudoBox = styled(Box)(
     _visited,
     _before,
     _readOnly,
+    _readOnlyFocus,
     _first,
     _notFirst,
     _notLast,
@@ -78,6 +80,7 @@ const PseudoBox = styled(Box)(
       [checked]: tx(_checked),
       [pressed]: tx(_pressed),
       [groupHover]: tx(_groupHover),
+      [readOnlyFocus]: tx(_readOnlyFocus),
       '&:before': tx(_before),
       '&:after': tx(_after),
       '&:focus-within': tx(_focusWithin),

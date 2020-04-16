@@ -13,6 +13,9 @@ export const readOnlyStyle = {
     bg: 'transparent',
     boxShadow: 'none',
     userSelect: 'all'
+  },
+  _readOnlyFocus: {
+    borderColor: 'inherit'
   }
 };
 
