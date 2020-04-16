@@ -14,7 +14,7 @@ export function useComponentSize<T extends HTMLElement = HTMLElement>(
 ): [ComponentSizeType];
 export function useComponentSize<T extends HTMLElement = HTMLElement>(): [
   ComponentSizeType,
-  React.MutableRefObject<T>
+  React.RefObject<T>
 ];
 
 ////////////////////////////////////////////

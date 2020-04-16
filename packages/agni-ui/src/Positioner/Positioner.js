@@ -30,7 +30,8 @@ const Positioner = ({
 }) => {
   const timeoutRef = useRef(null);
   const popperRef = useRef(null);
-  const [triggerSize] = useComponentSize(() => (triggerRef ? triggerRef.current : undefined));
+  const [triggerSize] = useComponentSize(triggerRef);
+
   const prevSize = useRef(null);
 
   const prevOpen = useRef(isOpen);

@@ -1,49 +1,63 @@
 /**
- * Thanks to umijs/hooks
+ * Thanks to zee coder
  *
  * Original resource:
- * https://github.com/umijs/hooks/blob/master/packages/hooks/src/useSize/index.ts
+ * https://github.com/ZeeCoder/use-resize-observer/blob/master/src/index.ts
  */
-import { useState, useRef, useLayoutEffect } from 'react';
-import ResizeObserver from 'resize-observer-polyfill';
+import { useState, useRef, useEffect, useMemo } from 'react';
+import { ResizeObserver } from '@juggle/resize-observer';
 
-export function useComponentSize(...args) {
-  const hasPassedInElement = args.length === 1;
-  const arg = useRef(args[0]);
-  [arg.current] = args;
-  const element = useRef();
-  const [state, setState] = useState(() => {
-    const initDOM = typeof arg.current === 'function' ? arg.current() : arg.current;
-    return {
-      width: (initDOM || {}).clientWidth,
-      height: (initDOM || {}).clientHeight
-    };
+export function useComponentSize(refProp) {
+  // `defaultRef` Has to be non-conditionally declared here whether or not it'll
+  // be used as that's how hooks work.
+  // @see https://reactjs.org/docs/hooks-rules.html#explanation
+  const defaultRef = useRef(null);
+
+  const ref = refProp || defaultRef;
+  const [size, setSize] = useState({
+    width: undefined,
+    height: undefined
   });
 
-  useLayoutEffect(() => {
-    const passedInElement = typeof arg.current === 'function' ? arg.current() : arg.current;
-    const targetElement = hasPassedInElement ? passedInElement : element.current;
-    if (!targetElement) {
-      return () => {};
+  // Using a ref to track the previous width / height to avoid unnecessary renders
+  const previous = useRef({
+    width: undefined,
+    height: undefined
+  });
+
+  useEffect(() => {
+    if (typeof ref !== 'object' || ref === null || !(ref.current instanceof Element)) {
+      return;
     }
 
+    const element = ref.current;
     const resizeObserver = new ResizeObserver(entries => {
-      entries.forEach(entry => {
-        setState({
-          width: entry.target.clientWidth,
-          height: entry.target.clientHeight
-        });
-      });
+      if (!Array.isArray(entries)) {
+        return;
+      }
+      if (!entries.length) {
+        return;
+      }
+
+      const entry = entries[0];
+
+      // `Math.round` is in line with how CSS resolves sub-pixel values
+      const newWidth = Math.round(entry.contentRect.width);
+      const newHeight = Math.round(entry.contentRect.height);
+      // const newWidth = Math.round(entry.target.clientWidth);
+      // const newHeight = Math.round(entry.target.clientHeight);
+      if (previous.current.width !== newWidth || previous.current.height !== newHeight) {
+        const newSize = { width: newWidth, height: newHeight };
+        previous.current.width = newWidth;
+        previous.current.height = newHeight;
+        setSize(newSize);
+      }
     });
 
-    resizeObserver.observe(targetElement);
-    return () => {
-      resizeObserver.disconnect();
-    };
-  }, [hasPassedInElement]);
+    resizeObserver.observe(element);
 
-  if (hasPassedInElement) {
-    return [state];
-  }
-  return [state, element];
+    return () => resizeObserver.unobserve(element);
+  }, [ref]);
+
+  return useMemo(() => [size, ref], [ref, size]);
 }

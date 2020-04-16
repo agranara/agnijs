@@ -10,6 +10,7 @@ import React, {
 } from 'react';
 import isEqual from 'fast-deep-equal/es6/react';
 import { get } from '../_utils/get';
+import { Box } from '../Box';
 import { Positioner, useTogglePositioner } from '../Positioner';
 import { useComponentSize } from '../_hooks/useComponentSize';
 import { useAutoId } from '../_hooks/useAutoId';
@@ -401,9 +402,8 @@ const Select = memo(
       return (
         <SelectMetaContext.Provider value={metaCtx}>
           <SelectContext.Provider value={valueCtx}>
-            <React.Fragment>
+            <Box w="full" ref={selectRef}>
               <SelectContainer
-                ref={selectRef}
                 className={className}
                 onContainerFocus={handleFocus}
                 onSearchKeyDown={handleKeyDown}
@@ -431,7 +431,7 @@ const Select = memo(
                   </SelectNotFound>
                 )}
               </Positioner>
-            </React.Fragment>
+            </Box>
           </SelectContext.Provider>
         </SelectMetaContext.Provider>
       );
