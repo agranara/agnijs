@@ -28,8 +28,8 @@ const InputNumber = forwardRef(
       isDisabled,
       isFullWidth,
       size = 'md',
-      // thousandSeparator = ',',
-      // decimalSeparator = '.',
+      thousandSeparator = ',',
+      decimalSeparator = '.',
       children,
       ...rest
     },
@@ -50,9 +50,9 @@ const InputNumber = forwardRef(
       isReadOnly,
       isInvalid,
       isDisabled,
-      onBlur
-      // thousandSeparator,
-      // decimalSeparator
+      onBlur,
+      thousandSeparator,
+      decimalSeparator
     });
 
     return (

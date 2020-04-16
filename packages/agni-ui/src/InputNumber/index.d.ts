@@ -57,6 +57,15 @@ interface IInputNumberProps {
    * Input size. Default: 'md'
    */
   size?: IInputTextProps['size'];
+  /**
+   * Thousand separator. Default: ','
+   */
+  thousandSeparator?: string;
+  /**
+   * Decimal separator. Default: '.'
+   */
+  decimalSeparator?: string;
+
 }
 
 type InputNumberProps = IInputNumberProps & Omit<BoxProps, 'size'>;
