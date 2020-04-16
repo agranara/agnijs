@@ -38,7 +38,7 @@ const InputNumberField = forwardRef(({ onBlur, onFocus, onKeyDown, onChange, ...
   return (
     <InputText
       ref={inputRef}
-      value={value}
+      value={value || ''}
       size={size}
       pr={10}
       isReadOnly={isReadOnly}

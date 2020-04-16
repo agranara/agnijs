@@ -64,9 +64,14 @@ const InputNumber = forwardRef(
           alignItems="stretch"
           w={isFullWidth ? 'full' : null}
           pos="relative"
+          aria-readonly={ctx.isReadOnly}
+          aria-disabled={ctx.isDisabled}
           css={css({
             '&:hover .input-number__steppers,&:focus .input-number__steppers': {
               opacity: 1
+            },
+            '&[aria-readonly=true]:hover .input-number__steppers,&[aria-readonly=true]:focus .input-number__steppers,&[aria-disabled=true]:hover .input-number__steppers,&[aria-disabled=true]:focus .input-number__steppers': {
+              opacity: 0
             },
             '& .input-number__steppers': {
               opacity: 0

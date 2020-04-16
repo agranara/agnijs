@@ -25,10 +25,13 @@ export function isKeyboardKey(event, name) {
     return event.key === 'Escape' || event.key === 'Esc'; // IE/Edge;
   }
   if (name === 'Backspace') {
-    return event.key === 'Backspace';
+    return event.key === 'Backspace' || event.key === 'Delete';
   }
   if (name === 'Space') {
     return event.key === 'Spacebar' || event.key === ' ';
+  }
+  if (name === 'Delete') {
+    return event.key === 'Del' || event.key === 'Delete';
   }
 
   return event.key === name;

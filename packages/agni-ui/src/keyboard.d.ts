@@ -6,6 +6,7 @@ type KeyboardNameType =
   | 'Enter'
   | 'Escape'
   | 'Backspace'
-  | 'Space';
+  | 'Space'
+  | 'Delete';
 
 export function isKeyboardKey(event: Event, name: KeyboardNameType & string): boolean;

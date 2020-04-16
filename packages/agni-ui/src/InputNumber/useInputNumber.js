@@ -117,26 +117,22 @@ const useNumberInput = ({
   const handleKeyDown = event => {
     preventNonNumberKey(event);
     if (!isInteractive) return;
-
     if (isKeyboardKey(event, 'ArrowUp')) {
       event.preventDefault();
       const ratio = getIncrementFactor(event);
       handleIncrement(ratio * stepProp);
     }
-
     if (isKeyboardKey(event, 'ArrowDown')) {
       event.preventDefault();
       const ratio = getIncrementFactor(event);
       handleDecrement(ratio * stepProp);
     }
-
     if (isKeyboardKey(event, 'Home')) {
       event.preventDefault();
       if (min != null) {
         updateValue(max);
       }
     }
-
     if (isKeyboardKey(event, 'End')) {
       event.preventDefault();
       if (max != null) {

@@ -1,7 +1,12 @@
+import { isKeyboardKey } from '../keyboard';
+
 function isNumberKey(event) {
   const charCode = event.which ? event.which : event.keyCode;
   if (event.key === '.') return true;
   if (event.key === ',') return true;
+  if (isKeyboardKey(event, 'ArrowLeft')) return true;
+  if (isKeyboardKey(event, 'ArrowRight')) return true;
+  if (isKeyboardKey(event, 'Delete')) return true;
   if (
     charCode > 31 &&
     (charCode < 48 || charCode > 57) &&
