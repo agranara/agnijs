@@ -60,11 +60,11 @@ interface IInputNumberProps {
   /**
    * Thousand separator. Default: ','
    */
-  thousandSeparator?: string;
+  thousandSeparator?: ',' | '.' | '';
   /**
    * Decimal separator. Default: '.'
    */
-  decimalSeparator?: string;
+  decimalSeparator?: ',' | '.';
 
 }
 

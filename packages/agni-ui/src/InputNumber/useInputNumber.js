@@ -1,8 +1,12 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { canUseDOM } from 'exenv';
 import { useLongPress } from '../_hooks/useLongPress';
 import { isKeyboardKey } from '../keyboard';
-import { preventNonNumberKey, roundToPrecision, calculatePrecision } from './util';
+import { calculatePrecision } from './util';
+
+const MAX_SAFE_INTEGER = Number.MAX_SAFE_INTEGER || Math.pow(2, 53) - 1;
+
+const isValidStr = val => typeof val !== 'undefined' && val !== null && val !== '';
 
 const useNumberInput = ({
   value: valueProp,
@@ -14,172 +18,421 @@ const useNumberInput = ({
   focusInputOnChange = true,
   clampValueOnBlur = true,
   keepWithinRange = true,
-  min = -Infinity,
-  max = Infinity,
-  step: stepProp = 1,
-  precision: precisionProp = 0,
+  min = -MAX_SAFE_INTEGER,
+  max = MAX_SAFE_INTEGER,
+  step: stepProp,
+  precision: precisionProp,
   getAriaValueText,
   isReadOnly,
   isInvalid,
   isDisabled
 }) => {
-  const { current: isControlled } = useRef(typeof onChange === 'function');
+  // Reference
+  const cursor = useRef({
+    value: null,
+    cursorStart: null,
+    cursorEnd: null,
+    cursorBefore: null,
+    cursorAfter: null
+  });
+  const lastKeyboard = useRef(null);
 
   const defaultPrecision = Math.max(calculatePrecision(stepProp), 0);
   const precision = precisionProp || defaultPrecision;
 
-  const [valueState, setValue] = useState(() => {
-    if (defaultValue != null) {
-      let nextValue = defaultValue;
+  const getActualRegex = val => {
+    if (val === '.') {
+      return new RegExp(/\./g);
+    } else if (val === ',') {
+      return new RegExp(/,/g);
+    } else {
+      return new RegExp('');
+    }
+  };
+
+  const displayThousandRegex = useRef(new RegExp(/\B(?=(\d{3})+(?!\d))/g));
+
+  const actualThousandRegex = useRef(null);
+  const actualDecimalRegex = useRef(null);
+
+  useEffect(() => {
+    actualThousandRegex.current = getActualRegex(thousandSeparator);
+  }, [thousandSeparator]);
+
+  useEffect(() => {
+    actualDecimalRegex.current = getActualRegex(decimalSeparator);
+  }, [decimalSeparator]);
+
+  const cleanStrButFirst = (
+    str,
+    separator = decimalSeparator,
+    regx = actualDecimalRegex.current
+  ) => {
+    const firstIndex = str.indexOf(separator);
+    return str.replace(regx, (v, i) => (i === firstIndex ? v : ''));
+  };
+
+  const toActualValue = (strOrNum, usePrecision = false) => {
+    if (strOrNum !== null && typeof strOrNum !== undefined) {
+      const strValue = strOrNum.toString();
+
+      if (strValue.length === 0) {
+        return null;
+      }
+
+      let trimmedVal = strValue.replace(actualThousandRegex.current, '');
+      trimmedVal = cleanStrButFirst(trimmedVal).replace(decimalSeparator, '.');
+
+      // Handle minus number
+      trimmedVal = cleanStrButFirst(trimmedVal, '-', /-/g);
+      if (trimmedVal === '-') {
+        return null;
+      }
+
+      const decimalIndex = trimmedVal.indexOf('.');
+      const backVal = trimmedVal.substring(decimalIndex + 1);
+      const fixedNumber = usePrecision ? precision : backVal.length;
+
+      const result = +trimmedVal;
+      return Number(result.toFixed(fixedNumber));
+    }
+    return null;
+  };
+
+  const isValueStringIncomplete = str => {
+    const hasDecimal = str.indexOf(decimalSeparator) > -1;
+    const hasTrailingZero = str.substr(str.length - 1) === '0';
+    const hasTrailingDecimal = str.substr(str.length - 1) === decimalSeparator;
+
+    if (hasDecimal && hasTrailingZero) return true;
+    if (hasDecimal && hasTrailingDecimal) return true;
+    return false;
+  };
+
+  const toDisplayValue = strOrNum => {
+    if (strOrNum !== null && typeof strOrNum !== undefined) {
+      const strValue = strOrNum.toString();
+      const isIncomplete = isValueStringIncomplete(strValue);
+
+      if (isIncomplete) {
+        return strValue;
+      }
+
+      const splitter = typeof strOrNum === 'string' ? decimalSeparator : '.';
+      const values = strValue.split(splitter);
+
+      const front = values[0] || '';
+      const frontVal = front
+        .replace(actualThousandRegex.current, '')
+        .replace(displayThousandRegex.current, thousandSeparator);
+
+      const hasDecimal = strValue.indexOf(splitter) > -1;
+
+      let back = '';
+      if (values[1] && values[1].length > 0) {
+        back = values[1].replace(/[^0-9]/g, '');
+      }
+
+      return `${frontVal}${hasDecimal ? decimalSeparator : ''}${back}`;
+    }
+    return '';
+  };
+
+  const [{ value, inputValue }, setValue] = useState(() => {
+    if (defaultValue != null || valueProp != null) {
+      let nextValue = defaultValue || valueProp;
       if (keepWithinRange) {
         nextValue = Math.max(Math.min(nextValue, max), min);
       }
-      nextValue = roundToPrecision(nextValue, precision);
-      return nextValue;
+      const actualValue = toActualValue(toDisplayValue(nextValue), true);
+      return {
+        value: actualValue,
+        inputValue: toDisplayValue(actualValue)
+      };
     }
-    return '';
+    return {
+      value: null,
+      inputValue: toDisplayValue(null)
+    };
   });
+
+  const prevNumberString = useRef(null);
+  const prevNumberValue = useRef(null);
+
+  const restoreByAfter = str => {
+    if (str === undefined) return false;
+
+    const fullStr = inputRef.current.value;
+    const index = fullStr.lastIndexOf(str);
+
+    if (index === -1) return false;
+
+    const prevCursorPos = cursor.current.cursorBefore.length;
+    if (
+      lastKeyboard.current === 46 &&
+      cursor.current.cursorBefore.charAt(prevCursorPos - 1) === str[0]
+    ) {
+      setCursor(prevCursorPos, prevCursorPos);
+      return true;
+    }
+
+    if (index + str.length === fullStr.length) {
+      setCursor(index, index);
+
+      return true;
+    }
+    return false;
+  };
+
+  const partRestoreByAfter = str => {
+    if (str === undefined) return false;
+    return Array.prototype.some.call(str, (_, start) => {
+      const partStr = str.substring(start);
+
+      return restoreByAfter(partStr);
+    });
+  };
 
   const [isFocused, setIsFocused] = useState(false);
 
-  const value = isControlled ? valueProp : valueState;
-  const isInteractive = !(isReadOnly || isDisabled);
-  const inputRef = useRef();
-
-  const prevNextValue = useRef(null);
-
-  const shouldConvertToNumber = value => {
-    if (typeof value !== 'string') return false;
-
-    const hasDot = value.indexOf(decimalSeparator) > -1;
-    const hasTrailingZero = value.substr(value.length - 1) === '0';
-    const hasTrailingDecimal = value.substr(value.length - 1) === decimalSeparator;
-    if (hasDot && hasTrailingZero) return false;
-    if (hasDot && hasTrailingDecimal) return false;
-    return true;
-  };
-
-  const toInt = val => {
-    if (val !== null && val !== undefined) {
-      const values = val.toString().split(decimalSeparator);
-      const front = values[0] || '0';
-      const back = values[1] || '0';
-
-      const frontVal = front.split(thousandSeparator).join('');
-      const backVal = back.split(thousandSeparator).join('');
-
-      const decimal = +backVal * (1 / 10 ** backVal.length);
-
-      return +frontVal + decimal;
+  const setCursor = (start, end) => {
+    if (start === undefined || end === undefined || !inputRef.current || !inputRef.current.value) {
+      return;
     }
-    return 0;
-  };
 
-  const toString = val => {
-    if (val !== null && val !== undefined) {
-      const strValue = val.toString();
-      const values = strValue.split(typeof val === 'string' ? decimalSeparator : '.');
-      const front = values[0] || '0';
-      let back = '';
-      if (values[1]) {
-        back = `${decimalSeparator}${values[1]}`;
-      } else if (strValue.indexOf(decimalSeparator) > -1) {
-        back = decimalSeparator;
+    try {
+      const currentStart = inputRef.current.selectionStart;
+      const currentEnd = inputRef.current.selectionEnd;
+
+      if (start !== currentStart || end !== currentEnd) {
+        inputRef.current.setSelectionRange(start, end);
       }
-
-      const frontVal = front
-        .split(thousandSeparator)
-        .join('')
-        .replace(/(\d)(?=(\d{3})+(?!\d))/g, `$1${thousandSeparator}`);
-
-      return `${frontVal}${back}`;
-    }
-    return '0';
+    } catch (e) {}
   };
 
-  const updateValue = nextValue => {
-    //eslint-disable-next-line
-    if (prevNextValue.current == nextValue) return;
+  const fixCursorKeyboard = () => {
+    if (
+      !partRestoreByAfter(cursor.current.cursorAfter) &&
+      prevNumberString.current !== inputValue
+    ) {
+      let pos = cursor.current.cursorStart + 1;
+      if (!cursor.current.cursorAfter) {
+        pos = inputRef.current.value.length;
+      } else if (lastKeyboard.current === 46) {
+        pos = cursor.current.cursorStart;
+      } else if (lastKeyboard.current === 8) {
+        pos = cursor.current.cursorStart - 1;
+      }
+      setCursor(pos, pos);
+    } else if (cursor.current.value === inputRef.current.value) {
+      switch (lastKeyboard.current) {
+        case 8:
+          setCursor(cursor.current.cursorStart - 1, cursor.current.cursorStart - 1);
+          break;
+        case 46:
+          setCursor(cursor.current.cursorStart + 1, cursor.current.cursorStart + 1);
+          break;
+        default:
+        // Do nothing
+      }
+    }
+  };
 
-    const converted = shouldConvertToNumber(nextValue) ? toInt(nextValue) : nextValue;
+  useEffect(() => {
+    try {
+      if (isFocused && cursor.current.cursorStart !== null) {
+        fixCursorKeyboard();
+      }
+      lastKeyboard.current = null;
+    } catch (error) {}
+  });
 
-    if (!isControlled) setValue(converted);
-    if (onChange) onChange(converted);
+  const isInteractive = !(isReadOnly || isDisabled);
+  const inputRef = useRef(null);
 
-    prevNextValue.current = nextValue;
+  const validateAndClamp = val => {
+    const maxExists = max != null;
+    const minExists = min != null;
+
+    let returnedValue = val || value;
+
+    if (maxExists && value > max) {
+      returnedValue = max;
+    }
+
+    if (minExists && value < min) {
+      returnedValue = min;
+    }
+    return returnedValue;
+  };
+
+  const updateValue = (nextValueString, usePrecision = false) => {
+    if (prevNumberString.current === nextValueString) return;
+
+    const convertedValue = toActualValue(nextValueString, usePrecision);
+
+    setValue({
+      value: convertedValue,
+      inputValue: nextValueString
+    });
+
+    if (onChange && prevNumberValue.current !== convertedValue) {
+      onChange(convertedValue);
+    }
+
+    prevNumberString.current = nextValueString;
+    prevNumberValue.current = convertedValue;
   };
 
   const handleIncrement = (step = stepProp) => {
     if (!isInteractive) return;
-    let nextValue = Number(value) + Number(step);
+    let nextValue = value + Number(step);
 
     if (keepWithinRange) {
       nextValue = Math.min(nextValue, max);
     }
 
-    nextValue = roundToPrecision(nextValue, precision);
-    updateValue(nextValue);
-
+    updateValue(toDisplayValue(nextValue), true);
     focusInput();
   };
 
   const handleDecrement = (step = stepProp) => {
     if (!isInteractive) return;
-    let nextValue = Number(value) - Number(step);
+    let nextValue = value - Number(step);
 
     if (keepWithinRange) {
       nextValue = Math.max(nextValue, min);
     }
 
-    nextValue = roundToPrecision(nextValue, precision);
-    updateValue(nextValue);
-
+    updateValue(toDisplayValue(nextValue), true);
     focusInput();
   };
 
   const focusInput = () => {
     if (focusInputOnChange && inputRef.current && canUseDOM) {
-      requestAnimationFrame(() => {
-        inputRef.current.focus();
-      });
+      inputRef.current.focus();
+      // recordCursor();
     }
+  };
+
+  const handleFocus = () => {
+    setIsFocused(true);
   };
 
   const incrementStepperProps = useLongPress(handleIncrement);
   const decrementStepperProps = useLongPress(handleDecrement);
 
   const handleChange = event => {
-    updateValue(event.target.value);
+    updateValue(toDisplayValue(event.target.value));
+  };
+
+  const recordCursor = () => {
+    // Record position
+    try {
+      cursor.current.cursorStart = inputRef.current.selectionStart;
+      cursor.current.cursorEnd = inputRef.current.selectionEnd;
+      cursor.current.value = inputRef.current.value;
+      cursor.current.cursorBefore = inputRef.current.value.substring(0, cursor.current.cursorStart);
+      cursor.current.cursorAfter = inputRef.current.value.substring(cursor.current.cursorEnd);
+    } catch (e) {
+      // Fix error in Chrome:
+      // Failed to read the 'selectionStart' property from 'HTMLInputElement'
+      // http://stackoverflow.com/q/21177489/3040605
+    }
+  };
+
+  const isNumberKey = event => {
+    const charCode = event.which ? event.which : event.keyCode;
+    // if (event.key === thousandSeparator) return true;
+    if (event.key === decimalSeparator) return true;
+    if (event.keyCode === 189) return true;
+    if (isKeyboardKey(event, 'ArrowLeft')) return true;
+    if (isKeyboardKey(event, 'ArrowRight')) return true;
+    if (isKeyboardKey(event, 'Delete')) return true;
+    if (isKeyboardKey(event, 'Backspace')) return true;
+    if (
+      charCode > 31 &&
+      (charCode < 48 || charCode > 57) &&
+      (charCode < 96 || charCode > 105) &&
+      charCode !== 110
+    )
+      return false;
+    return true;
   };
 
   const handleKeyDown = event => {
-    preventNonNumberKey(event);
+    if (!isNumberKey(event)) {
+      event.preventDefault();
+    }
+
     if (!isInteractive) return;
+
+    recordCursor();
+    lastKeyboard.current = event.keyCode;
+
     if (isKeyboardKey(event, 'ArrowUp')) {
       event.preventDefault();
       const ratio = getIncrementFactor(event);
       handleIncrement(ratio * stepProp);
     }
+
     if (isKeyboardKey(event, 'ArrowDown')) {
       event.preventDefault();
       const ratio = getIncrementFactor(event);
       handleDecrement(ratio * stepProp);
     }
+
     if (isKeyboardKey(event, 'Home')) {
       event.preventDefault();
       if (min != null) {
-        updateValue(max);
+        updateValue(toDisplayValue(max));
       }
     }
+
     if (isKeyboardKey(event, 'End')) {
       event.preventDefault();
       if (max != null) {
-        updateValue(min);
+        updateValue(toDisplayValue(min));
       }
     }
+
+    // On ctrl+A
     if (event.keyCode === 65 && event.ctrlKey) {
       event.target.select();
     }
+
+    // on backspace
+    if (event.keyCode === 8 && isValidStr(cursor.current.cursorBefore)) {
+      // Handle backspace for decimalSeparator
+      const lastCharBeforeCursor =
+        cursor.current.cursorBefore[cursor.current.cursorBefore.length - 1];
+
+      const lastCharIsNaN = Number.isNaN(+lastCharBeforeCursor);
+      if (!([decimalSeparator, '-'].indexOf(lastCharBeforeCursor) > -1) && lastCharIsNaN) {
+        event.preventDefault();
+        fixCursorKeyboard();
+      }
+    }
+
+    // On delete
+    if (
+      event.keyCode === 46 &&
+      isValidStr(cursor.current.cursorAfter) &&
+      cursor.current.cursorAfter.length > 0
+    ) {
+      // Handle decimal for decimalSeparator
+      const firstCharAfterCursor = cursor.current.cursorAfter[0];
+      const firstCharIsNaN = Number.isNaN(+cursor.current.cursorAfter[0]);
+
+      if (!([decimalSeparator, '-'].indexOf(firstCharAfterCursor) > -1) && firstCharIsNaN) {
+        event.preventDefault();
+        fixCursorKeyboard();
+      }
+    }
+  };
+
+  const handleKeyUp = () => {
+    recordCursor();
   };
 
   const getIncrementFactor = event => {
@@ -193,33 +446,14 @@ const useNumberInput = ({
     return ratio;
   };
 
-  const validateAndClamp = ev => {
-    const maxExists = max != null;
-    const minExists = min != null;
-
-    let returnedValue = value;
-
-    if (maxExists && value > max) {
-      updateValue(max);
-      returnedValue = max;
-    }
-
-    if (minExists && value < min) {
-      updateValue(min);
-      returnedValue = min;
-    }
-
-    if (onBlur) {
-      onBlur(ev, returnedValue);
-    }
-  };
-
   const handleBlur = ev => {
     setIsFocused(false);
-    if (clampValueOnBlur) {
-      validateAndClamp(ev);
-    } else if (onBlur) {
-      onBlur(ev, value);
+    const val = clampValueOnBlur ? validateAndClamp() : value;
+
+    updateValue(toDisplayValue(val));
+
+    if (onBlur) {
+      onBlur(ev, val);
     }
   };
 
@@ -227,14 +461,14 @@ const useNumberInput = ({
   const ariaValueText = getAriaValueText ? getAriaValueText(value) : null;
 
   return {
-    value: value,
+    value,
     isFocused,
     isDisabled,
     isReadOnly,
     incrementStepper: incrementStepperProps,
     decrementStepper: decrementStepperProps,
     incrementButton: {
-      onClick: () => handleIncrement(),
+      onClick: handleIncrement,
       'aria-label': 'add',
       ...(keepWithinRange && {
         disabled: value === max,
@@ -242,7 +476,7 @@ const useNumberInput = ({
       })
     },
     decrementButton: {
-      onClick: () => handleDecrement(),
+      onClick: handleDecrement,
       'aria-label': 'subtract',
       ...(keepWithinRange && {
         disabled: value === min,
@@ -251,9 +485,8 @@ const useNumberInput = ({
     },
     input: {
       onChange: handleChange,
-      onKeyDown: handleKeyDown,
       ref: inputRef,
-      value: toString(value),
+      value: inputValue,
       role: 'spinbutton',
       type: 'text',
       'aria-valuemin': min,
@@ -261,14 +494,15 @@ const useNumberInput = ({
       'aria-disabled': isDisabled,
       'aria-valuenow': value,
       'aria-invalid': isInvalid || isOutOfRange,
+      invalid: isInvalid || isOutOfRange,
       ...(ariaValueText !== null && { 'aria-valuetext': ariaValueText }),
       readOnly: isReadOnly,
       disabled: isDisabled,
       autoComplete: 'off',
-      onFocus: () => {
-        setIsFocused(true);
-      },
-      onBlur: handleBlur
+      onFocus: handleFocus,
+      onBlur: handleBlur,
+      onKeyDown: handleKeyDown,
+      onKeyUp: handleKeyUp
     }
   };
 };

@@ -31,7 +31,7 @@ export function isKeyboardKey(event, name) {
     return event.key === 'Spacebar' || event.key === ' ';
   }
   if (name === 'Delete') {
-    return event.key === 'Del' || event.key === 'Delete';
+    return event.key === 'Del' || event.keyCode === 46;
   }
 
   return event.key === name;

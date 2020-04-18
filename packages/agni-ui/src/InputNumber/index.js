@@ -21,7 +21,7 @@ const InputNumber = forwardRef(
       min,
       max,
       step = 1,
-      precision,
+      precision = 0,
       getAriaValueText,
       isReadOnly,
       isInvalid,
@@ -64,8 +64,8 @@ const InputNumber = forwardRef(
           alignItems="stretch"
           w={isFullWidth ? 'full' : null}
           pos="relative"
-          aria-readonly={ctx.isReadOnly}
-          aria-disabled={ctx.isDisabled}
+          aria-readonly={isReadOnly || rest.readOnly}
+          aria-disabled={isDisabled || rest.disabled}
           css={css({
             '&:hover .input-number__steppers,&:focus .input-number__steppers': {
               opacity: 1
@@ -77,7 +77,6 @@ const InputNumber = forwardRef(
               opacity: 0
             }
           })}
-          {...rest}
         >
           <InputNumberField {...rest} />
           <PseudoBox
