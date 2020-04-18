@@ -3,12 +3,27 @@ import { jsx, css } from '@emotion/core';
 import { memo } from 'react';
 import { PseudoBox } from '../../PseudoBox';
 import { useDatepickerContext } from '../DatepickerContext';
-import { viewMode, selectorStyle, baseStyle, monthStyle, cursorStyle } from '../constants';
+import {
+  viewMode,
+  selectorStyle,
+  baseStyle,
+  monthStyle,
+  cursorStyle,
+  highlightStyle
+} from '../constants';
 
 ///////////////////////////////////////////////////////////////////
 
 const PickerBodyDay = ({ viewConfig, startRow, weekIndex, dayIndex, today }) => {
-  const { value, focusValue, onChange } = useDatepickerContext();
+  const {
+    parser,
+    value,
+    focusValue,
+    onChange,
+    dateRender,
+    highlightedDates,
+    disabledDates
+  } = useDatepickerContext();
 
   const day = viewConfig.startCellView(startRow, dayIndex);
   const formatDay = viewConfig.cellFullFormat(day);
@@ -18,9 +33,40 @@ const PickerBodyDay = ({ viewConfig, startRow, weekIndex, dayIndex, today }) => 
   const isSameCursor = viewConfig.sameCursorSelector(day, focusValue);
   const isCurrentNoValue = viewConfig.sameCurrentSelector(day, today) && !value;
 
+  let isHighlighted = false;
+  if (typeof highlightedDates === 'function') {
+    isHighlighted = highlightedDates(day);
+  } else if (highlightedDates && Array.isArray(highlightedDates)) {
+    isHighlighted =
+      highlightedDates.filter(item => viewConfig.sameCellSelector(day, parser(item))).length > 0;
+  }
+
+  let isDisabled = false;
+  if (typeof disabledDates === 'function') {
+    isDisabled = disabledDates(day);
+  } else if (disabledDates && Array.isArray(disabledDates)) {
+    isDisabled =
+      disabledDates.filter(item => viewConfig.sameCellSelector(day, parser(item))).length > 0;
+  }
+
   const handleChange = () => {
     onChange(day);
   };
+
+  const boxProps = {
+    ...baseStyle,
+    ...(isSameView && monthStyle),
+    ...(isSameCursor && cursorStyle),
+    ...((isSameCell || isCurrentNoValue) && selectorStyle),
+    rounded: 'md',
+    py: '6px',
+    mx: 1,
+    verticalAlign: 'middle',
+    ...(isHighlighted && highlightStyle),
+    'aria-disabled': isDisabled
+  };
+
+  const cellFormattedDate = viewConfig.cellFormat(day, focusValue);
 
   return (
     <PseudoBox
@@ -34,25 +80,26 @@ const PickerBodyDay = ({ viewConfig, startRow, weekIndex, dayIndex, today }) => 
       textAlign="center"
       lineHeight="1"
       outline="none"
-      onClick={handleChange}
+      {...(!isDisabled && {
+        onClick: handleChange
+      })}
       tabIndex={-1}
       title={formatDay}
       aria-label={formatDay}
       aria-selected={isSameCell}
+      aria-disabled={isDisabled}
       cursor="pointer"
       userSelect="none"
+      _disabled={{
+        ...baseStyle._disabled,
+        opacity: 0.4
+      }}
     >
-      <PseudoBox
-        {...baseStyle}
-        {...(isSameView && monthStyle)}
-        {...(isSameCursor && cursorStyle)}
-        {...((isSameCell || isCurrentNoValue) && selectorStyle)}
-        rounded="md"
-        py="7px"
-        verticalAlign="middle"
-      >
-        {viewConfig.cellFormat(day, focusValue)}
-      </PseudoBox>
+      {dateRender ? (
+        dateRender(day, cellFormattedDate, boxProps)
+      ) : (
+        <PseudoBox {...boxProps}>{cellFormattedDate}</PseudoBox>
+      )}
     </PseudoBox>
   );
 };

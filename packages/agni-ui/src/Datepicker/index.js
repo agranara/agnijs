@@ -32,6 +32,9 @@ const Datepicker = forwardRef(
       closeOnSelect = true,
       mode = 'date',
       customParser,
+      dateRender,
+      disabledDates,
+      highlightedDates,
       ...rest
     },
     ref
@@ -54,7 +57,7 @@ const Datepicker = forwardRef(
     const forkedRef = useForkedRef(ref, ctx.ref);
 
     return (
-      <DatepickerContext.Provider value={ctx}>
+      <DatepickerContext.Provider value={{ ...ctx, dateRender, disabledDates, highlightedDates }}>
         <React.Fragment>
           <InputGroup className="datepicker" size={size}>
             <InputText

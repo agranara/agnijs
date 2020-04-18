@@ -1,5 +1,5 @@
 import React, { useCallback, memo } from 'react';
-import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
+import { FiChevronLeft, FiChevronRight, FiChevronDown } from 'react-icons/fi';
 import { useDebounceCallback } from '../../_hooks/useDebounceCallback';
 import { PseudoBox } from '../../PseudoBox';
 import { InputText } from '../../InputText';
@@ -43,15 +43,55 @@ PickerHeaderButton.displayName = 'PickerHeaderButton';
 
 /////////////////////////////////////////////////////////////
 
-const PickerHeaderSelect = ({ children, className, onChange, value }) => {
+const PickerHeaderSelect = ({ children, className, onChange, value, ...rest }) => {
   return (
-    <InputText as="select" size="sm" className={className} value={value} onChange={onChange}>
-      {children}
-    </InputText>
+    <PseudoBox d="block" pos="relative" mx={1} px={1} {...rest}>
+      <InputText
+        as="select"
+        border="0"
+        _focus={{ borderColor: 'transparent' }}
+        pos="relative"
+        onChange={onChange}
+        className={className}
+        value={value}
+        h={6}
+        pl={1}
+        pr={1}
+      >
+        {children}
+      </InputText>
+      <PseudoBox
+        pos="absolute"
+        top={0}
+        right={2}
+        bottom={0}
+        h={6}
+        fontSize={16}
+        bg="white"
+        d="flex"
+        alignItems="center"
+      >
+        <PseudoBox pt="2px">
+          <FiChevronDown />
+        </PseudoBox>
+      </PseudoBox>
+    </PseudoBox>
   );
 };
 
 PickerHeaderSelect.displayName = 'PickerHeaderSelect';
+
+/////////////////////////////////////////////////////////////
+
+const PickerHeaderSelectOption = ({ children, value }) => {
+  return (
+    <PseudoBox as="option" value={value} lineHeight="normal" fontSize="md">
+      {children}
+    </PseudoBox>
+  );
+};
+
+PickerHeaderSelectOption.displayName = 'PickerHeaderSelectOption';
 
 /////////////////////////////////////////////////////////////
 
@@ -119,11 +159,12 @@ const PickerHeader = memo(() => {
       className="datepicker__header-month"
       value={focusValue.get('month')}
       onChange={ev => handleChangeSelect(ev, 'month')}
+      borderRightWidth={1}
     >
       {months.map(({ label, value }) => (
-        <option key={`cal-m-${value}`} value={value}>
+        <PickerHeaderSelectOption key={`cal-m-${value}`} value={value}>
           {label}
-        </option>
+        </PickerHeaderSelectOption>
       ))}
     </PickerHeaderSelect>
   );
@@ -135,9 +176,9 @@ const PickerHeader = memo(() => {
       onChange={ev => handleChangeSelect(ev, 'year')}
     >
       {years.map(year => (
-        <option key={`cal-y-${year}`} value={year}>
+        <PickerHeaderSelectOption key={`cal-y-${year}`} value={year}>
           {year}
-        </option>
+        </PickerHeaderSelectOption>
       ))}
     </PickerHeaderSelect>
   );

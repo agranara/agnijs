@@ -38,15 +38,28 @@ export const cursorStyle = {
 
 export const baseStyle = {
   color: 'gray.300',
-  bg: 'white'
+  bg: 'white',
+  borderWidth: 1,
+  borderColor: 'transparent',
+  _disabled: {
+    bg: 'gray.200',
+    color: 'black',
+    cursor: 'not-allowed'
+  }
 };
 
 export const monthStyle = {
   color: 'black',
   bg: 'white',
   _hover: {
-    bg: 'gray.200'
+    bg: 'gray.100'
   }
+};
+
+export const highlightStyle = {
+  rounded: 'full',
+  borderColor: 'primary.500',
+  shadow: 'lg'
 };
 
 // Date view configuration
