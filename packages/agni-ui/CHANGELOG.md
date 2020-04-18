@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.24](https://github.com/agranara/agnijs/compare/@agnijs/agni-ui@1.1.23...@agnijs/agni-ui@1.1.24) (2020-04-18)
+
+
+### Bug Fixes
+
+* **inputnumber:** keyboard binding and disabled style ([d7cd2ad](https://github.com/agranara/agnijs/commit/d7cd2ad19c3f33880be1b2dd295eaebcb1dbb3d7))
+
+
+### Features
+
+* **datepicker:** disabled dates, highlighted dates, and render dates ([addeddc](https://github.com/agranara/agnijs/commit/addeddcc2e9f821e35d5e2117de761534eaeba1b))
+
+
+
+
+
 ## [1.1.23](https://github.com/agranara/agnijs/compare/@agnijs/agni-ui@1.1.22...@agnijs/agni-ui@1.1.23) (2020-04-16)
 
 
