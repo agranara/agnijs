@@ -51,7 +51,8 @@ const Datepicker = forwardRef(
       initialOpenPicker,
       visualFormat,
       mode,
-      customParser
+      customParser,
+      isClearable
     });
 
     const forkedRef = useForkedRef(ref, ctx.ref);

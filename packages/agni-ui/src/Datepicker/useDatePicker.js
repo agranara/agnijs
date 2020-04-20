@@ -23,7 +23,8 @@ const useDatePicker = ({
   valueFormat: valueFormatProp,
   visualFormat: visualFormatProp,
   mode,
-  customParser
+  customParser,
+  isClearable
 }) => {
   const { current: parser } = useRef(dayjs);
   parser.locale(locale);
@@ -181,7 +182,7 @@ const useDatePicker = ({
     if (isEnter) {
       updateValue(focusValue);
     }
-    if (isBackspace) {
+    if (isBackspace && isClearable) {
       updateValue(undefined);
     }
     if (isEscape || isTab) {
