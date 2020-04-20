@@ -3,46 +3,42 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## [1.1.24](https://github.com/agranara/agnijs/compare/@agnijs/agni-ui@1.1.23...@agnijs/agni-ui@1.1.24) (2020-04-18)
-
+## [1.1.25](https://github.com/agranara/agnijs/compare/@agnijs/agni-ui@1.1.24...@agnijs/agni-ui@1.1.25) (2020-04-20)
 
 ### Bug Fixes
 
-* **inputnumber:** keyboard binding and disabled style ([d7cd2ad](https://github.com/agranara/agnijs/commit/d7cd2ad19c3f33880be1b2dd295eaebcb1dbb3d7))
+- **datepicker:** handle non clearable input onKeyDown ([f69e59c](https://github.com/agranara/agnijs/commit/f69e59c657f394cc2977d92d6f2346872a79ede1))
+- **inputnumber:** check value change from props, handle 0 initial value ([d961d51](https://github.com/agranara/agnijs/commit/d961d51a223025575e9d39c96dc79dcef2d476e1))
+- **pagination:** perpage component and onPaginationChange handler ([2cf54df](https://github.com/agranara/agnijs/commit/2cf54dfb5f781b51c80f6f984277f26e94327cf0))
+- **select:** isclearable active for keydown handler ([9339894](https://github.com/agranara/agnijs/commit/9339894dc78df44e266ce085164ac39ca93b79d0))
 
+## [1.1.24](https://github.com/agranara/agnijs/compare/@agnijs/agni-ui@1.1.23...@agnijs/agni-ui@1.1.24) (2020-04-18)
+
+### Bug Fixes
+
+- **inputnumber:** keyboard binding and disabled style ([d7cd2ad](https://github.com/agranara/agnijs/commit/d7cd2ad19c3f33880be1b2dd295eaebcb1dbb3d7))
 
 ### Features
 
-* **datepicker:** disabled dates, highlighted dates, and render dates ([addeddc](https://github.com/agranara/agnijs/commit/addeddcc2e9f821e35d5e2117de761534eaeba1b))
-
-
-
-
+- **datepicker:** disabled dates, highlighted dates, and render dates ([addeddc](https://github.com/agranara/agnijs/commit/addeddcc2e9f821e35d5e2117de761534eaeba1b))
 
 ## [1.1.23](https://github.com/agranara/agnijs/compare/@agnijs/agni-ui@1.1.22...@agnijs/agni-ui@1.1.23) (2020-04-16)
 
-
 ### Bug Fixes
 
-* **breadcrumb:** fixed breadcrumb item and link applied css ([b5bca5d](https://github.com/agranara/agnijs/commit/b5bca5d9b0e529d12f1d90c7cfc752dc4971cf2a))
-* **card:** change to forwardref for card components ([773ba66](https://github.com/agranara/agnijs/commit/773ba66ae3cf33379317d1a4692a09afa77ac1f0))
-* **datagrid:** added column info for cell related render function ([065b719](https://github.com/agranara/agnijs/commit/065b719dd24d047f9a24904d82456ff8e64a7c4d)), closes [#5](https://github.com/agranara/agnijs/issues/5)
-* **datagrid:** fixed scrollbar size not applied to header ([74d064c](https://github.com/agranara/agnijs/commit/74d064cc625ce82c3bebe368b07c22c1b86430d4))
-* **datepicker:** handling null initial value ([25228d0](https://github.com/agranara/agnijs/commit/25228d0653c8e80e29a1f51dec7e563d2de4e200)), closes [#4](https://github.com/agranara/agnijs/issues/4)
-* **inputnumber:** fix keyboard binding inside InputNumber ([57f8798](https://github.com/agranara/agnijs/commit/57f87984fd35df997aa52c1272fda9e5ef4c8f35))
-* **inputtext:** fixed readonly and disabled style ([4932d33](https://github.com/agranara/agnijs/commit/4932d33863ca28a9b201c994aec8c5aa08c52410))
-* **select:** select placeholder overflow and label value getter handling ([3a13ce7](https://github.com/agranara/agnijs/commit/3a13ce740cfcc37c847edbe11788c8c190f8634e))
-* **usecomponentsize:** improve useComponentSize hook ([b2a9fda](https://github.com/agranara/agnijs/commit/b2a9fda56800a2ccbb209b0f528d8f07dd23973f))
-
+- **breadcrumb:** fixed breadcrumb item and link applied css ([b5bca5d](https://github.com/agranara/agnijs/commit/b5bca5d9b0e529d12f1d90c7cfc752dc4971cf2a))
+- **card:** change to forwardref for card components ([773ba66](https://github.com/agranara/agnijs/commit/773ba66ae3cf33379317d1a4692a09afa77ac1f0))
+- **datagrid:** added column info for cell related render function ([065b719](https://github.com/agranara/agnijs/commit/065b719dd24d047f9a24904d82456ff8e64a7c4d)), closes [#5](https://github.com/agranara/agnijs/issues/5)
+- **datagrid:** fixed scrollbar size not applied to header ([74d064c](https://github.com/agranara/agnijs/commit/74d064cc625ce82c3bebe368b07c22c1b86430d4))
+- **datepicker:** handling null initial value ([25228d0](https://github.com/agranara/agnijs/commit/25228d0653c8e80e29a1f51dec7e563d2de4e200)), closes [#4](https://github.com/agranara/agnijs/issues/4)
+- **inputnumber:** fix keyboard binding inside InputNumber ([57f8798](https://github.com/agranara/agnijs/commit/57f87984fd35df997aa52c1272fda9e5ef4c8f35))
+- **inputtext:** fixed readonly and disabled style ([4932d33](https://github.com/agranara/agnijs/commit/4932d33863ca28a9b201c994aec8c5aa08c52410))
+- **select:** select placeholder overflow and label value getter handling ([3a13ce7](https://github.com/agranara/agnijs/commit/3a13ce740cfcc37c847edbe11788c8c190f8634e))
+- **usecomponentsize:** improve useComponentSize hook ([b2a9fda](https://github.com/agranara/agnijs/commit/b2a9fda56800a2ccbb209b0f528d8f07dd23973f))
 
 ### Features
 
-* **inputnumber:** added custom thousand and decimal separator ([cd756cd](https://github.com/agranara/agnijs/commit/cd756cd6495d6c8ec2253c9ae7d241e371f17e67))
-
-
-
-
-
+- **inputnumber:** added custom thousand and decimal separator ([cd756cd](https://github.com/agranara/agnijs/commit/cd756cd6495d6c8ec2253c9ae7d241e371f17e67))
 
 ## [1.1.22](https://github.com/agranara/agnijs/compare/@agnijs/agni-ui@1.1.21...@agnijs/agni-ui@1.1.22) (2020-03-29)
 
