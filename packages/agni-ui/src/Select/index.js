@@ -298,7 +298,7 @@ const Select = memo(
           if (isEscape) {
             handleIsOpen(false);
           }
-          if (isBackspace && search === '' && hasValue) {
+          if (isBackspace && search === '' && hasValue && isClearable) {
             if (isMulti) {
             } else {
               handleClear();
@@ -324,6 +324,7 @@ const Select = memo(
           handleFocus,
           handleIsOpen,
           hasValue,
+          isClearable,
           isMulti,
           isOpen,
           search,
