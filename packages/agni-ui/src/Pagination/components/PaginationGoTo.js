@@ -18,7 +18,8 @@ const PaginationGoTo = () => {
     <Flex className="pagination__goto">
       <Text mr={2}>Go to page</Text>
       <InputNumber
-        defaultValue={page}
+        value={page}
+        isFullWidth={false}
         size="sm"
         minW="80px"
         w="80px"
