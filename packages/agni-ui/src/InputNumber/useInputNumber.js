@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect, useCallback } from 'react';
 import { canUseDOM } from 'exenv';
 import { useLongPress } from '../_hooks/useLongPress';
 import { isKeyboardKey } from '../keyboard';
@@ -6,7 +6,8 @@ import { calculatePrecision } from './util';
 
 const MAX_SAFE_INTEGER = Number.MAX_SAFE_INTEGER || Math.pow(2, 53) - 1;
 
-const isValidStr = val => typeof val !== 'undefined' && val !== null && val !== '';
+const isValid = val => typeof val !== 'undefined' && val !== null;
+const isValidStr = val => isValid(val) && val !== '';
 
 const useNumberInput = ({
   value: valueProp,
@@ -63,80 +64,92 @@ const useNumberInput = ({
     actualDecimalRegex.current = getActualRegex(decimalSeparator);
   }, [decimalSeparator]);
 
-  const cleanStrButFirst = (
-    str,
-    separator = decimalSeparator,
-    regx = actualDecimalRegex.current
-  ) => {
-    const firstIndex = str.indexOf(separator);
-    return str.replace(regx, (v, i) => (i === firstIndex ? v : ''));
-  };
+  const cleanStrButFirst = useCallback(
+    (str, separator = decimalSeparator, regx = actualDecimalRegex.current) => {
+      const firstIndex = str.indexOf(separator);
+      return str.replace(regx, (v, i) => (i === firstIndex ? v : ''));
+    },
+    [decimalSeparator]
+  );
 
-  const toActualValue = (strOrNum, usePrecision = false) => {
-    if (strOrNum !== null && typeof strOrNum !== undefined) {
-      const strValue = strOrNum.toString();
+  const toActualValue = useCallback(
+    (strOrNum, usePrecision = false) => {
+      if (isValid(strOrNum)) {
+        const strValue = `${strOrNum}`;
 
-      if (strValue.length === 0) {
-        return null;
+        if (strValue.length === 0) {
+          return null;
+        }
+
+        let trimmedVal = strValue.replace(actualThousandRegex.current, '');
+        trimmedVal = cleanStrButFirst(trimmedVal).replace(decimalSeparator, '.');
+
+        // Handle minus number
+        trimmedVal = cleanStrButFirst(trimmedVal, '-', /-/g);
+        if (trimmedVal === '-') {
+          return null;
+        }
+
+        const decimalIndex = trimmedVal.indexOf('.');
+        const backVal = trimmedVal.substring(decimalIndex + 1);
+        const fixedNumber = usePrecision ? precision : backVal.length;
+
+        const result = +trimmedVal;
+        return Number(result.toFixed(fixedNumber));
       }
+      return null;
+    },
+    [cleanStrButFirst, decimalSeparator, precision]
+  );
 
-      let trimmedVal = strValue.replace(actualThousandRegex.current, '');
-      trimmedVal = cleanStrButFirst(trimmedVal).replace(decimalSeparator, '.');
+  const isValueStringIncomplete = useCallback(
+    str => {
+      const hasDecimal = str.indexOf(decimalSeparator) > -1;
+      const hasTrailingZero = str.substr(str.length - 1) === '0';
+      const hasTrailingDecimal = str.substr(str.length - 1) === decimalSeparator;
 
-      // Handle minus number
-      trimmedVal = cleanStrButFirst(trimmedVal, '-', /-/g);
-      if (trimmedVal === '-') {
-        return null;
+      if (hasDecimal && hasTrailingZero) return true;
+      if (hasDecimal && hasTrailingDecimal) return true;
+      return false;
+    },
+    [decimalSeparator]
+  );
+
+  const toDisplayValue = useCallback(
+    strOrNum => {
+      if (isValid(strOrNum)) {
+        const strValue = `${strOrNum}`;
+        const isIncomplete = isValueStringIncomplete(strValue);
+
+        if (isIncomplete) {
+          return strValue;
+        }
+
+        const splitter = typeof strOrNum === 'string' ? decimalSeparator : '.';
+        const values = strValue.split(splitter);
+        const hasDecimal = strValue.indexOf(splitter) > -1;
+
+        const front = values[0] || '';
+        /** @type {string} */
+        let frontVal = front
+          .replace(actualThousandRegex.current, '')
+          .replace(displayThousandRegex.current, thousandSeparator);
+
+        if (frontVal.length > 1 && frontVal[0] === '0' && !hasDecimal) {
+          frontVal = frontVal.substring(1);
+        }
+
+        let back = '';
+        if (values[1] && values[1].length > 0) {
+          back = values[1].replace(/[^0-9]/g, '');
+        }
+
+        return `${frontVal}${hasDecimal ? decimalSeparator : ''}${back}`;
       }
-
-      const decimalIndex = trimmedVal.indexOf('.');
-      const backVal = trimmedVal.substring(decimalIndex + 1);
-      const fixedNumber = usePrecision ? precision : backVal.length;
-
-      const result = +trimmedVal;
-      return Number(result.toFixed(fixedNumber));
-    }
-    return null;
-  };
-
-  const isValueStringIncomplete = str => {
-    const hasDecimal = str.indexOf(decimalSeparator) > -1;
-    const hasTrailingZero = str.substr(str.length - 1) === '0';
-    const hasTrailingDecimal = str.substr(str.length - 1) === decimalSeparator;
-
-    if (hasDecimal && hasTrailingZero) return true;
-    if (hasDecimal && hasTrailingDecimal) return true;
-    return false;
-  };
-
-  const toDisplayValue = strOrNum => {
-    if (strOrNum !== null && typeof strOrNum !== undefined) {
-      const strValue = strOrNum.toString();
-      const isIncomplete = isValueStringIncomplete(strValue);
-
-      if (isIncomplete) {
-        return strValue;
-      }
-
-      const splitter = typeof strOrNum === 'string' ? decimalSeparator : '.';
-      const values = strValue.split(splitter);
-
-      const front = values[0] || '';
-      const frontVal = front
-        .replace(actualThousandRegex.current, '')
-        .replace(displayThousandRegex.current, thousandSeparator);
-
-      const hasDecimal = strValue.indexOf(splitter) > -1;
-
-      let back = '';
-      if (values[1] && values[1].length > 0) {
-        back = values[1].replace(/[^0-9]/g, '');
-      }
-
-      return `${frontVal}${hasDecimal ? decimalSeparator : ''}${back}`;
-    }
-    return '';
-  };
+      return '';
+    },
+    [decimalSeparator, isValueStringIncomplete, thousandSeparator]
+  );
 
   const [{ value, inputValue }, setValue] = useState(() => {
     if (defaultValue != null || valueProp != null) {
@@ -155,6 +168,18 @@ const useNumberInput = ({
       inputValue: toDisplayValue(null)
     };
   });
+
+  useEffect(() => {
+    if (prevNumberValue.current !== valueProp) {
+      setValue(() => {
+        const newValue = toActualValue(valueProp);
+        return {
+          value: newValue,
+          inputValue: toDisplayValue(newValue)
+        };
+      });
+    }
+  }, [toActualValue, toDisplayValue, valueProp]);
 
   const prevNumberString = useRef(null);
   const prevNumberValue = useRef(null);
@@ -276,17 +301,17 @@ const useNumberInput = ({
       inputValue: nextValueString
     });
 
+    prevNumberValue.current = convertedValue;
+    prevNumberString.current = nextValueString;
+
     if (onChange && prevNumberValue.current !== convertedValue) {
       onChange(convertedValue);
     }
-
-    prevNumberString.current = nextValueString;
-    prevNumberValue.current = convertedValue;
   };
 
   const handleIncrement = (step = stepProp) => {
     if (!isInteractive) return;
-    let nextValue = value + Number(step);
+    let nextValue = (value || 0) + Number(step);
 
     if (keepWithinRange) {
       nextValue = Math.min(nextValue, max);
@@ -298,7 +323,7 @@ const useNumberInput = ({
 
   const handleDecrement = (step = stepProp) => {
     if (!isInteractive) return;
-    let nextValue = value - Number(step);
+    let nextValue = (value || 0) - Number(step);
 
     if (keepWithinRange) {
       nextValue = Math.max(nextValue, min);
@@ -457,7 +482,7 @@ const useNumberInput = ({
     }
   };
 
-  const isOutOfRange = value > max || value < min;
+  const isOutOfRange = (value > max || value < min) && isValid(value);
   const ariaValueText = getAriaValueText ? getAriaValueText(value) : null;
 
   return {

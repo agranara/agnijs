@@ -3,6 +3,10 @@ import { IInputTextProps } from '../InputText';
 
 interface IInputNumberProps {
   /**
+   * Value inside input number
+   */
+  value?: null | string | number;
+  /**
    * Focus input on change. Default: true
    */
   focusInputOnChange?: boolean;
@@ -68,6 +72,6 @@ interface IInputNumberProps {
 
 }
 
-type InputNumberProps = IInputNumberProps & Omit<BoxProps, 'size'>;
+type InputNumberProps = IInputNumberProps & Omit<BoxProps, 'size' | 'defaultValue'>;
 
 export const InputNumber: React.ForwardRefExoticComponent<InputNumberProps>;

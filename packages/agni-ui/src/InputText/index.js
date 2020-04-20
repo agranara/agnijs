@@ -28,6 +28,7 @@ const InputText = forwardRef(
       placeholder,
       pl,
       pr,
+      w,
       ...restProps
     },
     ref
@@ -55,7 +56,7 @@ const InputText = forwardRef(
         aria-invalid={invalid}
         required={required}
         aria-required={required}
-        w={isFullWidth ? '100%' : undefined}
+        w={isFullWidth ? '100%' : w}
         className={cn(['input', isFocus && 'focused', className])}
         value={value}
         defaultValue={defaultValue}

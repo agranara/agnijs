@@ -78,7 +78,7 @@ const InputNumber = forwardRef(
             }
           })}
         >
-          <InputNumberField {...rest} />
+          <InputNumberField {...rest} isFullWidth={isFullWidth} />
           <PseudoBox
             className="input-number__steppers"
             d="flex"
