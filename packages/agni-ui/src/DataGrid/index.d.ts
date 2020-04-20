@@ -9,7 +9,7 @@ export type RenderCellValueProp = {
   /** Row Record */
   record: any;
   /** Column info */
-  column: any;
+  column: DataGridColumnType;
   /** Row index */
   indexRow: number;
   /** Cell index */
@@ -58,7 +58,7 @@ export type DataGridCellProps = {
   /**
    * Column info
    */
-  column?: any;
+  column?: DataGridColumnType;
   /**
    * Row index
    */
