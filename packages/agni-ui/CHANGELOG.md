@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.26](https://github.com/agranara/agnijs/compare/@agnijs/agni-ui@1.1.25...@agnijs/agni-ui@1.1.26) (2020-04-22)
+
+### Bug Fixes
+
+- **inputnumber:** fix handle change not triggered ([74e800a](https://github.com/agranara/agnijs/commit/74e800a6cb7e52edde02e46b309088481ef78515))
+
 ## [1.1.25](https://github.com/agranara/agnijs/compare/@agnijs/agni-ui@1.1.24...@agnijs/agni-ui@1.1.25) (2020-04-20)
 
 ### Bug Fixes
