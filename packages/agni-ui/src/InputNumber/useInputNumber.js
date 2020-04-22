@@ -301,12 +301,11 @@ const useNumberInput = ({
       inputValue: nextValueString
     });
 
-    prevNumberValue.current = convertedValue;
-    prevNumberString.current = nextValueString;
-
     if (onChange && prevNumberValue.current !== convertedValue) {
       onChange(convertedValue);
     }
+    prevNumberValue.current = convertedValue;
+    prevNumberString.current = nextValueString;
   };
 
   const handleIncrement = (step = stepProp) => {
