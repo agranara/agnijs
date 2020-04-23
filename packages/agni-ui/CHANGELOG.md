@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.27](https://github.com/agranara/agnijs/compare/@agnijs/agni-ui@1.1.26...@agnijs/agni-ui@1.1.27) (2020-04-23)
+
+### Bug Fixes
+
+- **datagrid:** sort value not updated, detect column changes ([18c2f4b](https://github.com/agranara/agnijs/commit/18c2f4b49be36503f575ce015c0a8ffbf8b63c4c))
+- **datepicker:** changed controlled value should update its view ([d647231](https://github.com/agranara/agnijs/commit/d6472310fe1c630882df529f94b9240ca9a1585e))
+- **inputcheckbox:** detect change from value props ([f76b8d0](https://github.com/agranara/agnijs/commit/f76b8d0bb16ffa31bd4011c0e161a3937386fb00))
+
 ## [1.1.26](https://github.com/agranara/agnijs/compare/@agnijs/agni-ui@1.1.25...@agnijs/agni-ui@1.1.26) (2020-04-22)
 
 ### Bug Fixes
