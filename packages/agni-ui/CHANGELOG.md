@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.28](https://github.com/agranara/agnijs/compare/@agnijs/agni-ui@1.1.27...@agnijs/agni-ui@1.1.28) (2020-04-23)
+
+### Bug Fixes
+
+- **datepicker:** eslint and datepicker scroll render ([5965336](https://github.com/agranara/agnijs/commit/5965336a9dfb6e28176c6916287d2cf0b842e1cc))
+
 ## [1.1.27](https://github.com/agranara/agnijs/compare/@agnijs/agni-ui@1.1.26...@agnijs/agni-ui@1.1.27) (2020-04-23)
 
 ### Bug Fixes
