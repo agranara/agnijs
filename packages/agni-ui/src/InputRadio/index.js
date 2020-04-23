@@ -8,8 +8,7 @@ import {
   useImperativeHandle,
   cloneElement,
   isValidElement,
-  Children,
-  useEffect
+  Children
 } from 'react';
 import { Box } from '../Box';
 import { ControlBox } from '../ControlBox';
