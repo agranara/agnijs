@@ -4,7 +4,7 @@ import { useLongPress } from '../_hooks/useLongPress';
 import { isKeyboardKey } from '../keyboard';
 import { calculatePrecision } from './util';
 
-const MAX_SAFE_INTEGER = Number.MAX_SAFE_INTEGER || Math.pow(2, 53) - 1;
+const MAX_SAFE_INTEGER = Number.MAX_SAFE_INTEGER || 2 ** 53 - 1;
 
 const isValid = val => typeof val !== 'undefined' && val !== null;
 const isValidStr = val => isValid(val) && val !== '';
@@ -29,6 +29,8 @@ const useNumberInput = ({
   isDisabled
 }) => {
   // Reference
+  const inputRef = useRef(null);
+
   const cursor = useRef({
     value: null,
     cursorStart: null,
@@ -36,7 +38,11 @@ const useNumberInput = ({
     cursorBefore: null,
     cursorAfter: null
   });
+
   const lastKeyboard = useRef(null);
+
+  const prevNumberString = useRef(null);
+  const prevNumberValue = useRef(null);
 
   const defaultPrecision = Math.max(calculatePrecision(stepProp), 0);
   const precision = precisionProp || defaultPrecision;
@@ -44,11 +50,11 @@ const useNumberInput = ({
   const getActualRegex = val => {
     if (val === '.') {
       return new RegExp(/\./g);
-    } else if (val === ',') {
-      return new RegExp(/,/g);
-    } else {
-      return new RegExp('');
     }
+    if (val === ',') {
+      return new RegExp(/,/g);
+    }
+    return new RegExp('');
   };
 
   const displayThousandRegex = useRef(new RegExp(/\B(?=(\d{3})+(?!\d))/g));
@@ -181,8 +187,21 @@ const useNumberInput = ({
     }
   }, [toActualValue, toDisplayValue, valueProp]);
 
-  const prevNumberString = useRef(null);
-  const prevNumberValue = useRef(null);
+  const setCursor = (start, end) => {
+    if (start === undefined || end === undefined || !inputRef.current || !inputRef.current.value) {
+      return;
+    }
+
+    try {
+      const currentStart = inputRef.current.selectionStart;
+      const currentEnd = inputRef.current.selectionEnd;
+
+      if (start !== currentStart || end !== currentEnd) {
+        inputRef.current.setSelectionRange(start, end);
+      }
+      // eslint-disable-next-line no-empty
+    } catch (e) {}
+  };
 
   const restoreByAfter = str => {
     if (str === undefined) return false;
@@ -220,21 +239,6 @@ const useNumberInput = ({
 
   const [isFocused, setIsFocused] = useState(false);
 
-  const setCursor = (start, end) => {
-    if (start === undefined || end === undefined || !inputRef.current || !inputRef.current.value) {
-      return;
-    }
-
-    try {
-      const currentStart = inputRef.current.selectionStart;
-      const currentEnd = inputRef.current.selectionEnd;
-
-      if (start !== currentStart || end !== currentEnd) {
-        inputRef.current.setSelectionRange(start, end);
-      }
-    } catch (e) {}
-  };
-
   const fixCursorKeyboard = () => {
     if (
       !partRestoreByAfter(cursor.current.cursorAfter) &&
@@ -269,11 +273,11 @@ const useNumberInput = ({
         fixCursorKeyboard();
       }
       lastKeyboard.current = null;
+      // eslint-disable-next-line no-empty
     } catch (error) {}
   });
 
   const isInteractive = !(isReadOnly || isDisabled);
-  const inputRef = useRef(null);
 
   const validateAndClamp = val => {
     const maxExists = max != null;
@@ -308,6 +312,13 @@ const useNumberInput = ({
     prevNumberString.current = nextValueString;
   };
 
+  const focusInput = () => {
+    if (focusInputOnChange && inputRef.current && canUseDOM) {
+      inputRef.current.focus();
+      // recordCursor();
+    }
+  };
+
   const handleIncrement = (step = stepProp) => {
     if (!isInteractive) return;
     let nextValue = (value || 0) + Number(step);
@@ -330,13 +341,6 @@ const useNumberInput = ({
 
     updateValue(toDisplayValue(nextValue), true);
     focusInput();
-  };
-
-  const focusInput = () => {
-    if (focusInputOnChange && inputRef.current && canUseDOM) {
-      inputRef.current.focus();
-      // recordCursor();
-    }
   };
 
   const handleFocus = () => {
@@ -382,6 +386,17 @@ const useNumberInput = ({
     )
       return false;
     return true;
+  };
+
+  const getIncrementFactor = event => {
+    let ratio = 1;
+    if (event.metaKey || event.ctrlKey) {
+      ratio = 0.1;
+    }
+    if (event.shiftKey) {
+      ratio = 10;
+    }
+    return ratio;
   };
 
   const handleKeyDown = event => {
@@ -457,17 +472,6 @@ const useNumberInput = ({
 
   const handleKeyUp = () => {
     recordCursor();
-  };
-
-  const getIncrementFactor = event => {
-    let ratio = 1;
-    if (event.metaKey || event.ctrlKey) {
-      ratio = 0.1;
-    }
-    if (event.shiftKey) {
-      ratio = 10;
-    }
-    return ratio;
   };
 
   const handleBlur = ev => {

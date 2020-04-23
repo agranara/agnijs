@@ -50,7 +50,7 @@ const FileList = ({
   };
 
   const mappedFiles = [];
-  for (let i = 0; i < files.length; i++) {
+  for (let i = 0; i < files.length; i += 1) {
     const item = files[i];
     mappedFiles.push(
       <FileItem

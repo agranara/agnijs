@@ -198,30 +198,30 @@ const useDatePicker = ({
     }
 
     if (isArrowDown && !isOpen) {
-      return handleIsOpen(true);
-    }
-
-    if (isArrowUp) {
-      updateFocus(-1, true);
-    }
-    if (isArrowDown) {
-      updateFocus(1, true);
-    }
-    if (isArrowLeft) {
-      updateFocus(-1, false);
-    }
-    if (isArrowRight) {
-      updateFocus(1, false);
-    }
-    if (isEnter) {
-      updateValue(focusValue);
-    }
-    if (isBackspace && isClearable) {
-      updateValue(undefined);
-    }
-    if (isEscape || isTab) {
-      handleIsOpen(false);
-      inputRef.current.blur();
+      handleIsOpen(true);
+    } else {
+      if (isArrowUp) {
+        updateFocus(-1, true);
+      }
+      if (isArrowDown) {
+        updateFocus(1, true);
+      }
+      if (isArrowLeft) {
+        updateFocus(-1, false);
+      }
+      if (isArrowRight) {
+        updateFocus(1, false);
+      }
+      if (isEnter) {
+        updateValue(focusValue);
+      }
+      if (isBackspace && isClearable) {
+        updateValue(undefined);
+      }
+      if (isEscape || isTab) {
+        handleIsOpen(false);
+        inputRef.current.blur();
+      }
     }
   };
 

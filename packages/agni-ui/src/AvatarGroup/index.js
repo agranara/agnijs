@@ -33,17 +33,17 @@ const MoreAvatarLabel = ({ size, label, ...props }) => {
 };
 
 const AvatarGroup = ({ size, children, borderColor, max, spacing = -3, ...rest }) => {
-  let count = Children.count(children);
+  const count = Children.count(children);
 
   const clones = Children.map(children, (child, index) => {
-    if (!isValidElement(child)) return;
+    if (!isValidElement(child)) return null;
 
     if (max && index > max) {
       return null;
     }
 
     if (max == null || (max && index < max)) {
-      let isFirstAvatar = index === 0;
+      const isFirstAvatar = index === 0;
       return cloneElement(child, {
         ml: isFirstAvatar ? 0 : spacing,
         size,
@@ -56,6 +56,8 @@ const AvatarGroup = ({ size, children, borderColor, max, spacing = -3, ...rest }
     if (max && index === max) {
       return <MoreAvatarLabel size={size} ml={spacing} label={`+${count - max}`} />;
     }
+
+    return null;
   });
 
   return (

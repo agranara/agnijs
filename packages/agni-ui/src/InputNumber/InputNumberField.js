@@ -3,6 +3,7 @@ import { useForkedRef } from '../_hooks/useForkedRef';
 import { InputText } from '../InputText';
 import { useInputNumberContext } from './InputNumberContext';
 
+// eslint-disable-next-line consistent-return
 const wrapEvent = (theirHandler, ourHandler) => event => {
   if (theirHandler) {
     theirHandler(event);

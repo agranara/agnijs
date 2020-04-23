@@ -25,7 +25,7 @@ const SelectOptionList = memo(
         ? itemCount * itemSize
         : maxItemShown * itemSize;
 
-    const usedHeight = height ? height : calculatedHeight;
+    const usedHeight = height || calculatedHeight;
 
     return (
       <FixedSizeList

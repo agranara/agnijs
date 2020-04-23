@@ -53,9 +53,11 @@ export function isFileInRangeSize(file, min, max) {
   if (isNotEmpty(file) && isNotEmpty(file.size)) {
     if (isNotEmpty(min) && isNotEmpty(max)) {
       return file.size >= min && file.size <= max;
-    } else if (isNotEmpty(min)) {
+    }
+    if (isNotEmpty(min)) {
       return file.size >= min;
-    } else if (isNotEmpty(max)) {
+    }
+    if (isNotEmpty(max)) {
       return file.size <= max;
     }
   }

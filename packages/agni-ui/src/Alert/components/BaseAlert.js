@@ -57,9 +57,7 @@ const BaseAlert = ({
         borderColor={borderColor}
         {...restProps}
       >
-        {children ? (
-          children
-        ) : (
+        {children || (
           <Fragment>
             {icon && (
               <PseudoBox

@@ -83,7 +83,7 @@ const Breadcrumb = ({ children, ...restProps }) => {
       {...restProps}
     >
       {Children.map(children, (child, childIndex) => {
-        if (!isValidElement(child)) return;
+        if (!isValidElement(child)) return null;
 
         if (child.type === BreadcrumbItem) {
           return cloneElement(child, { index: childIndex });

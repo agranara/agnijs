@@ -25,12 +25,12 @@ const SvgPpt = props => (
       fontWeight={700}
       letterSpacing=".05em"
     >
-      {'.P'}
+      .P
       <tspan x={107.92} y={0}>
-        {'P'}
+        P
       </tspan>
       <tspan x={177.43} y={0}>
-        {'T'}
+        T
       </tspan>
     </text>
     <path

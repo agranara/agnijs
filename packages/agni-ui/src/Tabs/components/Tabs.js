@@ -57,13 +57,7 @@ const Tabs = forwardRef(
 
     return (
       <TabContext.Provider value={context}>
-        <PseudoBox
-          {...rest}
-          ref={forkedRef}
-          className={cn(['tabs', className])}
-          role="tabs"
-          id={uid}
-        >
+        <PseudoBox {...rest} ref={forkedRef} className={cn(['tabs', className])} id={uid}>
           {children}
         </PseudoBox>
       </TabContext.Provider>

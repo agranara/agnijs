@@ -12,14 +12,18 @@ const useHasImageLoaded = ({ src, onLoad, onError }) => {
       image.onload = event => {
         if (isMounted.current) {
           setHasLoaded(true);
-          onLoad && onLoad(event);
+          if (onLoad) {
+            onLoad(event);
+          }
         }
       };
 
       image.onerror = event => {
         if (isMounted.current) {
           setHasLoaded(false);
-          onError && onError(event);
+          if (onError) {
+            onError(event);
+          }
         }
       };
     }

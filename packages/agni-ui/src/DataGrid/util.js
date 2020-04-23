@@ -10,6 +10,8 @@ export function cancelTimeout(timeoutID) {
 export function requestTimeout(callback, delay) {
   const start = now();
 
+  let timeoutID = {};
+
   function tick() {
     if (now() - start >= delay) {
       callback.call(null);
@@ -18,7 +20,7 @@ export function requestTimeout(callback, delay) {
     }
   }
 
-  const timeoutID = {
+  timeoutID = {
     id: requestAnimationFrame(tick)
   };
 
@@ -33,7 +35,7 @@ export function getArrayDepth(array, key = 'children') {
 
 export function getFlatColumns(source, key = 'children', parent = null) {
   let result = [];
-  for (let j = 0; j < source.length; j++) {
+  for (let j = 0; j < source.length; j += 1) {
     const col = source[j];
     if (col.children) {
       const resultChildrens = getFlatColumns(col[key], key, j);
@@ -51,7 +53,7 @@ export function getFlatColumns(source, key = 'children', parent = null) {
 export function getLastFreezeIndex(source, startResult = 0, previousFreeze = false) {
   let result = -1;
 
-  for (let i = 0; i < source.length; i++) {
+  for (let i = 0; i < source.length; i += 1) {
     const col = source[i];
     if (col.freezeLeft || previousFreeze) {
       result = startResult + i;

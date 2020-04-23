@@ -1,3 +1,4 @@
+/* eslint-disable no-use-before-define */
 import { useRef, useEffect, useState, useCallback } from 'react';
 
 const defaultEvents = ['mousedown', 'touchstart'];
@@ -29,7 +30,7 @@ function useTogglePositioner({
   // Handle on Click outside
   const handleClickOutside = useCallback(
     ev => {
-      for (let i = 0; i < refs.length; i++) {
+      for (let i = 0; i < refs.length; i += 1) {
         const ref = refs[i];
 
         if (ref.current && ref.current.contains(ev.target)) return;
@@ -49,14 +50,14 @@ function useTogglePositioner({
   );
 
   const registerOutsideClick = useCallback(() => {
-    for (let i = 0; i < events.length; i++) {
+    for (let i = 0; i < events.length; i += 1) {
       const eventName = events[i];
       document.addEventListener(eventName, handleClickOutside, false);
     }
   }, [events, handleClickOutside]);
 
   const unregisterOutsideClick = useCallback(() => {
-    for (let i = 0; i < events.length; i++) {
+    for (let i = 0; i < events.length; i += 1) {
       const eventName = events[i];
       document.removeEventListener(eventName, handleClickOutside, false);
     }

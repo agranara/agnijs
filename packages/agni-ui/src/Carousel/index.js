@@ -295,7 +295,7 @@ const Carousel = ({
   };
 
   const carouselItems = Children.map(children, (child, index) => {
-    if (!isValidElement(child) || child.type !== CarouselItem) return;
+    if (!isValidElement(child) || child.type !== CarouselItem) return null;
 
     return cloneElement(child, {
       index

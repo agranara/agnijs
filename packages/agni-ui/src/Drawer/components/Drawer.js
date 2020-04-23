@@ -38,6 +38,7 @@ const Drawer = forwardRef(
 
     const mouseDownTarget = useRef();
 
+    // eslint-disable-next-line consistent-return
     useEffect(() => {
       const handleMouseDown = event => {
         mouseDownTarget.current = event.target;

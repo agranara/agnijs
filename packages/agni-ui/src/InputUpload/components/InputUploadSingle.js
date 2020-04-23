@@ -134,7 +134,7 @@ const InputUploadSingle = forwardRef(
 
           fileReader.current.onerror = () => {
             fileReader.current.abort();
-            reject('Error while reading file');
+            reject(new Error('Error while reading file'));
           };
 
           fileReader.current.readAsDataURL(item.file);

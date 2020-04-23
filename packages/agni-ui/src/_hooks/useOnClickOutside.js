@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-syntax */
 import { useRef, useEffect } from 'react';
 
 const defaultEvents = ['mousedown', 'touchstart'];
@@ -15,8 +16,9 @@ const useOnClickOutside = (refs, onClickOutside, events = defaultEvents) => {
         return ref.current && !ref.current.contains(ev.target) && acc;
       }, false);
 
-      shouldApplyCallback && savedCallback.current(ev);
+      if (shouldApplyCallback) savedCallback.current(ev);
     };
+
     for (const eventName of events) {
       document.addEventListener(eventName, handler);
     }

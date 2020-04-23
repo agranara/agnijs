@@ -9,9 +9,8 @@ const getInitials = name => {
 
   if (firstName && lastName) {
     return `${firstName.charAt(0)}${lastName.charAt(0)}`;
-  } else {
-    return firstName.charAt(0);
   }
+  return firstName.charAt(0);
 };
 
 const AvatarName = ({ name, ...props }) => {
@@ -61,9 +60,8 @@ const Avatar = ({ size = 'md', showBorder, name, src, borderColor, children, ...
     if (src && !hasLoaded) {
       if (name) {
         return <AvatarName size={_size} name={name} />;
-      } else {
-        return <DefaultAvatar aria-label={name} />;
       }
+      return <DefaultAvatar aria-label={name} />;
     }
 
     if (!src && name) {

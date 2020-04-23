@@ -121,14 +121,6 @@ const SubMenu = ({
   const innerRef = useRef(null);
 
   const [isHover, setHover] = useState(false);
-  const [debounceHover, cancelDebounce] = useDebounceCallback({
-    callback: isCurrentHover => {
-      setHover(isCurrentHover);
-
-      unregisterRef();
-    },
-    delay: 50
-  });
 
   const registerRef = useCallback(() => {
     if (innerRef.current) {
@@ -141,6 +133,15 @@ const SubMenu = ({
       setRefs(oldRefs => oldRefs.filter(ref => ref.current !== innerRef.current));
     }
   }, [setRefs]);
+
+  const [debounceHover, cancelDebounce] = useDebounceCallback({
+    callback: isCurrentHover => {
+      setHover(isCurrentHover);
+
+      unregisterRef();
+    },
+    delay: 50
+  });
 
   const handleMouseEnter = useCallback(() => {
     setHover(true);

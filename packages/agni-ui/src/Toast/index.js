@@ -9,7 +9,7 @@ const CONTAINER_ID = 'toast__container';
 let toastCount = 0;
 
 const increaseCount = () => {
-  ++toastCount;
+  toastCount += 1;
   return `toast-${toastCount}`;
 };
 
@@ -21,7 +21,7 @@ const defaultOption = {
 const toast = (description, options) => {
   const containerId = options?.containerId || CONTAINER_ID;
   let rootToast;
-  let existingElement = document.getElementById(containerId);
+  const existingElement = document.getElementById(containerId);
 
   if (existingElement) {
     rootToast = existingElement;
@@ -38,7 +38,7 @@ const toast = (description, options) => {
 
   const counter = increaseCount();
 
-  const toast = { id: counter, description, ...defaultOption, ...options };
+  const toastValue = { id: counter, description, ...defaultOption, ...options };
 
   ReactDOM.render(
     <UiProvider theme={options && options.theme ? options.theme : uiTheme.getTheme()}>
@@ -51,7 +51,7 @@ const toast = (description, options) => {
           }
         `}
       />
-      <ToastContainer toast={toast} />
+      <ToastContainer toast={toastValue} />
     </UiProvider>,
     rootToast
   );

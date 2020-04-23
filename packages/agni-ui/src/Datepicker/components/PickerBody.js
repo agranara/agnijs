@@ -177,7 +177,7 @@ const PickerBody = memo(() => {
                 className="datepicker__body-pickweek"
                 role="row"
               >
-                {Array.from({ length: view.columns }, (_, x) => {
+                {Array.from({ length: view.columns }, (__, x) => {
                   return (
                     <PickerBodyDay
                       key={`view-body-${x}-${y}`}

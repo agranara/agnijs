@@ -25,7 +25,7 @@ const SvgDoc = props => (
       fontWeight={700}
       letterSpacing=".05em"
     >
-      {'.DOC'}
+      .DOC
     </text>
     <path
       className="doc_svg__cls-3"

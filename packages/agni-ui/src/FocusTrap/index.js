@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/no-noninteractive-tabindex */
 /**
  * Thanks to 'material-ui'
  *
@@ -100,6 +101,7 @@ const FocusTrap = ({
       contain();
     }, 50);
 
+    // eslint-disable-next-line consistent-return
     return () => {
       clearInterval(interval);
 

@@ -51,25 +51,25 @@ const DGMetaProvider = ({
   // when isLoading is true
   // triggering 'isReady' to true triggered from `DGInitializer`
   useEffect(() => {
-    if (isLoading !== prevLoading.current) {
+    if (isLoading !== prevLoading.current && metaState.isReady) {
       prevLoading.current = isLoading;
       setMeta(oldMeta => ({
         ...oldMeta,
         ...initialMeta
       }));
     }
-  }, [isLoading]);
+  }, [isLoading, metaState.isReady]);
 
   useEffect(() => {
-    if (!isEqual(columnProps, prevColumns.current)) {
+    if (!isEqual(columnProps, prevColumns.current) && metaState.isReady) {
+      prevColumns.current = columnProps;
       setMeta(oldMeta => ({
         ...oldMeta,
         ...initialMeta
       }));
       setColumns(columnProps);
-      prevColumns.current = columnProps;
     }
-  }, [columnProps]);
+  }, [columnProps, metaState.isReady]);
 
   const getContainerHeight = () => {
     if (height) return height;

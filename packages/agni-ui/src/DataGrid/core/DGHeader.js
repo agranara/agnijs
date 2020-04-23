@@ -27,9 +27,7 @@ const DGHeader = React.memo(
 
     const handleClickColumn = useCallback(
       ev => {
-        const colSortKey = ev.currentTarget.dataset
-          ? ev.currentTarget.dataset['sortkey']
-          : undefined;
+        const colSortKey = ev.currentTarget.dataset ? ev.currentTarget.dataset.sortkey : undefined;
         handleSort(colSortKey, sortKey, sortOrder);
       },
       [sortKey, sortOrder, handleSort]
@@ -37,9 +35,7 @@ const DGHeader = React.memo(
 
     const handleKeyDown = useCallback(
       ev => {
-        const colSortKey = ev.currentTarget.dataset
-          ? ev.currentTarget.dataset['sortkey']
-          : undefined;
+        const colSortKey = ev.currentTarget.dataset ? ev.currentTarget.dataset.sortkey : undefined;
         if (isKeyboardKey(ev, 'Enter')) {
           handleSort(colSortKey, sortKey, sortOrder);
         }
@@ -55,7 +51,7 @@ const DGHeader = React.memo(
     const renderColumn = (cols, depth = 0) => {
       const renderedColumns = [];
       const curDepth = columnDepth - depth;
-      for (let i = 0; i < cols.length; i++) {
+      for (let i = 0; i < cols.length; i += 1) {
         const col = cols[i];
 
         const colWidth = col.children

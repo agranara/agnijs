@@ -141,12 +141,14 @@ const extraConfig = system(config);
 // Transform the custom alias to a format that styled-system CSS supports
 const transformAlias = (prop, propValue) => {
   const configKeys = Object.keys(config);
-  let result = {};
+  const result = {};
 
   if (configKeys.includes(prop)) {
     const { properties, property } = config[prop];
     if (properties) {
-      properties.forEach(_cssProp => (result[_cssProp] = propValue));
+      properties.forEach(_cssProp => {
+        result[_cssProp] = propValue;
+      });
     }
     if (property) {
       result[property] = propValue;
@@ -162,7 +164,8 @@ const transformAlias = (prop, propValue) => {
 
 const transformAliasProps = props => {
   let result = {};
-  for (let prop in props) {
+  // eslint-disable-next-line no-restricted-syntax
+  for (const prop in props) {
     if (typeof props[prop] === 'object') {
       result = { ...result, [prop]: transformAliasProps(props[prop]) };
     } else {

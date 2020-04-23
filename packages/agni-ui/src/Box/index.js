@@ -15,14 +15,15 @@ import {
 } from 'styled-system';
 import { extraConfig } from './config';
 
-const boxTruncate = props => {
-  if (props.isTruncated) {
+const boxTruncate = boxProps => {
+  if (boxProps.isTruncated) {
     return {
       overflow: 'hidden',
       textOverflow: 'ellipsis',
       whiteSpace: 'nowrap'
     };
   }
+  return {};
 };
 
 const boxSystemProps = compose(
@@ -63,9 +64,8 @@ const Box = styled('div', {
   shouldForwardProp: prop => {
     if (nativeHTMLPropAlias.includes(prop)) {
       return true;
-    } else {
-      return shouldForwardProp(prop);
     }
+    return shouldForwardProp(prop);
   }
 })(boxTruncate, boxSystemProps);
 

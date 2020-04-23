@@ -9,8 +9,8 @@ const InputInside = ({
   children,
   ...restProps
 }) => {
-  const height = inputSizes[size] && inputSizes[size]['height'];
-  const fontSize = inputSizes[size] && inputSizes[size]['fontSize'];
+  const height = inputSizes[size] && inputSizes[size].height;
+  const fontSize = inputSizes[size] && inputSizes[size].fontSize;
   const placementProp = { [placement]: '0' };
 
   return (

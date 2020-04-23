@@ -1,3 +1,4 @@
+/* eslint-disable prefer-destructuring */
 // import icons from '../IconPaths';
 import colors from './colors';
 import sizes, { baseSizes } from './sizes';

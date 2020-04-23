@@ -92,11 +92,11 @@ const Select = memo(
       });
 
       const makeKeyOptions = useCallback(
-        options => {
-          if (Array.isArray(options)) {
+        opts => {
+          if (Array.isArray(opts)) {
             const reduced = {};
-            for (let j = 0; j < options.length; j++) {
-              const opt = options[j];
+            for (let j = 0; j < opts.length; j += 1) {
+              const opt = opts[j];
               reduced[getKeyedOption(get(opt, valueKey))] = { ...opt, cursor: j };
             }
             return reduced;
@@ -121,13 +121,16 @@ const Select = memo(
       // Debounce filter search
       const [debounceFilterOnSearch] = useDebounceCallback({
         callback: searchValue => {
-          if (!searchValue || searchValue === '') return setFilterOptions(options);
-          const regexp = new RegExp(safeString(searchValue), 'i');
-          const newOptions = options.filter(
-            item => regexp.test(item[labelKey]) || regexp.test(item[valueKey])
-          );
+          if (!searchValue || searchValue === '') {
+            setFilterOptions(options);
+          } else {
+            const regexp = new RegExp(safeString(searchValue), 'i');
+            const newOptions = options.filter(
+              item => regexp.test(item[labelKey]) || regexp.test(item[valueKey])
+            );
 
-          setFilterOptions(newOptions);
+            setFilterOptions(newOptions);
+          }
         },
         delay: 300,
         deps: [labelKey, options, valueKey]
@@ -141,11 +144,21 @@ const Select = memo(
         : typeof value !== 'undefined' && value !== null;
       const hasValueOrSearch = hasValue || search !== '';
 
-      // Signaling to parent about select value
-      useImperativeHandle(forwardedRef, () => ({
-        focus: handleFocus,
-        value
-      }));
+      // Update search field
+      const updateSearch = useCallback(
+        nextSearch => {
+          if (prevNextSearch.current === nextSearch) return;
+          const dom = searchRef.current;
+          if (dom) {
+            const str = nextSearch;
+            dom.style.width = `${str.length * 7 + 12}px`;
+          }
+          debounceFilterOnSearch(nextSearch);
+          setSearch(nextSearch);
+          prevNextSearch.current = nextSearch;
+        },
+        [debounceFilterOnSearch]
+      );
 
       const [isOpen, handleIsOpen] = useTogglePositioner({
         refs: [selectRef, dropdownRef],
@@ -169,6 +182,25 @@ const Select = memo(
         }
       });
 
+      // Handle focus
+      const handleFocus = useCallback(
+        ev => {
+          if (!isInteractive) return;
+          handleIsOpen(true);
+
+          if (searchRef.current) {
+            searchRef.current.focus(ev);
+          }
+        },
+        [handleIsOpen, isInteractive]
+      );
+
+      // Signaling to parent about select value
+      useImperativeHandle(forwardedRef, () => ({
+        focus: handleFocus,
+        value
+      }));
+
       // Keep prev value same as prop value
       useEffect(() => {
         if (isControlled.current && prevNextValue.current !== valueProp) {
@@ -187,22 +219,6 @@ const Select = memo(
           prevNextValue.current = nextValue;
         },
         [onChange]
-      );
-
-      // Update search field
-      const updateSearch = useCallback(
-        nextSearch => {
-          if (prevNextSearch.current === nextSearch) return;
-          const dom = searchRef.current;
-          if (dom) {
-            const str = nextSearch;
-            dom.style.width = `${str.length * 7 + 12}px`;
-          }
-          debounceFilterOnSearch(nextSearch);
-          setSearch(nextSearch);
-          prevNextSearch.current = nextSearch;
-        },
-        [debounceFilterOnSearch]
       );
 
       // Set search value onChange
@@ -235,19 +251,6 @@ const Select = memo(
           }
         },
         [updateValue, value]
-      );
-
-      // Handle focus
-      const handleFocus = useCallback(
-        ev => {
-          if (!isInteractive) return;
-          handleIsOpen(true);
-
-          if (searchRef.current) {
-            searchRef.current.focus(ev);
-          }
-        },
-        [handleIsOpen, isInteractive]
       );
 
       // Handle Change option;
@@ -283,36 +286,37 @@ const Select = memo(
           const isShift = ev.shiftKey;
           const isBackspace = isKeyboardKey(ev, 'Backspace');
           const isEnter = isKeyboardKey(ev, 'Enter');
+
           if (isArrowDown && cursor === null && filterOptions.length > 0) {
             if (!isOpen) {
               handleFocus();
             }
-            return setCursor(0);
-          }
-          if (isArrowUp || isArrowDown || isShift & isTab) {
-            ev.preventDefault();
-          }
-          if (isTab) {
-            return handleIsOpen(false);
-          }
-          if (isEscape) {
-            handleIsOpen(false);
-          }
-          if (isBackspace && search === '' && hasValue && isClearable) {
-            if (isMulti) {
-            } else {
-              handleClear();
+            setCursor(0);
+          } else {
+            if (isArrowUp || isArrowDown || (isShift && isTab)) {
+              ev.preventDefault();
             }
-          }
-          if (filterOptions.length > 0) {
-            if (isEnter && cursor !== null) {
-              const item = filterOptions[cursor][valueKey];
-              handleClickItem(ev, item);
+            if (isTab) {
+              handleIsOpen(false);
             }
-            if (isArrowDown && cursor < filterOptions.length - 1) {
-              setCursor(oldCursor => oldCursor + 1);
-            } else if (isArrowUp && cursor > 0) {
-              setCursor(oldCursor => oldCursor - 1);
+            if (isEscape) {
+              handleIsOpen(false);
+            }
+            if (isBackspace && search === '' && hasValue && isClearable) {
+              if (!isMulti) {
+                handleClear();
+              }
+            }
+            if (filterOptions.length > 0) {
+              if (isEnter && cursor !== null) {
+                const item = filterOptions[cursor][valueKey];
+                handleClickItem(ev, item);
+              }
+              if (isArrowDown && cursor < filterOptions.length - 1) {
+                setCursor(oldCursor => oldCursor + 1);
+              } else if (isArrowUp && cursor > 0) {
+                setCursor(oldCursor => oldCursor - 1);
+              }
             }
           }
         },
@@ -419,7 +423,7 @@ const Select = memo(
               >
                 {filterOptions.length > 0 ? (
                   <SelectOptionList
-                    width={dropdownWidth ? dropdownWidth : width}
+                    width={dropdownWidth || width}
                     height={dropdownHeight}
                     cursor={cursor}
                     maxItemShown={maxItemShown}

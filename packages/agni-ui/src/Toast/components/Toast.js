@@ -31,6 +31,12 @@ const Toast = memo(
 
     const timeoutRef = useRef(null);
 
+    const handleClose = useCallback(() => {
+      unregisterToast(id, placement);
+
+      if (onClose) onClose();
+    }, [id, onClose, placement, unregisterToast]);
+
     useEffect(() => {
       if (duration > 0 && !paused) {
         timeoutRef.current = setTimeout(() => {
@@ -47,12 +53,6 @@ const Toast = memo(
         }
       };
     }, []);
-
-    const handleClose = useCallback(() => {
-      unregisterToast(id, placement);
-
-      if (onClose) onClose();
-    }, [id, onClose, placement, unregisterToast]);
 
     const handleMouseEnter = useCallback(() => {
       setPaused(true);

@@ -17,7 +17,7 @@ const SvgUnknown = props => (
       fontWeight={700}
       letterSpacing=".05em"
     >
-      {'...'}
+      ...
     </text>
   </svg>
 );

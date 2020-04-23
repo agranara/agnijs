@@ -85,7 +85,7 @@ const Row = ({ totalColumn = 24, className, style, children, isDeck = false, ...
       // w={restProps.w || 'full'}
     >
       {Children.map(children, child => {
-        if (!isValidElement(child)) return;
+        if (!isValidElement(child)) return null;
 
         if (child.type === Column) {
           return cloneElement(child, { isDeck, totalColumn });

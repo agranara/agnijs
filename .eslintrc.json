@@ -1,41 +1,31 @@
 {
+  "env": {
+    "browser": true,
+    "es6": true,
+    "node": true
+  },
   "extends": [
     "react-app",
+    "airbnb",
     "plugin:react/recommended",
     "plugin:prettier/recommended",
     "prettier/react",
     "prettier"
   ],
   "globals": {
-    "__DEV__": "readonly",
     "Atomics": "readonly",
     "SharedArrayBuffer": "readonly"
   },
   "parser": "babel-eslint",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": 2018,
+    "sourceType": "module"
+  },
   "plugins": ["react", "prettier", "react-hooks"],
   "rules": {
-    "no-use-before-define": "off",
-    "no-unused-vars": [
-      1,
-      {
-        "args": "after-used",
-        "ignoreRestSiblings": true,
-        "argsIgnorePattern": "^(event|_)$"
-      }
-    ],
-    "jsx-a11y/no-static-element-interactions": [
-      1,
-      {
-        "handlers": ["onClick", "onMouseDown", "onMouseUp", "onKeyPress", "onKeyDown", "onKeyUp"]
-      }
-    ],
-    "import/first": 0,
-    "import/no-unresolved": 2,
-    "import/no-duplicates": 2,
-    "import/order": [
-      "error",
-      { "groups": ["builtin", "external", "internal", "parent", "sibling", "index"] }
-    ],
     "linebreak-style": "off",
     "object-curly-newline": "off",
     "react/jsx-filename-extension": [
@@ -62,6 +52,13 @@
     "spaced-comment": "off",
     "react/no-array-index-key": "off",
     "react/destructuring-assignment": "off",
-    "react/display-name": "off"
+    "react/display-name": "off",
+    "no-nested-ternary": "off",
+    "import/no-unresolved": [
+      2,
+      {
+        "ignore": ["^@wais"]
+      }
+    ]
   }
 }

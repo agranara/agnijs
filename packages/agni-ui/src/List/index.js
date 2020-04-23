@@ -25,7 +25,7 @@ const List = ({
 
     const results = [];
 
-    for (let i = 0; i < data.length; i++) {
+    for (let i = 0; i < data.length; i += 1) {
       const el = data[i];
       results.push(React.createElement(children, { index: i, item: el, key: itemKey(el, i) }));
     }

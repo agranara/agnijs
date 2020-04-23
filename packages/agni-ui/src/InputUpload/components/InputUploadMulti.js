@@ -111,7 +111,7 @@ const InputUploadMulti = forwardRef(
 
         setKeepFiles(result);
 
-        if (onChange) onChange(result.acceptedFiles.map(item => item.file));
+        if (onChange) onChange(result.acceptedFiles.map(it => it.file));
         if (onClearItem) onClearItem(item, index);
       },
       [keepFiles, onChange, onClearItem]

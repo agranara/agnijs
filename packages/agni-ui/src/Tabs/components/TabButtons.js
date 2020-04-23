@@ -96,7 +96,7 @@ const TabButtons = forwardRef(({ children, ...rest }, forwardedRef) => {
         userSelect="none"
       >
         {Children.map(children, (child, childIndex) => {
-          if (!isValidElement(child)) return;
+          if (!isValidElement(child)) return null;
 
           if (child.type === TabButton) {
             return cloneElement(child, { index: childIndex });

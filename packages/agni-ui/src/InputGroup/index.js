@@ -8,7 +8,7 @@ import { InputText } from '../InputText';
 const InputGroup = forwardRef(({ children, size = 'md', ...restProps }, ref) => {
   const { sizes } = useUiTheme();
 
-  const height = inputSizes[size] && inputSizes[size]['height'];
+  const height = inputSizes[size] && inputSizes[size].height;
   const paddingSize = sizes[height];
 
   let paddingLeft = null;
@@ -35,7 +35,7 @@ const InputGroup = forwardRef(({ children, size = 'md', ...restProps }, ref) => 
       {...restProps}
     >
       {Children.map(children, child => {
-        if (!isValidElement(child)) return;
+        if (!isValidElement(child)) return null;
 
         if (child.type === InputText) {
           const inputProps = {

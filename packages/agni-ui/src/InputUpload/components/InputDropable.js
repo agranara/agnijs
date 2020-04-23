@@ -26,7 +26,7 @@ const InputDropable = ({
       css={css({
         transition: '0.2s all',
         position: 'relative',
-        height: height,
+        height,
         borderWidth: 1,
         borderRadius: theme.radii.md,
         cursor: isInteractive ? 'pointer' : 'not-allowed',

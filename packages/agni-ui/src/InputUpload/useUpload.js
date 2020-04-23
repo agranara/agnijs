@@ -12,7 +12,7 @@ import {
 
 let fileCount = 0;
 const increaseCount = () => {
-  ++fileCount;
+  fileCount += 1;
   return `upload_file_${fileCount}`;
 };
 
@@ -65,6 +65,7 @@ function useUpload({
 
   // On mount, listen to window focus
   // On unmount, remove event listener
+  // eslint-disable-next-line consistent-return
   useEffect(() => {
     const onWindowFocus = () => {
       if (state.isDialogOpened) {
@@ -215,7 +216,9 @@ function useUpload({
 
       if (ev.dataTransfer) {
         try {
+          // eslint-disable-next-line no-param-reassign
           ev.dataTransfer.dropEffect = 'copy';
+          // eslint-disable-next-line no-empty
         } catch {}
       }
 

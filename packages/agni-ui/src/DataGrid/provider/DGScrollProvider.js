@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState, useEffect } from 'react';
+import React, { useCallback, useRef, useState, useEffect, useMemo } from 'react';
 import isEqual from 'fast-deep-equal/es6/react';
 import { DGScrollContext } from '../context/DGScrollContext';
 
@@ -9,16 +9,21 @@ const DGScrollProvider = ({ children, initialOffsetTop, initialOffsetLeft }) => 
   const headerRef = useRef(null);
   const contentRef = useRef(null);
 
-  // Observe scroll position
-  const [scrollState, setScrollState] = useState(() => {
-    return {
+  const initialScrollState = useMemo(
+    () => ({
       isScrolling: false,
       isRequested: false,
       top: initialOffsetTop,
       topDirection: 'forward',
       left: initialOffsetLeft,
       leftDirection: 'forward'
-    };
+    }),
+    [initialOffsetLeft, initialOffsetTop]
+  );
+
+  // Observe scroll position
+  const [scrollState, setScrollState] = useState(() => {
+    return initialScrollState;
   });
 
   // Cached scrollstate
@@ -52,7 +57,7 @@ const DGScrollProvider = ({ children, initialOffsetTop, initialOffsetLeft }) => 
 
   const getNewScrollState = useCallback(
     ({ scrollTop, scrollHeight, clientHeight, scrollLeft, scrollWidth, clientWidth }) => {
-      let newScrollState = { ...prevScrollState.current };
+      const newScrollState = { ...prevScrollState.current };
 
       if (prevScrollState.current.top !== scrollTop) {
         // Vertical scrolling
@@ -96,14 +101,9 @@ const DGScrollProvider = ({ children, initialOffsetTop, initialOffsetLeft }) => 
   // Handle on table scrolled
   const onScrollBody = useCallback(
     ev => {
-      const {
-        clientHeight,
-        scrollHeight,
-        scrollTop,
-        scrollLeft,
-        clientWidth,
-        scrollWidth
-      } = ev.currentTarget;
+      const { clientHeight, scrollHeight, scrollTop, scrollLeft, clientWidth, scrollWidth } = ev
+        ? ev.currentTarget
+        : contentRef.current;
 
       const newScrollState = getNewScrollState({
         clientHeight,
@@ -121,6 +121,13 @@ const DGScrollProvider = ({ children, initialOffsetTop, initialOffsetLeft }) => 
     },
     [resetScroll, getNewScrollState]
   );
+
+  // Keep scroll insync with its height
+  useEffect(() => {
+    if (contentRef.current && !scrollState.isScrolling) {
+      onScrollBody();
+    }
+  });
 
   const context = {
     ...scrollState,

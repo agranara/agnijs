@@ -56,8 +56,8 @@ const DGContent = React.memo(
           offset = itemMetadata.offset + itemMetadata.size;
         }
 
-        for (let i = metadataRef.current.lastMeasuredIndex + 1; i <= index; i++) {
-          let size = rowHeight;
+        for (let i = metadataRef.current.lastMeasuredIndex + 1; i <= index; i += 1) {
+          const size = rowHeight;
 
           metadataRef.current.itemMap[i] = {
             offset,
@@ -74,37 +74,42 @@ const DGContent = React.memo(
     };
 
     const findNearestItemBinary = ({ high, low, offset }) => {
-      while (low <= high) {
-        const middle = low + Math.floor((high - low) / 2);
+      let usedLow = low;
+      let usedHigh = high;
+
+      while (usedLow <= usedHigh) {
+        const middle = usedLow + Math.floor((usedHigh - usedLow) / 2);
 
         const metadataOffset = getItemMetadata(middle).offset;
 
         if (metadataOffset === offset) {
           return middle;
-        } else if (metadataOffset < offset) {
-          low = middle + 1;
+        }
+        if (metadataOffset < offset) {
+          usedLow = middle + 1;
         } else if (metadataOffset > offset) {
-          high = middle - 1;
+          usedHigh = middle - 1;
         }
       }
 
-      if (low > 0) {
-        return low - 1;
+      if (usedLow > 0) {
+        return usedLow - 1;
       }
       return 0;
     };
 
     const findNearestItemExponent = ({ index, offset }) => {
       let interval = 1;
+      let usedIndex = index;
 
-      while (index < itemCount && getItemMetadata(index).offset < offset) {
-        index += interval;
+      while (usedIndex < itemCount && getItemMetadata(usedIndex).offset < offset) {
+        usedIndex += interval;
         interval *= 2;
       }
 
       return findNearestItemBinary({
-        high: Math.min(index, itemCount - 1),
-        low: Math.floor(index / 2),
+        high: Math.min(usedIndex, itemCount - 1),
+        low: Math.floor(usedIndex / 2),
         offset
       });
     };
@@ -164,7 +169,7 @@ const DGContent = React.memo(
 
     // Get cell style from cache
     // else insert style to cache
-    const getOrSetCellStyle = ({ cache, indexRow, indexCell, record, column, rowHeight }) => {
+    const getOrSetCellStyle = ({ cache, indexRow, indexCell, record, column }) => {
       if (!cellStyleRef.current[indexRow]) {
         cellStyleRef.current[indexRow] = {};
       }
@@ -193,7 +198,7 @@ const DGContent = React.memo(
     };
     // Get row style from cache
     // else insert style to cache
-    const getOrSetRowStyle = ({ index, record, rowHeight, rowStyle }) => {
+    const getOrSetRowStyle = ({ index, record, rowStyle }) => {
       if (!rowStyleRef.current[index]) {
         const rowStyleProps = rowStyle ? rowStyle({ indexRow: index, record }) : {};
 
@@ -223,11 +228,11 @@ const DGContent = React.memo(
     const [renderStartIndex, renderEndIndex] = getRenderRange();
 
     const rows = [];
-    for (let i = renderStartIndex; i <= renderEndIndex; i++) {
+    for (let i = renderStartIndex; i <= renderEndIndex; i += 1) {
       const row = data[i];
       const cells = [];
 
-      for (let j = 0; j < columnFlat.length; j++) {
+      for (let j = 0; j < columnFlat.length; j += 1) {
         const col = columnFlat[j];
 
         const cachedCellStyle = getOrSetCellStyle({
@@ -235,8 +240,8 @@ const DGContent = React.memo(
           indexRow: i,
           column: col,
           record: row,
-          cache: columnStyle,
-          rowHeight
+          cache: columnStyle
+          // rowHeight
         });
 
         const cachedValue = getCellValue({
@@ -292,8 +297,8 @@ const DGContent = React.memo(
             style: getOrSetRowStyle({
               index: i,
               record: row,
-              rowHeight,
               rowStyle: getRowDatumStyle
+              // rowHeight,
             }),
             ...notDomRowProps
           },

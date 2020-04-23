@@ -25,7 +25,7 @@ const SvgMp4 = props => (
       letterSpacing=".05em"
       fill="#fff"
     >
-      {'.MP4'}
+      .MP4
     </text>
     <path
       className="mp4_svg__cls-3"

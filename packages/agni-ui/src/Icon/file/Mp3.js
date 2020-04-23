@@ -29,7 +29,7 @@ const SvgMp3 = props => (
       letterSpacing=".05em"
       fill="#fff"
     >
-      {'.MP3'}
+      .MP3
     </text>
     <path
       className="mp3_svg__cls-3"

@@ -56,7 +56,10 @@ export function useComponentSize(refProp) {
 
     resizeObserver.observe(element);
 
-    return () => resizeObserver.unobserve(element);
+    // eslint-disable-next-line consistent-return
+    return () => {
+      resizeObserver.unobserve(element);
+    };
   }, [ref]);
 
   return useMemo(() => [size, ref], [ref, size]);

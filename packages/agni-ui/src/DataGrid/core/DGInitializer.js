@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import React, { useLayoutEffect, useRef, Fragment, useEffect, useState } from 'react';
 import { get } from '../../_utils/get';
 import { Spinner } from '../../Spinner';
@@ -34,7 +35,7 @@ const DGInitializer = ({
   useLayoutEffect(() => {
     let totalWidth = 0;
 
-    for (let i = 0; i < columnRefs.current.length; i++) {
+    for (let i = 0; i < columnRefs.current.length; i += 1) {
       const sampleCell = columnRefs.current[i];
 
       if (!columnStyle[i]) columnStyle[i] = {};
@@ -59,7 +60,7 @@ const DGInitializer = ({
   // Provide extension width for each cells
   // through padding styling
   const sampleHeader = [];
-  for (let i = 0; i < columnFlat.length; i++) {
+  for (let i = 0; i < columnFlat.length; i += 1) {
     const col = columnFlat[i];
 
     let width;
@@ -80,10 +81,10 @@ const DGInitializer = ({
   }
 
   const sampleData = [];
-  for (let i = sampleStart; i < sampleEnd; i++) {
+  for (let i = sampleStart; i < sampleEnd; i += 1) {
     const datum = data[i];
     const cells = [];
-    for (let ii = 0; ii < columnFlat.length; ii++) {
+    for (let ii = 0; ii < columnFlat.length; ii += 1) {
       const col = columnFlat[ii];
 
       let value = get(datum, col.key) || null;

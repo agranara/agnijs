@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 /**
  * Thanks to 'material-ui' team
  *
@@ -52,7 +53,7 @@ function findIndexOf(containerInfo, callback) {
 function handleContainer(containerInfo, props) {
   const restoreStyle = [];
   const restorePaddings = [];
-  const container = containerInfo.container;
+  const { container } = containerInfo;
   let fixedNodes;
 
   if (!props.isScrollLockDisabled) {
@@ -135,6 +136,7 @@ class PopupManager {
 
     this.containers = [];
   }
+
   add(popup, container) {
     let popupIndex = this.popups.indexOf(popup);
     if (popupIndex !== -1) {

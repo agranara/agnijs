@@ -1,4 +1,4 @@
 {
-  "extends": ["react-app", "../../.eslintrc.json"],
+  "extends": ["../../.eslintrc.json"],
   "ignorePatterns": ["rollup.config.js"]
 }

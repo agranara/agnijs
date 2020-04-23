@@ -21,9 +21,9 @@ const Menu = forwardRef(({ as: Comp = 'div', children, isActive }, forwardedRef)
 
   const getIsOutside = useCallback(
     target => {
-      for (let i = 0; i < refs.length; i++) {
+      for (let i = 0; i < refs.length; i += 1) {
         const ref = refs[i];
-        if (ref && ref.current && ref.current.contains(target)) return;
+        if (ref && ref.current && ref.current.contains(target)) return false;
       }
 
       return true;

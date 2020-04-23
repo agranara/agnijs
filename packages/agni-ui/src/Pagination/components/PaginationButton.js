@@ -58,7 +58,7 @@ const PaginationButton = () => {
   const { page, totalPage, updatePage } = usePaginationContext();
 
   const buttons = [];
-  for (let index = 0; index < totalPage; index++) {
+  for (let index = 0; index < totalPage; index += 1) {
     if (isWithinRange({ page, index, totalPage })) {
       buttons.push(
         createElement(

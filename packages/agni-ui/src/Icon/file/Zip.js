@@ -25,7 +25,7 @@ const SvgZip = props => (
       fontWeight={700}
       letterSpacing=".05em"
     >
-      {'.ZIP'}
+      .ZIP
     </text>
     <path
       className="zip_svg__cls-3"

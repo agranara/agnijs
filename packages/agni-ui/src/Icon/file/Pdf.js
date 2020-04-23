@@ -25,7 +25,7 @@ const SvgPdf = props => (
       letterSpacing=".05em"
       fill="#fff"
     >
-      {'.PDF'}
+      .PDF
     </text>
     <path
       className="pdf_svg__cls-3"

@@ -2,6 +2,7 @@ import { useState, useLayoutEffect, useEffect } from 'react';
 
 let serverHandoffComplete = false;
 let autoIdCounter = 0;
+// eslint-disable-next-line no-plusplus
 const increaseId = () => ++autoIdCounter;
 
 /**

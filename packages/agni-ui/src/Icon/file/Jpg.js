@@ -29,9 +29,9 @@ const SvgJpg = props => (
       letterSpacing=".07em"
       fill="#fff"
     >
-      {'.'}
+      .
       <tspan x={40.1} y={0} letterSpacing=".05em">
-        {'JPG'}
+        JPG
       </tspan>
     </text>
     <path

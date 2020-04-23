@@ -140,18 +140,16 @@ const InputCheckboxGroup = ({
       } else {
         newValues = _values.filter(val => val !== value);
       }
+    } else if (checked) {
+      newValues = [value];
     } else {
-      if (checked) {
-        newValues = [value];
-      } else {
-        newValues = [];
-      }
+      newValues = [];
     }
 
     prevValues.current = newValues;
 
-    !isControlled && setValues(newValues);
-    onChange && onChange(newValues);
+    if (!isControlled) setValues(newValues);
+    if (onChange) onChange(newValues);
   };
 
   const validChildren = React.Children.toArray(children).filter(child =>
@@ -159,7 +157,7 @@ const InputCheckboxGroup = ({
   );
 
   const clones = React.Children.map(children, (child, index) => {
-    if (!React.isValidElement(child)) return;
+    if (!React.isValidElement(child)) return null;
 
     const isLastCheckbox = validChildren.length === index + 1;
     const spacingProps = isInline ? { mr: spacing } : { mb: spacing };

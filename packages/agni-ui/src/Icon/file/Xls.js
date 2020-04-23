@@ -28,7 +28,7 @@ const SvgXls = props => (
       letterSpacing=".05em"
       fill="#fff"
     >
-      {'.XLS'}
+      .XLS
     </text>
     <path
       className="xls_svg__cls-4"
