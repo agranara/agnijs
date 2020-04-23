@@ -155,7 +155,7 @@ const weekView = {
         #
       </PseudoBox>
     );
-    for (let j = 0; j < 7; j++) {
+    for (let j = 0; j < 7; j += 1) {
       const weekName = val.add(j, 'day').format('dd');
       headerWeeks.push(
         <PseudoBox w={30} lineHeight="30px" key={j}>
@@ -179,7 +179,7 @@ const weekView = {
         {val.week()}
       </PseudoBox>
     );
-    for (let j = 0; j < 7; j++) {
+    for (let j = 0; j < 7; j += 1) {
       const day = val.add(j, 'day');
       const dayName = day.format('DD');
       const isSame = day.isSame(compareVal, 'month');
@@ -203,8 +203,8 @@ const weekView = {
 
   sameCellSelector: (val, compareVal) => val.isSame(compareVal, 'week'),
   sameViewSelector: (val, compareVal) => val.isSame(compareVal, 'month'),
-  sameCursorSelector: (val, compareVal) => val.isSame(compareVal, 'day'),
-  sameCurrentSelector: (val, compareVal) => val.isSame(compareVal, 'day')
+  sameCursorSelector: (val, compareVal) => val.isSame(compareVal, 'week'),
+  sameCurrentSelector: (val, compareVal) => val.isSame(compareVal, 'week')
 };
 
 export const viewMode = {

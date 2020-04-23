@@ -63,7 +63,8 @@ const PickerBodyDay = ({ viewConfig, startRow, weekIndex, dayIndex, today }) => 
     mx: 1,
     verticalAlign: 'middle',
     ...(isHighlighted && highlightStyle),
-    'aria-disabled': isDisabled
+    'aria-disabled': isDisabled,
+    'data-same-cursor': isSameCursor
   };
 
   const cellFormattedDate = viewConfig.cellFormat(day, focusValue);

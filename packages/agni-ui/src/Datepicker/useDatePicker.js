@@ -1,4 +1,4 @@
-import { useState, useRef, useMemo } from 'react';
+import { useState, useRef, useMemo, useEffect, useCallback } from 'react';
 import dayjs from 'dayjs';
 import 'dayjs/locale/id';
 import weekOfYear from 'dayjs/plugin/weekOfYear';
@@ -67,20 +67,23 @@ const useDatePicker = ({
   const dropdownRef = useRef(null);
   const inputRef = useRef(null);
 
-  const getParsed = val => {
-    if (customParser) {
-      return customParser(parser, val);
-    }
+  const getParsed = useCallback(
+    val => {
+      if (customParser) {
+        return customParser(parser, val);
+      }
 
-    if (mode === 'week' && typeof val === 'string' && val) {
-      const splitted = val.split('-');
-      const year = splitted[0];
-      const week = splitted[1];
-      return parser(year, 'YYYY').week(week);
-    }
+      if (mode === 'week' && typeof val === 'string' && val) {
+        const splitted = val.split('-');
+        const year = splitted[0];
+        const week = splitted[1];
+        return parser(year, 'YYYY').week(week);
+      }
 
-    return parser(val, valueFormat);
-  };
+      return parser(val, valueFormat);
+    },
+    [customParser, mode, parser, valueFormat]
+  );
 
   const [valueState, setValue] = useState(() => {
     if (isControlled) {
@@ -92,7 +95,6 @@ const useDatePicker = ({
   // When controlled, check value prop, when present, format to dayjs
   // else use undefined as intended
   const value = isControlled ? (valueProp ? getParsed(valueProp) : undefined) : valueState;
-
   const prevNextValue = useRef(valueProp);
 
   const [focusValue, setFocusValue] = useState(() => {
@@ -102,6 +104,15 @@ const useDatePicker = ({
 
     return parser();
   });
+
+  useEffect(() => {
+    if (prevNextValue.current !== valueProp) {
+      prevNextValue.current = valueProp;
+      const isValidDate = !isNullOrEmpty(valueProp);
+      setValue(isValidDate ? getParsed(valueProp) : undefined);
+      setFocusValue(isValidDate ? getParsed(valueProp) : parser());
+    }
+  }, [getParsed, parser, valueProp]);
 
   const [isOpen, handleIsOpen] = useTogglePositioner({
     refs: [dropdownRef, inputRef],
@@ -116,19 +127,42 @@ const useDatePicker = ({
   const updateValue = (nextValue, shouldClose = true) => {
     if (prevNextValue.current === nextValue) return;
 
-    const converted = nextValue ? nextValue.format(valueFormat) : nextValue;
+    const isValidDate = !isNullOrEmpty(nextValue);
+    const converted = isValidDate ? nextValue.format(valueFormat) : nextValue;
 
     if (!isControlled) setValue(nextValue);
     if (onChange) onChange(converted);
 
-    setFocusValue(nextValue ? nextValue : parser());
+    setFocusValue(isValidDate ? nextValue : parser());
 
     prevNextValue.current = nextValue;
 
-    if (closeOnSelect && isOpen && !isNullOrEmpty(nextValue) && shouldClose) {
+    if (closeOnSelect && isOpen && isValidDate && shouldClose) {
       handleIsOpen(false);
       inputRef.current.blur();
     }
+  };
+
+  const updateFocus = (increment, isVertically) => {
+    let usedIncrement = increment;
+    let unit = isVertically ? 'week' : 'day';
+    switch (mode) {
+      case 'year':
+        unit = 'year';
+        usedIncrement = isVertically ? 3 * increment : increment;
+        break;
+      case 'month':
+        unit = 'month';
+        usedIncrement = isVertically ? 3 * increment : increment;
+        break;
+      case 'week':
+        unit = 'week';
+        usedIncrement = increment;
+        break;
+      default:
+        break;
+    }
+    setFocusValue(oldFocus => oldFocus.add(usedIncrement, unit));
   };
 
   const handleChange = nextValue => {
@@ -168,16 +202,16 @@ const useDatePicker = ({
     }
 
     if (isArrowUp) {
-      setFocusValue(oldFocus => oldFocus.subtract(1, 'week'));
+      updateFocus(-1, true);
     }
     if (isArrowDown) {
-      setFocusValue(oldFocus => oldFocus.add(1, 'week'));
+      updateFocus(1, true);
     }
     if (isArrowLeft) {
-      setFocusValue(oldFocus => oldFocus.subtract(1, 'day'));
+      updateFocus(-1, false);
     }
     if (isArrowRight) {
-      setFocusValue(oldFocus => oldFocus.add(1, 'day'));
+      updateFocus(1, false);
     }
     if (isEnter) {
       updateValue(focusValue);
