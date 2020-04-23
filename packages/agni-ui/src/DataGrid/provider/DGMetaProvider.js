@@ -1,4 +1,5 @@
 import React, { useRef, useState, useMemo, useEffect } from 'react';
+import isEqual from 'fast-deep-equal/es6/react';
 import { DGMetaContext } from '../context/DGMetaContext';
 import { useAutoId } from '../../_hooks/useAutoId';
 import { useComponentSize } from '../../_hooks/useComponentSize';
@@ -15,7 +16,7 @@ const initialMeta = {
 const DGMetaProvider = ({
   children,
   isHeadless,
-  columns,
+  columns: columnProps,
   data,
   height,
   heightByItem,
@@ -30,7 +31,11 @@ const DGMetaProvider = ({
   const uid = useAutoId();
 
   const cachedContainerHeight = useRef(0);
+
   const prevLoading = useRef(isLoading);
+
+  const [columns, setColumns] = useState(() => columnProps);
+  const prevColumns = useRef(columnProps);
 
   const columnStyleRef = useRef({});
 
@@ -54,6 +59,17 @@ const DGMetaProvider = ({
       }));
     }
   }, [isLoading]);
+
+  useEffect(() => {
+    if (!isEqual(columnProps, prevColumns.current)) {
+      setMeta(oldMeta => ({
+        ...oldMeta,
+        ...initialMeta
+      }));
+      setColumns(columnProps);
+      prevColumns.current = columnProps;
+    }
+  }, [columnProps]);
 
   const getContainerHeight = () => {
     if (height) return height;

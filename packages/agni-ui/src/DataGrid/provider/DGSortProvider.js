@@ -1,4 +1,5 @@
-import React, { useRef, useState, useCallback } from 'react';
+import React, { useRef, useState, useCallback, useEffect } from 'react';
+import isEqual from 'fast-deep-equal/es6/react';
 import { DGSortContext } from '../context/DGSortContext';
 import { SORT_ASC, SORT_DESC } from '../constant';
 
@@ -11,10 +12,20 @@ const DGSortProvider = ({
   const isControlledRef = useRef(sortKeyProp && sortOrderProp);
   const [orderState, setOrder] = useState(() => {
     return {
-      sortKey: sortKeyProp || undefined,
-      sortOrder: sortOrderProp || undefined
+      sortKey: sortKeyProp,
+      sortOrder: sortOrderProp
     };
   });
+
+  const prevSort = useRef({ sortKey: sortKeyProp, sortOrder: sortOrderProp });
+
+  useEffect(() => {
+    const sort = { sortKey: sortKeyProp, sortOrder: sortOrderProp };
+    if (!isEqual(prevSort.current, sort)) {
+      prevSort.current = sort;
+      setOrder(sort);
+    }
+  }, [sortKeyProp, sortOrderProp]);
 
   const handleSort = useCallback(
     (columnSortKey, currentSortKey, currentSortOrder) => {
