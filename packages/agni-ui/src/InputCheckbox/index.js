@@ -1,5 +1,6 @@
 import React, { forwardRef, useRef, useEffect, useState } from 'react';
 import cn from 'classnames';
+import isEqual from 'fast-deep-equal/es6/react';
 import { FiCheck, FiMinus } from 'react-icons/fi';
 import { useForkedRef, useAutoId } from '../_hooks';
 import { Box } from '../Box';
@@ -121,14 +122,33 @@ const InputCheckboxGroup = ({
   const { current: isControlled } = useRef(valueProp != null);
   const _values = isControlled ? valueProp : values;
 
+  const prevValues = useRef(valueProp);
+
+  useEffect(() => {
+    if (!isEqual(prevValues.current, valueProp)) {
+      prevValues.current = valueProp;
+      setValues(valueProp);
+    }
+  }, [valueProp]);
+
   const _onChange = event => {
     const { checked, value } = event.target;
     let newValues;
-    if (checked) {
-      newValues = [..._values, value];
+    if (Array.isArray(_values)) {
+      if (checked) {
+        newValues = [..._values, value];
+      } else {
+        newValues = _values.filter(val => val !== value);
+      }
     } else {
-      newValues = _values.filter(val => val !== value);
+      if (checked) {
+        newValues = [value];
+      } else {
+        newValues = [];
+      }
     }
+
+    prevValues.current = newValues;
 
     !isControlled && setValues(newValues);
     onChange && onChange(newValues);
@@ -155,7 +175,7 @@ const InputCheckboxGroup = ({
           variantColor: child.props.variantColor || variantColor,
           name: `${_name}[${index}]`,
           onChange: _onChange,
-          isChecked: _values.includes(child.props.value)
+          isChecked: Array.isArray(_values) ? _values.includes(child.props.value) : false
         })}
       </Box>
     );
