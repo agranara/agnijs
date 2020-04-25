@@ -163,10 +163,11 @@ const useNumberInput = ({
       if (keepWithinRange) {
         nextValue = Math.max(Math.min(nextValue, max), min);
       }
-      const actualValue = toActualValue(toDisplayValue(nextValue), true);
+
+      nextValue = isValid(nextValue) ? nextValue : null;
       return {
-        value: actualValue,
-        inputValue: toDisplayValue(actualValue)
+        value: nextValue,
+        inputValue: toDisplayValue(nextValue)
       };
     }
     return {
@@ -177,11 +178,11 @@ const useNumberInput = ({
 
   useEffect(() => {
     if (prevNumberValue.current !== valueProp) {
+      // Since valueProp should be a numeric value, pass directly
       setValue(() => {
-        const newValue = toActualValue(valueProp);
         return {
-          value: newValue,
-          inputValue: toDisplayValue(newValue)
+          value: valueProp,
+          inputValue: toDisplayValue(valueProp)
         };
       });
     }
