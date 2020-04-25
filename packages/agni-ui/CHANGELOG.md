@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.29](https://github.com/agranara/agnijs/compare/@agnijs/agni-ui@1.1.28...@agnijs/agni-ui@1.1.29) (2020-04-25)
+
+### Bug Fixes
+
+- **inputnumber:** fix value not updated properly when view "," decimal ([74153dd](https://github.com/agranara/agnijs/commit/74153dd020d88400336c6d064895cba70a2a8709))
+
 ## [1.1.28](https://github.com/agranara/agnijs/compare/@agnijs/agni-ui@1.1.27...@agnijs/agni-ui@1.1.28) (2020-04-23)
 
 ### Bug Fixes
