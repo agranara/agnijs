@@ -27,21 +27,11 @@ const Pagination = ({
   perPageOptionLabel,
   perPageOptionValue
 }) => {
-  const controlledPageRef = useRef(!isValid(pageProp));
-  const controlledPerPageRef = useRef(!isValid(perPageProp));
+  const controlledPageRef = useRef(isValid(pageProp));
+  const controlledPerPageRef = useRef(isValid(perPageProp));
 
   const { current: isControlledPage } = controlledPageRef;
   const { current: isControlledPerPage } = controlledPerPageRef;
-
-  const prevPageRef = useRef();
-  useEffect(() => {
-    prevPageRef.current = pageProp;
-  }, [pageProp]);
-
-  const prevPerPageRef = useRef();
-  useEffect(() => {
-    prevPerPageRef.current = perPageProp;
-  }, [perPageProp]);
 
   const [state, setState] = useState(() => {
     const page = pageProp || defaultPage;
@@ -53,9 +43,25 @@ const Pagination = ({
     };
   });
 
+  const prevPageRef = useRef(pageProp);
+  useEffect(() => {
+    if (prevPageRef.current !== pageProp) {
+      prevPageRef.current = pageProp;
+      setState(old => ({ ...old, page: pageProp }));
+    }
+  }, [pageProp]);
+
+  const prevPerPageRef = useRef(perPageProp);
+  useEffect(() => {
+    if (prevPerPageRef.current !== perPageProp) {
+      prevPerPageRef.current = perPageProp;
+      setState(old => ({ ...old, perPage: perPageProp }));
+    }
+  }, [perPageProp]);
+
   const page = isControlledPage ? pageProp : state.page;
   const perPage = isControlledPerPage ? perPageProp : state.perPage;
-  const totalPage = Math.ceil(totalData / perPage);
+  const totalPage = Math.ceil(totalData / perPage) || 1;
   const itemSize = sizes[size];
 
   const updatePage = useCallback(
