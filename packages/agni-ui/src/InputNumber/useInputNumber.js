@@ -379,6 +379,7 @@ const useNumberInput = ({
     if (isKeyboardKey(event, 'ArrowRight')) return true;
     if (isKeyboardKey(event, 'Delete')) return true;
     if (isKeyboardKey(event, 'Backspace')) return true;
+    if (event.ctrlKey) return true;
     if (
       charCode > 31 &&
       (charCode < 48 || charCode > 57) &&
@@ -434,11 +435,6 @@ const useNumberInput = ({
       if (max != null) {
         updateValue(toDisplayValue(min));
       }
-    }
-
-    // On ctrl+A
-    if (event.keyCode === 65 && event.ctrlKey) {
-      event.target.select();
     }
 
     // on backspace
