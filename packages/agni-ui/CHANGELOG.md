@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.30](https://github.com/agranara/agnijs/compare/@agnijs/agni-ui@1.1.29...@agnijs/agni-ui@1.1.30) (2020-04-30)
+
+### Bug Fixes
+
+- **datagrid:** set sortkey to false for preventing sort column ([421580e](https://github.com/agranara/agnijs/commit/421580e709e18e5ee98c7fc661e4124d98a70e1f)), closes [#8](https://github.com/agranara/agnijs/issues/8)
+- **datagrid:** update type definition for sortkey ([0cdc8eb](https://github.com/agranara/agnijs/commit/0cdc8eb693429a53a7b208fd8b9d1b8bbcd1c7c3))
+- **inputnumber:** allow ctrl key on keydown handler ([94f1044](https://github.com/agranara/agnijs/commit/94f10444f87c8de554166a88eb8ac2bbd75cf364)), closes [#6](https://github.com/agranara/agnijs/issues/6)
+- **pagination:** fix pagination page and perpage prop sync ([baf7c32](https://github.com/agranara/agnijs/commit/baf7c32532adba5c0655f51a122f6e038c58c0b3)), closes [#7](https://github.com/agranara/agnijs/issues/7)
+
 ## [1.1.29](https://github.com/agranara/agnijs/compare/@agnijs/agni-ui@1.1.28...@agnijs/agni-ui@1.1.29) (2020-04-25)
 
 ### Bug Fixes
