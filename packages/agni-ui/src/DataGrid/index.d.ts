@@ -148,8 +148,9 @@ type DataGridProps = {
   getRowDatumStyle?: (prop: RowDatumStyleType) => React.CSSProperties;
   /**
    * Sort key based on provided columns
+   * if sortKey set to `false` sort will be disabled for this column
    */
-  sortKey?: string;
+  sortKey?: string | boolean;
   /**
    * Sort order. For rendering icon up or down inside
    */
