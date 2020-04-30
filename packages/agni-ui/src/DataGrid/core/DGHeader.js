@@ -1,4 +1,5 @@
 import React, { useRef, useCallback } from 'react';
+import cn from 'classnames';
 import { useForkedRef } from '../../_hooks/useForkedRef';
 import { isKeyboardKey } from '../../keyboard';
 import { useDGScrollContext } from '../context/DGScrollContext';
@@ -18,7 +19,7 @@ const DGHeader = React.memo(
     rowHeight,
     scrollbarSize
   }) => {
-    const ref = useRef();
+    const ref = useRef(null);
 
     const { left, headerRef } = useDGScrollContext();
     const { sortKey, sortOrder, handleSort } = useDGSortContext();
@@ -26,17 +27,17 @@ const DGHeader = React.memo(
     const forkedRef = useForkedRef(ref, headerRef);
 
     const handleClickColumn = useCallback(
-      ev => {
-        const colSortKey = ev.currentTarget.dataset ? ev.currentTarget.dataset.sortkey : undefined;
-        handleSort(colSortKey, sortKey, sortOrder);
+      (ev, colSortKey) => {
+        if (colSortKey) {
+          handleSort(colSortKey, sortKey, sortOrder);
+        }
       },
       [sortKey, sortOrder, handleSort]
     );
 
     const handleKeyDown = useCallback(
-      ev => {
-        const colSortKey = ev.currentTarget.dataset ? ev.currentTarget.dataset.sortkey : undefined;
-        if (isKeyboardKey(ev, 'Enter')) {
+      (ev, colSortKey) => {
+        if (isKeyboardKey(ev, 'Enter') && colSortKey) {
           handleSort(colSortKey, sortKey, sortOrder);
         }
         if (isKeyboardKey(ev, 'Tab')) {
@@ -63,6 +64,8 @@ const DGHeader = React.memo(
         if (!col.children) {
           flatCellIndex += 1;
         }
+
+        const colSortKey = typeof col.sortKey !== 'undefined' ? col.sortKey : col.key;
 
         renderedColumns.push(
           <div
@@ -96,18 +99,24 @@ const DGHeader = React.memo(
               <span
                 role="columnheader"
                 tabIndex={0}
-                className="datagrid__column datagrid__column-bg datagrid__column-value"
+                className={cn([
+                  'datagrid__column',
+                  'datagrid__column-bg',
+                  'datagrid__column-value',
+                  !colSortKey && 'datagrid__column-disablesort'
+                ])}
+                title={colSortKey ? 'Click to sort' : undefined}
                 style={{
                   ...col.headerCellStyle,
                   width: colWidth,
                   height: curDepth * rowHeight,
                   zIndex: col.freezeLeft ? 2 : undefined
                 }}
-                onClick={handleClickColumn}
-                onKeyDown={handleKeyDown}
-                data-sortkey={col.sortKey ? col.sortKey : col.key}
+                onClick={ev => handleClickColumn(ev, colSortKey)}
+                onKeyDown={ev => handleKeyDown(ev, colSortKey)}
+                data-sortkey={colSortKey}
                 aria-sort={
-                  sortKey === col.key && sortOrder
+                  sortKey === colSortKey && sortOrder
                     ? sortOrder === 'asc'
                       ? 'ascending'
                       : 'descending'
@@ -115,7 +124,7 @@ const DGHeader = React.memo(
                 }
               >
                 {col.label}
-                {sortKey === col.key && sortOrder && <DGSortHandler sortOrder={sortOrder} />}
+                {sortKey === colSortKey && sortOrder && <DGSortHandler sortOrder={sortOrder} />}
               </span>
             )}
           </div>

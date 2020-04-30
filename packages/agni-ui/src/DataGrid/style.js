@@ -84,6 +84,11 @@ const dataGridStyle = css`
     font-size: 12px;
     font-weight: 600;
     cursor: pointer;
+    outline: none;
+  }
+
+  & .datagrid__column-disablesort {
+    cursor: auto;
   }
 
   & .datagrid__initializer {
