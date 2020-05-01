@@ -12,6 +12,7 @@ const MenuTrigger = ({
   css: cssProp,
   showCaret = true,
   children,
+  caretProps,
   ...prop
 }) => {
   const {
@@ -43,7 +44,7 @@ const MenuTrigger = ({
           position: 'relative',
           display: 'inline-flex',
           alignItems: 'center',
-          paddingRight: showCaret ? 28 : 12,
+          paddingRight: showCaret ? 28 : 8,
           paddingLeft: 8,
           paddingTop: 4,
           paddingBottom: 4,
@@ -74,6 +75,7 @@ const MenuTrigger = ({
           transform="translateY(-50%)"
           fontSize="1rem"
           lineHeight="1"
+          {...caretProps}
         >
           <FiChevronDown
             css={css({

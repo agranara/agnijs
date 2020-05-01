@@ -2,7 +2,7 @@ import React from 'react';
 import { Positioner } from '../../Positioner';
 import { useMenuContext } from '../MenuContext';
 
-const MenuList = ({ as: Comp = 'div', children }) => {
+const MenuList = ({ as: Comp = 'div', children, ...rest }) => {
   const { triggerRef, innerRef, menuUid, triggerUid, isOpen } = useMenuContext();
 
   return (
@@ -18,6 +18,7 @@ const MenuList = ({ as: Comp = 'div', children }) => {
       tabIndex={-1}
       zIndex="dropdown"
       _focus={{ outline: 0 }}
+      {...rest}
     >
       {children}
     </Positioner>

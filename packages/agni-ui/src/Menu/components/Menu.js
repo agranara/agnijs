@@ -3,8 +3,9 @@ import { useForkedRef } from '../../_hooks/useForkedRef';
 import { MenuContext } from '../MenuContext';
 import { useTogglePositioner } from '../../Positioner';
 import { useAutoId } from '../../_hooks/useAutoId';
+import { PseudoBox } from '../../PseudoBox';
 
-const Menu = forwardRef(({ as: Comp = 'div', children, isActive }, forwardedRef) => {
+const Menu = forwardRef(({ as: Comp = 'div', children, isActive, ...rest }, forwardedRef) => {
   const uid = useAutoId();
   const menuUid = `menu-${uid}`;
   const triggerUid = `menutrigger-${uid}`;
@@ -57,9 +58,9 @@ const Menu = forwardRef(({ as: Comp = 'div', children, isActive }, forwardedRef)
         isActive
       }}
     >
-      <Comp ref={forkedRef} className="menu">
+      <PseudoBox as={Comp} ref={forkedRef} className="menu" {...rest}>
         {children}
-      </Comp>
+      </PseudoBox>
     </MenuContext.Provider>
   );
 });

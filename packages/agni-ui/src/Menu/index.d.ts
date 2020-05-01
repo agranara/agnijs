@@ -1,5 +1,6 @@
 import { CSSObject } from '@emotion/core';
 import { PseudoBoxProps } from '../PseudoBox';
+import { PositionerProps } from '../Positioner';
 
 interface IMenuProps {
   isActive?: boolean;
@@ -8,6 +9,7 @@ interface IMenuProps {
 interface IMenuTriggerProps {
   css?: CSSObject;
   showCaret?: boolean;
+  caretProps?: PseudoBoxProps;
 }
 
 interface IMenuItemProps {
@@ -16,11 +18,12 @@ interface IMenuItemProps {
   iconRight?: React.ReactNode;
   isDivider?: boolean;
   isHeader?: boolean;
+  className?: string;
 }
 
 type MenuProps = IMenuProps & PseudoBoxProps;
 type MenuTriggerProps = IMenuTriggerProps & PseudoBoxProps;
-type MenuListProps = PseudoBoxProps;
+type MenuListProps = PositionerProps;
 type MenuItemProps = IMenuItemProps;
 
 export const Menu: React.FC<MenuProps>;
