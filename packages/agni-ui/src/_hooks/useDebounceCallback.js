@@ -1,47 +1,85 @@
+/* eslint-disable prefer-destructuring */
 import { useRef, useCallback, useEffect } from 'react';
 
-/**
- * Thanks to umijs/hooks
- *
- * Original source:
- * https://github.com/umijs/hooks/blob/master/packages/hooks/src/useDebounceFn/index.ts
- */
-export function useDebounceCallback({ callback, delay, deps }) {
-  const _deps = Array.isArray(deps) ? deps : [];
-  const _wait = typeof deps === 'number' ? deps : delay || 0;
-  const timer = useRef();
+export function useDebounceCallback({ callback, delay, options = {} }) {
+  const maxWait = options.maxWait;
+  const maxWaitHandler = useRef(null);
+  const maxWaitArgs = useRef([]);
 
-  const fnRef = useRef(callback);
+  const leading = options.leading;
+  const trailing = options.trailing === undefined ? true : options.trailing;
+  const leadingCall = useRef(false);
 
-  // Remember the latest callback.
-  useEffect(() => {
-    fnRef.current = callback;
-  }, [callback]);
+  const functionTimeoutHandler = useRef(null);
+  const isComponentUnmounted = useRef(false);
 
-  const cancel = useCallback(() => {
-    if (timer.current) {
-      clearTimeout(timer.current);
-    }
+  const debouncedFunction = useRef(callback);
+  debouncedFunction.current = callback;
+
+  const cancelDebouncedCallback = useCallback(() => {
+    clearTimeout(functionTimeoutHandler.current);
+    clearTimeout(maxWaitHandler.current);
+    maxWaitHandler.current = null;
+    maxWaitArgs.current = [];
+    functionTimeoutHandler.current = null;
+    leadingCall.current = false;
   }, []);
 
-  const run = useCallback(
-    (...args) => {
-      cancel();
-      timer.current = setTimeout(() => {
-        fnRef.current(...args);
-      }, _wait);
+  useEffect(
+    () => () => {
+      // we use flag, as we allow to call callPending outside the hook
+      isComponentUnmounted.current = true;
     },
-    [_wait, cancel]
+    []
   );
 
-  useEffect(() => {
-    run();
-    return cancel;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [..._deps, run, cancel]);
+  const debouncedCallback = useCallback(
+    (...args) => {
+      maxWaitArgs.current = args;
+      clearTimeout(functionTimeoutHandler.current);
+      if (leadingCall.current) {
+        leadingCall.current = false;
+      }
+      if (!functionTimeoutHandler.current && leading && !leadingCall.current) {
+        debouncedFunction.current(...args);
+        leadingCall.current = true;
+      }
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => cancel, []);
+      functionTimeoutHandler.current = setTimeout(() => {
+        let shouldCallFunction = true;
+        if (leading && leadingCall.current) {
+          shouldCallFunction = false;
+        }
+        cancelDebouncedCallback();
 
-  return [run, cancel];
+        if (!isComponentUnmounted.current && trailing && shouldCallFunction) {
+          debouncedFunction.current(...args);
+        }
+      }, delay);
+
+      if (maxWait && !maxWaitHandler.current && trailing) {
+        maxWaitHandler.current = setTimeout(() => {
+          const maxWaitArg = maxWaitArgs.current;
+          cancelDebouncedCallback();
+
+          if (!isComponentUnmounted.current) {
+            debouncedFunction.current.apply(null, maxWaitArg);
+          }
+        }, maxWait);
+      }
+    },
+    [maxWait, delay, cancelDebouncedCallback, leading, trailing]
+  );
+
+  const callPending = useCallback(() => {
+    // Call pending callback only if we have anything in our queue
+    if (!functionTimeoutHandler.current) {
+      return;
+    }
+
+    debouncedFunction.current.apply(null, maxWaitArgs.current);
+    cancelDebouncedCallback();
+  }, [cancelDebouncedCallback]);
+
+  return [debouncedCallback, cancelDebouncedCallback, callPending];
 }
