@@ -1,13 +1,27 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core';
-import { useRef, Fragment, Children, cloneElement } from 'react';
+import { useRef, Fragment, Children, cloneElement, useEffect } from 'react';
+import cn from 'classnames';
 
 import { Positioner, useTogglePositioner } from '../Positioner';
 import { PseudoBox } from '../PseudoBox';
 import { useDebounceCallback } from '../_hooks/useDebounceCallback';
 import { useUiTheme } from '../UiProvider/hooks/useUiTheme';
 
-const Popover = ({ children, content, title, placement = 'bottom', isTooltip, ...restProps }) => {
+const Popover = ({
+  children,
+  className,
+  containerProps,
+  content,
+  contentProps,
+  title,
+  titleProps,
+  placement = 'bottom',
+  delayOpen = 300,
+  delayClose = 50,
+  isTooltip,
+  ...restProps
+}) => {
   const theme = useUiTheme();
   const triggerRef = useRef(null);
   const innerRef = useRef(null);
@@ -17,12 +31,25 @@ const Popover = ({ children, content, title, placement = 'bottom', isTooltip, ..
     initialOpen: false
   });
 
-  const [debounceHover, cancelDebounce] = useDebounceCallback({
-    callback: newOpen => {
-      handleIsOpen(newOpen);
+  const [debounceOpen, cancelDebounceOpen] = useDebounceCallback({
+    callback: () => {
+      handleIsOpen(true);
     },
-    delay: 50
+    delay: delayOpen
   });
+  const [debounceClose, cancelDebounceClose] = useDebounceCallback({
+    callback: () => {
+      handleIsOpen(false);
+    },
+    delay: delayClose
+  });
+
+  useEffect(() => {
+    return () => {
+      cancelDebounceClose();
+      cancelDebounceOpen();
+    };
+  }, [cancelDebounceClose, cancelDebounceOpen]);
 
   const handleClick = () => {
     if (!isTooltip) {
@@ -32,14 +59,17 @@ const Popover = ({ children, content, title, placement = 'bottom', isTooltip, ..
 
   const handleMouseEnter = () => {
     if (isTooltip) {
-      cancelDebounce();
-      handleIsOpen(true);
+      cancelDebounceOpen();
+      cancelDebounceClose();
+      debounceOpen();
     }
   };
 
   const handleMouseLeave = () => {
     if (isTooltip) {
-      debounceHover(false);
+      cancelDebounceClose();
+      cancelDebounceOpen();
+      debounceClose();
     }
   };
 
@@ -64,6 +94,7 @@ const Popover = ({ children, content, title, placement = 'bottom', isTooltip, ..
   const tooltipProps = {
     bg: 'gray.700',
     color: 'whiteAlpha.900',
+    borderColor: 'gray.700',
     arrowBackground: theme.colors.gray['700']
   };
 
@@ -83,9 +114,10 @@ const Popover = ({ children, content, title, placement = 'bottom', isTooltip, ..
         {...restProps}
       >
         <PseudoBox
-          className="content"
+          className={cn('popover__content', className)}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
+          {...containerProps}
         >
           {title && (
             <PseudoBox
@@ -94,11 +126,12 @@ const Popover = ({ children, content, title, placement = 'bottom', isTooltip, ..
               px={4}
               borderBottomWidth={1}
               fontWeight="medium"
+              {...titleProps}
             >
               {title}
             </PseudoBox>
           )}
-          <PseudoBox className="popover__content__inner" py={2} px={4}>
+          <PseudoBox className="popover__content__inner" py={2} px={4} {...contentProps}>
             {content}
           </PseudoBox>
         </PseudoBox>
