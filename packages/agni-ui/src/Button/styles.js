@@ -126,12 +126,12 @@ export const sizes = {
     height: 7,
     minWidth: 7,
     fontSize: 'sm',
-    lineHeight: 'sm',
+    lineHeight: 1.25,
     px: 3
   },
   xs: {
-    height: 5,
-    minWidth: 5,
+    height: 6,
+    minWidth: 6,
     fontSize: 'xs',
     px: 2
   }
@@ -141,11 +141,11 @@ const sizeProps = ({ size }) => sizes[size];
 
 ////////////////////////////////////////////////////////////
 
-const focusProps = {
-  _focus: {
-    boxShadow: 'outline'
-  }
-};
+// const focusProps = {
+//   _focus: {
+//     boxShadow: 'outline'
+//   }
+// };
 
 ////////////////////////////////////////////////////////////
 
@@ -203,10 +203,20 @@ const useButtonStyle = props => {
   const theme = useUiTheme();
 
   const _props = { ...props, theme };
+
+  const usedColor =
+    _props && _props.color && theme && theme.colors && theme.colors[_props.color]
+      ? theme.colors[_props.color]
+      : {};
+
   return {
     ...baseProps,
     ...sizeProps(_props),
-    ...(_props.variant !== 'unstyled' && focusProps),
+    ...(_props.variant !== 'unstyled' && {
+      _focus: {
+        boxShadow: usedColor['200'] ? `0 0 0 3px ${usedColor['200']}` : 'outline'
+      }
+    }),
     ...disabledProps,
     ...variantProps(_props)
   };

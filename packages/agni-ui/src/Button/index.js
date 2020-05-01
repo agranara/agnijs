@@ -32,8 +32,13 @@ const Button = forwardRef(
     });
     const _isDisabled = isDisabled || isLoading;
 
+    const iconOnly = !isLoading && (iconLeft || iconRight) && !children && variant !== 'unstyled';
+
     const insertedProps = {
       ...buttonStyleProps,
+      ...(iconOnly && {
+        minW: 'auto'
+      }),
       ...rest,
       type: Comp === 'button' ? type : undefined
     };
@@ -53,7 +58,11 @@ const Button = forwardRef(
         {...insertedProps}
       >
         {iconLeft && !isLoading && (
-          <Box className="button__icon-left" mr={iconSpacing} d="inline-flex">
+          <Box
+            className="button__icon-left"
+            mr={children ? iconSpacing : undefined}
+            d="inline-flex"
+          >
             {iconLeft}
           </Box>
         )}
@@ -72,12 +81,16 @@ const Button = forwardRef(
             </Box>
           )
         ) : (
-          <Box as="span" className="button__content" lineHeight="none" alignSelf="center">
+          <Box as="span" className="button__content" alignSelf="center">
             {children}
           </Box>
         )}
         {iconRight && !isLoading && (
-          <Box className="button__icon-right" ml={iconSpacing} d="inline-flex">
+          <Box
+            className="button__icon-right"
+            ml={children ? iconSpacing : undefined}
+            d="inline-flex"
+          >
             {iconRight}
           </Box>
         )}
