@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { PseudoBox } from '../../PseudoBox';
 import { ToastPosition } from './ToastPosition';
 
-const ToastContainer = ({ toast }) => {
+const ToastContainer = ({ toast, hiddenId, placement: placementProps }) => {
+  const prevHidden = useRef(hiddenId);
   const [toasts, setToasts] = useState({
     'top-left': [],
     'top-center': [],
@@ -26,6 +27,17 @@ const ToastContainer = ({ toast }) => {
       });
     }
   }, [toast]);
+
+  useEffect(() => {
+    if (prevHidden.current !== hiddenId) {
+      setToasts(oldToasts => ({
+        ...oldToasts,
+        [placementProps]: Array.isArray(oldToasts[placementProps])
+          ? oldToasts[placementProps].filter(toastItem => toastItem.id !== hiddenId)
+          : []
+      }));
+    }
+  }, [hiddenId, placementProps]);
 
   const unregisterToast = useCallback((id, placement) => {
     setToasts(oldToasts => {

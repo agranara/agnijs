@@ -12,15 +12,22 @@ const variantIcon = {
 };
 
 const Alert = ({
-  variant = 'info',
-  title,
-  description,
-  icon,
-  closeable,
-  isOpen: isOpenProp = true,
   afterOpen,
   afterClose,
-  iconSize = '1.5rem'
+  animate,
+  closeable,
+  description,
+  descriptionProps,
+  exit,
+  icon,
+  iconProps,
+  iconSize = '1.5rem',
+  initial,
+  isOpen: isOpenProp = true,
+  title,
+  titleProps,
+  variant = 'info',
+  ...rest
 }) => {
   const [isOpen, setIsOpen] = useState(() => isOpenProp);
   const UsedIcon = icon || variantIcon[variant];
@@ -45,15 +52,22 @@ const Alert = ({
     <AnimatePresence initial={false}>
       {isOpen && (
         <BaseAlert
-          title={title}
-          description={description}
-          icon={<UsedIcon />}
-          withPresence
+          animate={animate}
           closeable={closeable}
+          description={description}
+          descriptionProps={descriptionProps}
+          exit={exit}
+          icon={<UsedIcon />}
+          iconProps={iconProps}
+          iconSize={iconSize}
+          initial={initial}
           onClose={handleClick}
           onAnimationComplete={handleAnimationEnd}
+          title={title}
+          titleProps={titleProps}
           variant={variant}
-          iconSize={iconSize}
+          withPresence
+          {...rest}
         />
       )}
     </AnimatePresence>

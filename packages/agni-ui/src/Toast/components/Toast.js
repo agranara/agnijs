@@ -16,8 +16,11 @@ const Toast = memo(
   ({
     id,
     title,
+    titleProps,
     description,
+    descriptionProps,
     icon,
+    iconProps,
     variant,
     duration,
     unregisterToast,
@@ -96,8 +99,11 @@ const Toast = memo(
         withPresence
         positionTransition
         title={title}
+        titleProps={titleProps}
         description={description}
+        descriptionProps={descriptionProps}
         icon={usedIcon}
+        iconProps={iconProps}
         closeable={closeable}
         onClose={handleClose}
         initial={isTop ? { ...alertInitial, y: -50 } : alertInitial}

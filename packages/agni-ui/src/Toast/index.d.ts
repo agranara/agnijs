@@ -1,12 +1,26 @@
+import { PseudoBoxProps } from '../PseudoBox';
+
 type ToastOptionsType = {
   /**
    * Toast header if present
    */
   title?: React.ReactNode;
   /**
+   * Title props
+   */
+  titleProps?: PseudoBoxProps;
+  /**
    * Custom icon
    */
   icon?: React.ReactNode;
+  /**
+   * Icon props
+   */
+  iconProps?: PseudoBoxProps;
+  /**
+   * Description props
+   */
+  descriptionProps?: PseudoBoxProps;
   /**
    * Toast duration in second. Default: 5
    */
@@ -50,14 +64,14 @@ type ToastOptionsType = {
   containerId?: string;
 };
 
-type ToastFunctionReturnType = Promise<void> & { hide?: () => void };
+type ToastFunctionReturnType = () => void;
 
 type ToastFunctionType = (
   description: string,
   options?: ToastOptionsType
 ) => ToastFunctionReturnType;
 
-export type ToastType = ToastFunctionType & {
+type ToastVariantType = {
   /** Toast variant primary */
   primary: ToastFunctionType;
   /** Toast variant info */
@@ -72,13 +86,6 @@ export type ToastType = ToastFunctionType & {
   loading: ToastFunctionType;
 };
 
-declare namespace toast {
-  const primary: ToastFunctionType;
-  const info: ToastFunctionType;
-  const success: ToastFunctionType;
-  const warning: ToastFunctionType;
-  const danger: ToastFunctionType;
-  const loading: ToastFunctionType;
-}
+export type ToastType = ToastFunctionType & ToastVariantType;
 
-export { toast };
+export const toast: ToastType;

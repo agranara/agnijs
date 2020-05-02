@@ -12,20 +12,23 @@ const alertExit = { opacity: 0, scale: 0.5, transition: { duration: 0.2 } };
 
 const BaseAlert = ({
   as: Comp = 'div',
+  animate = alertAnimate,
+  children,
+  closeable,
+  description,
+  descriptionProps,
+  exit = alertExit,
+  icon,
+  iconProps,
+  iconSize = '1rem',
+  initial = alertInitial,
+  onAnimationComplete,
+  onClose,
   positionTransition = false,
   title,
-  description,
-  icon,
-  closeable,
-  onClose,
-  initial = alertInitial,
-  animate = alertAnimate,
-  exit = alertExit,
-  withPresence = false,
-  onAnimationComplete,
+  titleProps,
   variant,
-  children,
-  iconSize = '1rem',
+  withPresence = false,
   ...restProps
 }) => {
   const iconColor = variant ? `${variant}.500` : 'black';
@@ -66,6 +69,7 @@ const BaseAlert = ({
                 mr={2}
                 fontSize={iconSize}
                 color={iconColor}
+                {...iconProps}
               >
                 {icon}
               </PseudoBox>
@@ -73,12 +77,12 @@ const BaseAlert = ({
             {(title || description) && (
               <PseudoBox className="alert__text-container">
                 {title && (
-                  <Heading className="alert__title" size="md" fontWeight="semibold">
+                  <Heading className="alert__title" size="md" fontWeight="semibold" {...titleProps}>
                     {title}
                   </Heading>
                 )}
                 {description && (
-                  <Text className="alert__description" fontSize="md">
+                  <Text className="alert__description" fontSize="md" {...descriptionProps}>
                     {description}
                   </Text>
                 )}

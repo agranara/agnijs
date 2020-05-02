@@ -37,26 +37,11 @@ const ToastPosition = ({ placement, vertical, horizontal, toasts, unregisterToas
       {...horizontalStyle[horizontal]}
     >
       <AnimatePresence initial={false}>
-        {toasts.map(toast => {
-          return (
-            <Toast
-              key={`${placement}_${toast.id}`}
-              id={toast.id}
-              title={toast.title}
-              description={toast.description}
-              icon={toast.icon}
-              variant={toast.variant}
-              onClick={toast.onClick}
-              onClose={toast.onClose}
-              duration={toast.duration}
-              closeable={toast.closeable}
-              unregisterToast={unregisterToast}
-              placement={placement}
-            >
-              {toast.children}
-            </Toast>
-          );
-        })}
+        {toasts.map(toast => (
+          <Toast key={toast.id} unregisterToast={unregisterToast} placement={placement} {...toast}>
+            {toast.children}
+          </Toast>
+        ))}
       </AnimatePresence>
     </PseudoBox>
   );

@@ -55,6 +55,26 @@ const toast = (description, options) => {
     </UiProvider>,
     rootToast
   );
+
+  const hide = () => {
+    ReactDOM.render(
+      <UiProvider theme={options && options.theme ? options.theme : uiTheme.getTheme()}>
+        <Global
+          styles={css`
+            #${containerId} {
+              display: flex;
+              flex-direction: column;
+              justify-content: space-between;
+            }
+          `}
+        />
+        <ToastContainer hiddenId={toastValue.id} placement={toastValue.placement} />
+      </UiProvider>,
+      rootToast
+    );
+  };
+
+  return hide;
 };
 
 toast.primary = (description, options) => toast(description, { ...options, variant: 'primary' });
