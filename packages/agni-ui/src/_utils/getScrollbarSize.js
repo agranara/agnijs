@@ -6,7 +6,7 @@
 
 import { canUseDOM } from 'exenv';
 
-let scrollbarSize;
+let scrollbarSize = 17;
 
 function getScrollbarSize(recalc) {
   if ((!scrollbarSize && scrollbarSize !== 0) || recalc) {

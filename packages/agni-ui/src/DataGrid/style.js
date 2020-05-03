@@ -14,7 +14,6 @@ const dataGridStyle = css`
   & .datagrid__header {
     display: block;
     width: 100%;
-    position: absolute;
     outline: 0;
     overflow: hidden;
   }
@@ -33,6 +32,18 @@ const dataGridStyle = css`
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
+  }
+
+  & .datagrid__header-column {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    text-align: center;
+    text-transform: uppercase;
+    white-space: nowrap;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    outline: none;
   }
 
   & .datagrid__header-scrolls {
@@ -87,6 +98,10 @@ const dataGridStyle = css`
     outline: none;
   }
 
+  & .datagrid__column-sorted {
+    background-image: linear-gradient(#f7fafc, #edf2f7);
+  }
+
   & .datagrid__column-disablesort {
     cursor: auto;
   }
@@ -109,13 +124,11 @@ const dataGridStyle = css`
   }
 
   & .datagrid__empty {
-    position: absolute;
     padding: 8px;
     text-align: center;
   }
 
   & .datagrid__content {
-    position: absolute;
     width: 100%;
     overflow: auto;
   }
@@ -134,7 +147,8 @@ const dataGridStyle = css`
 
   & .datagrid__row {
     background-color: white;
-    position: absolute;
+    display: flex;
+    flex-direction: row;
     width: 100%;
   }
 
@@ -142,14 +156,23 @@ const dataGridStyle = css`
     background-color: #edf2f7 !important;
   }
 
+  & .datagrid__sample-cell {
+    position: relative;
+    align-items: center;
+    background-color: inherit;
+    white-space: nowrap;
+    padding: 4px 0.75rem;
+    border-bottom-width: 1px;
+  }
+
   & .datagrid__cell {
-    position: absolute;
+    position: relative;
     display: inline-flex;
     align-items: center;
     background-color: inherit;
     white-space: nowrap;
     text-overflow: ellipsis;
-    padding: 4px 8px;
+    padding: 4px 12px;
     border-bottom-width: 1px;
     overflow: hidden;
   }
