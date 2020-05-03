@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.32](https://github.com/agranara/agnijs/compare/@agnijs/agni-ui@1.1.31...@agnijs/agni-ui@1.1.32) (2020-05-03)
+
+
+### Reverts
+
+* **datagrid:** revert changes for datagrid ([7fe77a2](https://github.com/agranara/agnijs/commit/7fe77a286a1ea125800f06027a8d620552d137b6))
+
+
+
+
+
 ## [1.1.31](https://github.com/agranara/agnijs/compare/@agnijs/agni-ui@1.1.30...@agnijs/agni-ui@1.1.31) (2020-05-03)
 
 
