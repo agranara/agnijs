@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.31](https://github.com/agranara/agnijs/compare/@agnijs/agni-ui@1.1.30...@agnijs/agni-ui@1.1.31) (2020-05-03)
+
+
+### Bug Fixes
+
+* **button:** enhance button style related ([63ab6bf](https://github.com/agranara/agnijs/commit/63ab6bfe392f06752cd1800684f611016b5ee6c0))
+* **datagrid:** flash when scroll datagrid component ([3c08cb6](https://github.com/agranara/agnijs/commit/3c08cb6cbaa79b50a47cb977b93a979dd9dc7cab))
+* **menu:** complete menu related component properties ([c697d0f](https://github.com/agranara/agnijs/commit/c697d0f8a14e5e3113cfb134ca8329af414ed6c1))
+* **popover:** added delay open close for tooltip type and style props ([5cdb8cf](https://github.com/agranara/agnijs/commit/5cdb8cf5529b1801a3a7b19283312a2ed1775f23))
+* **toast:** added style properties to customize toast ([70c4b7e](https://github.com/agranara/agnijs/commit/70c4b7e9ea89e2ca6ac176ddbdb2c8ad7cb77104))
+* **usedebounce:** fix usedebounce run on first render ([1e1c76f](https://github.com/agranara/agnijs/commit/1e1c76f2490914e8c93c0cd8d28fff9537db33dd))
+
+
+
+
+
+
 ## [1.1.30](https://github.com/agranara/agnijs/compare/@agnijs/agni-ui@1.1.29...@agnijs/agni-ui@1.1.30) (2020-04-30)
 
 ### Bug Fixes
