@@ -8,7 +8,7 @@ const SelectOptionItem = ({ index, style }) => {
   const { inputSize, isMulti, valueKey, labelKey, handleClickItem } = useSelectMetaContext();
   const { cursor, value, options } = useSelectContext();
 
-  const option = options[index];
+  const option = options && index && options[index] ? options[index] : {};
   const optionLabel = option[labelKey];
   const optionValue = option[valueKey];
 
