@@ -72,7 +72,7 @@ const FocusTrap = ({
 
     const loopFocus = event => {
       // 9 = Tab
-      if (!isEnforceFocus || !isEnabled() || event.keyCode !== 9) {
+      if (!isEnforceFocus || !isEnabled() || event.keyCode !== 9 || event.which !== 9) {
         return;
       }
 

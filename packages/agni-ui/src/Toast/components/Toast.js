@@ -74,7 +74,7 @@ const Toast = memo(
       tabIndex: 0,
       onClick,
       onKeyPress: ev => {
-        if (ev.keyCode === 13) {
+        if (ev.keyCode === 13 || ev.which === 13) {
           onClick(ev);
         }
       }

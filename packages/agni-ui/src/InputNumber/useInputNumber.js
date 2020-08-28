@@ -372,9 +372,11 @@ const useNumberInput = ({
 
   const isNumberKey = event => {
     const charCode = event.which ? event.which : event.keyCode;
+
+    // console.log(charCode);
     // if (event.key === thousandSeparator) return true;
     if (event.key === decimalSeparator) return true;
-    if (event.keyCode === 189) return true;
+    if (charCode === 189 || charCode === 173 || charCode === 109) return true;
     if (isKeyboardKey(event, 'ArrowLeft')) return true;
     if (isKeyboardKey(event, 'ArrowRight')) return true;
     if (isKeyboardKey(event, 'Delete')) return true;
@@ -438,7 +440,7 @@ const useNumberInput = ({
     }
 
     // on backspace
-    if (event.keyCode === 8 && isValidStr(cursor.current.cursorBefore)) {
+    if ((event.keyCode === 8 || event.which === 8) && isValidStr(cursor.current.cursorBefore)) {
       // Handle backspace for decimalSeparator
       const lastCharBeforeCursor =
         cursor.current.cursorBefore[cursor.current.cursorBefore.length - 1];
@@ -452,7 +454,7 @@ const useNumberInput = ({
 
     // On delete
     if (
-      event.keyCode === 46 &&
+      (event.keyCode === 46 || event.which === 46) &&
       isValidStr(cursor.current.cursorAfter) &&
       cursor.current.cursorAfter.length > 0
     ) {
