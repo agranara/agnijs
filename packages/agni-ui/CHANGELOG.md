@@ -3,56 +3,41 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## [1.1.34](https://github.com/agranara/agnijs/compare/@agnijs/agni-ui@1.1.33...@agnijs/agni-ui@1.1.34) (2020-08-28)
-
+## [1.1.35](https://github.com/agranara/agnijs/compare/@agnijs/agni-ui@1.1.34...@agnijs/agni-ui@1.1.35) (2020-09-21)
 
 ### Bug Fixes
 
-* keycode and which handler ([b5864f4](https://github.com/agranara/agnijs/commit/b5864f45ad4df72ca5fd7f332afeec6281eab826))
+- change useLayoutEffect with useEnhancedEffect for SSR ([4c7ae57](https://github.com/agranara/agnijs/commit/4c7ae57211e961c89e1b1782db017a0afc94dda8))
 
+## [1.1.34](https://github.com/agranara/agnijs/compare/@agnijs/agni-ui@1.1.33...@agnijs/agni-ui@1.1.34) (2020-08-28)
 
+### Bug Fixes
 
-
+- keycode and which handler ([b5864f4](https://github.com/agranara/agnijs/commit/b5864f45ad4df72ca5fd7f332afeec6281eab826))
 
 ## [1.1.33](https://github.com/agranara/agnijs/compare/@agnijs/agni-ui@1.1.32...@agnijs/agni-ui@1.1.33) (2020-06-19)
 
-
 ### Bug Fixes
 
-* **select:** index should not included inside option check ([2319082](https://github.com/agranara/agnijs/commit/23190824d318c4dee0c20ceea82d5dc132d241d1))
-* **select:** select option label and value not found ([be55657](https://github.com/agranara/agnijs/commit/be55657208267766a5d096903c19e68b14a92275))
-
-
-
-
+- **select:** index should not included inside option check ([2319082](https://github.com/agranara/agnijs/commit/23190824d318c4dee0c20ceea82d5dc132d241d1))
+- **select:** select option label and value not found ([be55657](https://github.com/agranara/agnijs/commit/be55657208267766a5d096903c19e68b14a92275))
 
 ## [1.1.32](https://github.com/agranara/agnijs/compare/@agnijs/agni-ui@1.1.31...@agnijs/agni-ui@1.1.32) (2020-05-03)
 
-
 ### Reverts
 
-* **datagrid:** revert changes for datagrid ([7fe77a2](https://github.com/agranara/agnijs/commit/7fe77a286a1ea125800f06027a8d620552d137b6))
-
-
-
-
+- **datagrid:** revert changes for datagrid ([7fe77a2](https://github.com/agranara/agnijs/commit/7fe77a286a1ea125800f06027a8d620552d137b6))
 
 ## [1.1.31](https://github.com/agranara/agnijs/compare/@agnijs/agni-ui@1.1.30...@agnijs/agni-ui@1.1.31) (2020-05-03)
 
-
 ### Bug Fixes
 
-* **button:** enhance button style related ([63ab6bf](https://github.com/agranara/agnijs/commit/63ab6bfe392f06752cd1800684f611016b5ee6c0))
-* **datagrid:** flash when scroll datagrid component ([3c08cb6](https://github.com/agranara/agnijs/commit/3c08cb6cbaa79b50a47cb977b93a979dd9dc7cab))
-* **menu:** complete menu related component properties ([c697d0f](https://github.com/agranara/agnijs/commit/c697d0f8a14e5e3113cfb134ca8329af414ed6c1))
-* **popover:** added delay open close for tooltip type and style props ([5cdb8cf](https://github.com/agranara/agnijs/commit/5cdb8cf5529b1801a3a7b19283312a2ed1775f23))
-* **toast:** added style properties to customize toast ([70c4b7e](https://github.com/agranara/agnijs/commit/70c4b7e9ea89e2ca6ac176ddbdb2c8ad7cb77104))
-* **usedebounce:** fix usedebounce run on first render ([1e1c76f](https://github.com/agranara/agnijs/commit/1e1c76f2490914e8c93c0cd8d28fff9537db33dd))
-
-
-
-
-
+- **button:** enhance button style related ([63ab6bf](https://github.com/agranara/agnijs/commit/63ab6bfe392f06752cd1800684f611016b5ee6c0))
+- **datagrid:** flash when scroll datagrid component ([3c08cb6](https://github.com/agranara/agnijs/commit/3c08cb6cbaa79b50a47cb977b93a979dd9dc7cab))
+- **menu:** complete menu related component properties ([c697d0f](https://github.com/agranara/agnijs/commit/c697d0f8a14e5e3113cfb134ca8329af414ed6c1))
+- **popover:** added delay open close for tooltip type and style props ([5cdb8cf](https://github.com/agranara/agnijs/commit/5cdb8cf5529b1801a3a7b19283312a2ed1775f23))
+- **toast:** added style properties to customize toast ([70c4b7e](https://github.com/agranara/agnijs/commit/70c4b7e9ea89e2ca6ac176ddbdb2c8ad7cb77104))
+- **usedebounce:** fix usedebounce run on first render ([1e1c76f](https://github.com/agranara/agnijs/commit/1e1c76f2490914e8c93c0cd8d28fff9537db33dd))
 
 ## [1.1.30](https://github.com/agranara/agnijs/compare/@agnijs/agni-ui@1.1.29...@agnijs/agni-ui@1.1.30) (2020-04-30)
 
