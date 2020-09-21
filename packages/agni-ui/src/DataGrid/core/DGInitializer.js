@@ -1,5 +1,6 @@
 /* eslint-disable no-param-reassign */
-import React, { useLayoutEffect, useRef, Fragment, useEffect, useState } from 'react';
+import React, { useRef, Fragment, useEffect, useState } from 'react';
+import { useEnhancedEffect } from '../../_hooks/useEnhancedEffect';
 import { get } from '../../_utils/get';
 import { Spinner } from '../../Spinner';
 import { getScrollbarSize } from '../../_utils/getScrollbarSize';
@@ -32,7 +33,7 @@ const DGInitializer = ({
 
   // Immediate execution after page load
   // set width for columns from loaded sample data
-  useLayoutEffect(() => {
+  useEnhancedEffect(() => {
     let totalWidth = 0;
 
     for (let i = 0; i < columnRefs.current.length; i += 1) {

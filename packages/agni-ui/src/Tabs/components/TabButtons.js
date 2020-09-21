@@ -1,18 +1,11 @@
-import React, {
-  forwardRef,
-  useRef,
-  useState,
-  useLayoutEffect,
-  Children,
-  isValidElement,
-  cloneElement
-} from 'react';
+import React, { forwardRef, useRef, useState, Children, isValidElement, cloneElement } from 'react';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import { useForkedRef } from '../../_hooks/useForkedRef';
 import { debounce } from '../../_utils/debounce';
 import { PseudoBox } from '../../PseudoBox';
 import { Button } from '../../Button';
 import { TabButton } from './TabButton';
+import { useEnhancedEffect } from '../../_hooks/useEnhancedEffect';
 
 const TabButtons = forwardRef(({ children, ...rest }, forwardedRef) => {
   const ref = useRef();
@@ -22,7 +15,7 @@ const TabButtons = forwardRef(({ children, ...rest }, forwardedRef) => {
 
   const [hasScroll, setHasScroll] = useState(false);
 
-  useLayoutEffect(() => {
+  useEnhancedEffect(() => {
     const domRef = ref.current;
     if (domRef.scrollWidth > domRef.offsetWidth) {
       setHasScroll(true);
