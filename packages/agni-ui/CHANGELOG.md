@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.36](https://github.com/agranara/agnijs/compare/@agnijs/agni-ui@1.1.35...@agnijs/agni-ui@1.1.36) (2020-10-08)
+
+### Features
+
+- **select:** add select all button on search ([5436702](https://github.com/agranara/agnijs/commit/543670246e4b0ce18239d80796b27453d3e5dd78))
+
 ## [1.1.35](https://github.com/agranara/agnijs/compare/@agnijs/agni-ui@1.1.34...@agnijs/agni-ui@1.1.35) (2020-09-21)
 
 ### Bug Fixes
