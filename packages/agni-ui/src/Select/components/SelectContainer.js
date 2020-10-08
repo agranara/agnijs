@@ -22,7 +22,9 @@ const SelectContainer = memo(
       name,
       placeholder,
       hasValueOrSearch,
-      searchRef
+      searchRef,
+      isMulti,
+      hasMultiControl
     } = useSelectMetaContext();
 
     return (
@@ -37,7 +39,7 @@ const SelectContainer = memo(
         {...(!isInteractive ? { _focus: {} } : {})}
         d="block"
         pl={inputSize.px}
-        pr="42px"
+        pr={isMulti && hasMultiControl ? '74px' : '42px'}
         rounded={inputSize.rounded}
         pos="relative"
         tabIndex={0}

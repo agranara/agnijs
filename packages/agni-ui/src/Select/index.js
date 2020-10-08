@@ -26,6 +26,10 @@ import { SelectMetaContext } from './SelectMetaContext';
 
 const safeString = str => str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
+function onlyUnique(value, index, self) {
+  return self.indexOf(value) === index;
+}
+
 const Select = memo(
   forwardRef(
     (
@@ -35,6 +39,7 @@ const Select = memo(
         value: valueProp,
         options = [],
         onChange,
+        onSearch,
         className,
         placeholder = 'Select one from option below',
         notFoundText = 'Option not found',
@@ -43,6 +48,7 @@ const Select = memo(
         labelKey = 'label',
         valueKey = 'value',
         isMulti = false,
+        hasMultiControl = false,
         isClearable = true,
         isSearchable = true,
         isCreatable = false,
@@ -121,28 +127,43 @@ const Select = memo(
       // Debounce filter search
       const [debounceFilterOnSearch] = useDebounceCallback({
         callback: searchValue => {
-          if (!searchValue || searchValue === '') {
-            setFilterOptions(options);
-          } else {
-            const regexp = new RegExp(safeString(searchValue), 'i');
-            const newOptions = options.filter(
-              item => regexp.test(item[labelKey]) || regexp.test(item[valueKey])
-            );
+          let hasResult = false;
+          if (onSearch) {
+            const newOptions = onSearch(searchValue, options);
+            if (Array.isArray(newOptions)) {
+              hasResult = true;
+              setFilterOptions(newOptions);
+            }
+          }
 
-            setFilterOptions(newOptions);
+          if (!hasResult) {
+            if (!searchValue || searchValue === '') {
+              setFilterOptions(options);
+            } else {
+              const regexp = new RegExp(safeString(searchValue), 'i');
+              const newOptions = options.filter(
+                item => regexp.test(item[labelKey]) || regexp.test(item[valueKey])
+              );
+
+              setFilterOptions(newOptions);
+            }
           }
         },
         delay: 300,
-        deps: [labelKey, options, valueKey]
+        deps: [labelKey, options, onSearch, valueKey]
       });
 
-      const inputSize = inputSizes[size];
-      const isInteractive = !(readOnly || disabled);
+      const inputSize = useMemo(() => inputSizes[size], [size]);
+      const isInteractive = useMemo(() => !(readOnly || disabled), [disabled, readOnly]);
       const value = isControlled.current ? valueProp : valueState;
-      const hasValue = isMulti
-        ? Array.isArray(value) && value.length > 0
-        : typeof value !== 'undefined' && value !== null;
-      const hasValueOrSearch = hasValue || search !== '';
+      const hasValue = useMemo(() => {
+        return isMulti
+          ? Array.isArray(value) && value.length > 0
+          : typeof value !== 'undefined' && value !== null;
+      }, [isMulti, value]);
+      const hasValueOrSearch = useMemo(() => {
+        return hasValue || search !== '';
+      }, [hasValue, search]);
 
       // Update search field
       const updateSearch = useCallback(
@@ -186,6 +207,16 @@ const Select = memo(
       const handleFocus = useCallback(
         ev => {
           if (!isInteractive) return;
+
+          const isClear =
+            ev.target &&
+            (ev.target.classList.contains('select__icon-clear') ||
+              ev.target.classList.contains('select__icon-clear--icon') ||
+              ev.target.classList.contains('select__value-close') ||
+              ev.target.classList.contains('select__value-close--icon'));
+
+          if (isClear) return;
+
           handleIsOpen(true);
 
           if (searchRef.current) {
@@ -242,6 +273,19 @@ const Select = memo(
           updateValue(undefined);
         }
       }, [isInteractive, isMulti, updateValue]);
+
+      const handleCheckAll = useCallback(() => {
+        if (!isInteractive) return;
+
+        if (isMulti) {
+          const initialValue = Array.isArray(value) ? value : [];
+          updateValue(
+            [...initialValue, ...filterOptions.map(opt => opt[valueKey])].filter(onlyUnique)
+          );
+
+          updateSearch('');
+        }
+      }, [filterOptions, isInteractive, isMulti, updateSearch, updateValue, value, valueKey]);
 
       // Handle clear multi item
       const handleClearMultiItem = useCallback(
@@ -348,6 +392,7 @@ const Select = memo(
 
           hasValue,
           hasValueOrSearch,
+          hasMultiControl,
 
           isContainerFocus: isOpen && isInteractive,
           isInteractive,
@@ -362,6 +407,7 @@ const Select = memo(
 
           // Handler
           handleClear,
+          handleCheckAll,
           handleClearMultiItem,
           onSearch: handleSearch,
           handleClickItem,
@@ -371,10 +417,12 @@ const Select = memo(
         }),
         [
           disabled,
+          handleCheckAll,
           handleClear,
           handleClearMultiItem,
           handleClickItem,
           handleSearch,
+          hasMultiControl,
           hasValue,
           hasValueOrSearch,
           inputSize,

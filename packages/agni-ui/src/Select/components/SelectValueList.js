@@ -28,13 +28,18 @@ const SelectValueList = memo(({ children }) => {
   return (
     <PseudoBox as="ul" listStyleType="none" className="select__value-list" maxW="100%">
       {Array.isArray(value) ? (
-        <AnimatePresence>
-          {value.map(val => (
-            <SelectValueItem key={`${uid}-val-${getStringValue(val)}`} value={val} hasExit>
-              {getStringLabel(val)}
-            </SelectValueItem>
-          ))}
-        </AnimatePresence>
+        <React.Fragment>
+          <AnimatePresence>
+            {value.slice(0, 5).map(val => (
+              <SelectValueItem key={`${uid}-val-${getStringValue(val)}`} value={val} hasExit>
+                {getStringLabel(val)}
+              </SelectValueItem>
+            ))}
+          </AnimatePresence>
+          {value.length > 5 && (
+            <SelectValueItem hideClear>{value.length - 5} More ...</SelectValueItem>
+          )}
+        </React.Fragment>
       ) : typeof value !== 'undefined' && value !== null ? (
         <SelectValueItem key={`${uid}-val-${getStringValue(value)}`} value={value}>
           {getStringLabel(value)}

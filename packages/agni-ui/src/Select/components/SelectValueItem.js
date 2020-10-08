@@ -7,9 +7,14 @@ import { PseudoBox } from '../../PseudoBox';
 import { useSelectMetaContext } from '../SelectMetaContext';
 import { useUiTheme } from '../../UiProvider/hooks/useUiTheme';
 
-const SelectValueItem = memo(({ children, value, hasExit }) => {
+const SelectValueItem = memo(({ children, value, hasExit, hideClear }) => {
   const theme = useUiTheme();
   const { inputSize, isMulti, handleClearMultiItem } = useSelectMetaContext();
+
+  const handleClear = ev => {
+    ev.preventDefault();
+    handleClearMultiItem(value);
+  };
 
   return (
     <motion.li
@@ -28,25 +33,26 @@ const SelectValueItem = memo(({ children, value, hasExit }) => {
         userSelect: 'none',
         marginTop: 6,
         ...(isMulti && {
-          backgroundColor: theme.colors.gray[200],
+          backgroundColor: hideClear ? theme.colors.primary[200] : theme.colors.gray[200],
           display: 'inline-flex',
           alignItems: 'center',
           lineHeight: 1.65,
           borderRadius: theme.radii.md,
           paddingLeft: theme.sizes[2],
-          marginTop: 5
+          marginTop: 5,
+          paddingRight: hideClear ? theme.sizes[2] : 0
         })
       }}
     >
       <PseudoBox as="span" className="select__value-label">
         {children}
       </PseudoBox>
-      {isMulti && (
+      {isMulti && !hideClear && (
         <PseudoBox
           as="button"
           type="button"
           className="select__value-close"
-          onClick={() => handleClearMultiItem(value)}
+          onClick={handleClear}
           outline="none"
           mr={1}
           ml={2}
@@ -55,7 +61,7 @@ const SelectValueItem = memo(({ children, value, hasExit }) => {
             color: 'danger.500'
           }}
         >
-          <FiX />
+          <FiX className="select__value-close--icon" />
         </PseudoBox>
       )}
     </motion.li>

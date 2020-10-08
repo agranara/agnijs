@@ -22,6 +22,10 @@ type ISelectProps<T> = {
    */
   onChange?: (val: T) => void;
   /**
+   * Handler on search value
+   */
+  onSearch?: (searchVal: string, options: T[]) => void | T[];
+  /**
    * Is select disabled. Default: false
    */
   disabled?: boolean;
@@ -93,6 +97,10 @@ type ISelectProps<T> = {
    * Positioner properties. Extending 'Positioner' props
    */
   positionerProps?: PositionerProps;
+  /**
+   * Show check all when `isMulti` is true
+   */
+  hasMultiControl?: boolean;
 };
 
 type SelectComponent<T = any> = React.ForwardRefExoticComponent<ISelectProps<T>>;
