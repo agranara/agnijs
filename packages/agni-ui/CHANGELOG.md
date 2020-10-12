@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.37](https://github.com/agranara/agnijs/compare/@agnijs/agni-ui@1.1.36...@agnijs/agni-ui@1.1.37) (2020-10-12)
+
+### Bug Fixes
+
+- **pagination:** added on enter keydown pagination event ([8bf2c9a](https://github.com/agranara/agnijs/commit/8bf2c9affae2b2b8c8763d67dcee71b5ad228923))
+- **select:** cursor and multiple select on clear and enter ([d3cc41a](https://github.com/agranara/agnijs/commit/d3cc41a99f2d3f3e558819a8b2968495227be770))
+
 ## [1.1.36](https://github.com/agranara/agnijs/compare/@agnijs/agni-ui@1.1.35...@agnijs/agni-ui@1.1.36) (2020-10-08)
 
 ### Features
