@@ -13,6 +13,7 @@ const useNumberInput = ({
   value: valueProp,
   onChange,
   onBlur,
+  onKeyDown,
   defaultValue,
   thousandSeparator,
   decimalSeparator,
@@ -466,6 +467,10 @@ const useNumberInput = ({
         event.preventDefault();
         fixCursorKeyboard();
       }
+    }
+
+    if (onKeyDown) {
+      onKeyDown(event, value);
     }
   };
 

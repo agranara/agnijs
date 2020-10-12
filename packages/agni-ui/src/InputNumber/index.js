@@ -14,6 +14,7 @@ const InputNumber = forwardRef(
       value,
       onChange,
       onBlur,
+      onKeyDown,
       defaultValue,
       focusInputOnChange,
       clampValueOnBlur,
@@ -39,6 +40,8 @@ const InputNumber = forwardRef(
       value,
       defaultValue,
       onChange,
+      onBlur,
+      onKeyDown,
       focusInputOnChange,
       clampValueOnBlur,
       keepWithinRange,
@@ -50,7 +53,6 @@ const InputNumber = forwardRef(
       isReadOnly,
       isInvalid,
       isDisabled,
-      onBlur,
       thousandSeparator,
       decimalSeparator
     });
