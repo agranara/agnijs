@@ -470,7 +470,8 @@ const useNumberInput = ({
     }
 
     if (onKeyDown) {
-      onKeyDown(event, value);
+      const validatedValue = validateAndClamp();
+      onKeyDown(event, validatedValue);
     }
   };
 

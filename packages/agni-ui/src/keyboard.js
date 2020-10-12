@@ -4,7 +4,7 @@
  * based on https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key/Key_Values
  */
 export function isKeyboardKey(event, name) {
-  if (!event.key) return false;
+  if (!event || !event.key) return false;
 
   if (name === 'ArrowUp') {
     return event.key === 'ArrowUp' || event.key === 'Up'; // IE /Edge;

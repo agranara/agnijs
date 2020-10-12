@@ -193,7 +193,7 @@ const Select = memo(
               : value;
 
             const keyedValue = get(keyedRef.current, getKeyedOption(firstValue));
-            if (keyedValue) {
+            if (keyedValue && keyedValue.cursor) {
               setCursor(keyedValue.cursor);
             }
           }
@@ -208,22 +208,15 @@ const Select = memo(
         ev => {
           if (!isInteractive) return;
 
-          const isClear =
-            ev.target &&
-            (ev.target.classList.contains('select__icon-clear') ||
-              ev.target.classList.contains('select__icon-clear--icon') ||
-              ev.target.classList.contains('select__value-close') ||
-              ev.target.classList.contains('select__value-close--icon'));
-
-          if (isClear) return;
-
-          handleIsOpen(true);
+          if (!isOpen) {
+            handleIsOpen(true);
+          }
 
           if (searchRef.current) {
             searchRef.current.focus(ev);
           }
         },
-        [handleIsOpen, isInteractive]
+        [isOpen, handleIsOpen, isInteractive]
       );
 
       // Signaling to parent about select value
@@ -241,11 +234,13 @@ const Select = memo(
 
       // Update value of select
       const updateValue = useCallback(
-        nextValue => {
+        (nextValue, resetCursor = true) => {
           if (prevNextValue.current === nextValue) return;
 
           if (!isControlled.current) setValueState(nextValue);
-          setCursor(null);
+          if (resetCursor) {
+            setCursor(null);
+          }
           if (onChange) onChange(nextValue);
           prevNextValue.current = nextValue;
         },
@@ -258,6 +253,8 @@ const Select = memo(
           if (!isInteractive || (hasValue && !isMulti)) {
             return;
           }
+
+          setCursor(null);
           updateSearch(ev.target.value);
         },
         [hasValue, isInteractive, isMulti, updateSearch]
@@ -267,12 +264,16 @@ const Select = memo(
       const handleClear = useCallback(() => {
         if (!isInteractive) return;
 
+        if (!isOpen) {
+          handleIsOpen(true);
+        }
+
         if (isMulti) {
           updateValue([]);
         } else {
           updateValue(undefined);
         }
-      }, [isInteractive, isMulti, updateValue]);
+      }, [handleIsOpen, isInteractive, isMulti, isOpen, updateValue]);
 
       const handleCheckAll = useCallback(() => {
         if (!isInteractive) return;
@@ -292,6 +293,9 @@ const Select = memo(
         valueToRemove => {
           if (Array.isArray(value)) {
             updateValue(value.filter(val => val !== valueToRemove));
+            if (searchRef.current) {
+              searchRef.current.focus();
+            }
           }
         },
         [updateValue, value]
@@ -310,8 +314,17 @@ const Select = memo(
             } else {
               newOptions = [nextValue];
             }
-            updateValue(newOptions);
+            updateValue(newOptions, false);
             updateSearch('');
+
+            const keyedValue = get(keyedRef.current, getKeyedOption(nextValue));
+            if (keyedValue && keyedValue.cursor) {
+              setCursor(keyedValue.cursor);
+            }
+
+            if (searchRef.current) {
+              searchRef.current.focus(ev);
+            }
           } else {
             updateValue(nextValue);
             handleIsOpen(false);
@@ -331,9 +344,13 @@ const Select = memo(
           const isBackspace = isKeyboardKey(ev, 'Backspace');
           const isEnter = isKeyboardKey(ev, 'Enter');
 
+          if (isEnter && ev) {
+            ev.preventDefault();
+          }
+
           if (isArrowDown && cursor === null && filterOptions.length > 0) {
             if (!isOpen) {
-              handleFocus();
+              handleFocus(ev);
             }
             setCursor(0);
           } else {
@@ -357,9 +374,17 @@ const Select = memo(
                 handleClickItem(ev, item);
               }
               if (isArrowDown && cursor < filterOptions.length - 1) {
-                setCursor(oldCursor => oldCursor + 1);
+                setCursor(oldCursor => {
+                  const newCursor = oldCursor + 1;
+                  return newCursor > filterOptions.length - 1
+                    ? filterOptions.length - 1
+                    : newCursor;
+                });
               } else if (isArrowUp && cursor > 0) {
-                setCursor(oldCursor => oldCursor - 1);
+                setCursor(oldCursor => {
+                  const newCursor = oldCursor - 1;
+                  return newCursor < 0 ? 0 : newCursor;
+                });
               }
             }
           }
