@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.39](https://github.com/agranara/agnijs/compare/@agnijs/agni-ui@1.1.38...@agnijs/agni-ui@1.1.39) (2021-01-20)
+
+
+### Bug Fixes
+
+* **select:** should check val first before using includes ([6cb8edc](https://github.com/agranara/agnijs/commit/6cb8edc695de836f7a2d72e010f069261a41f861))
+
+
+
+
+
 ## [1.1.38](https://github.com/agranara/agnijs/compare/@agnijs/agni-ui@1.1.37...@agnijs/agni-ui@1.1.38) (2021-01-20)
 
 
