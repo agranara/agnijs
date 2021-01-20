@@ -14,7 +14,7 @@ const SelectValueList = memo(({ children }) => {
   const getStringValue = useCallback(
     val => {
       const keyVal = getKeyedOption(val);
-      if (val.includes('.') && keyedOptions && keyedOptions[keyVal]) {
+      if (typeof val === 'string' && val.includes('.') && keyedOptions && keyedOptions[keyVal]) {
         return get(keyedOptions[keyVal], valueKey, '');
       }
       return get(keyedOptions, `${getKeyedOption(val)}.${valueKey}`, '');
@@ -25,7 +25,7 @@ const SelectValueList = memo(({ children }) => {
   const getStringLabel = useCallback(
     val => {
       const keyVal = getKeyedOption(val);
-      if (val.includes('.') && keyedOptions && keyedOptions[keyVal]) {
+      if (typeof val === 'string' && val.includes('.') && keyedOptions && keyedOptions[keyVal]) {
         return get(keyedOptions[keyVal], labelKey, '');
       }
       return get(keyedOptions, `${keyVal}.${labelKey}`, '');
