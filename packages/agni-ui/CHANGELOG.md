@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.38](https://github.com/agranara/agnijs/compare/@agnijs/agni-ui@1.1.37...@agnijs/agni-ui@1.1.38) (2021-01-20)
+
+
+### Bug Fixes
+
+* **select:** value that has dot confuse select value or label getter ([68206e9](https://github.com/agranara/agnijs/commit/68206e96790c5ddb01eb6a756a92c71de83625f8))
+
+
+
+
+
+
 ## [1.1.37](https://github.com/agranara/agnijs/compare/@agnijs/agni-ui@1.1.36...@agnijs/agni-ui@1.1.37) (2020-10-12)
 
 ### Bug Fixes
